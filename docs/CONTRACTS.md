@@ -75,7 +75,7 @@ function verifyItem(item: QuestionItem): VerifyResult;          // pure, determi
 
 ```ts
 interface Clock { now(): number }                        // monotonic ms; never Date.now()
-const systemClock: Clock;                                // performance.now()
+const systemClock: Clock;                                // performance.timeOrigin + performance.now()
 function createFakeClock(start?: number): Clock & { advance(ms: number): void };  // tests, dev hook
 
 type TimerMode = 'mock' | 'drill';
@@ -90,6 +90,8 @@ msUntilTimeUp(s, now) → number | null                    // null when untimed 
 ```
 
 - Pure functions of `now`; state is immutable (a change returns a new object, a no-op returns the same one).
+- `systemClock` is monotonic within a page and on the epoch scale, so a session saved before a reload resumes with
+  its clock still running. `elapsedMs` is clamped at 0 in case the device clock moved back between reloads.
 - Time is derived from the clock on every read, never accumulated per tick, so frame jitter and a throttled hidden
   tab cannot cause drift.
 - `elapsedMs` excludes pauses and stops at the duration; `remainingMs` never goes below 0.
@@ -156,7 +158,9 @@ once task 10 saves it.
 
 `createSessionStore(clock)` → Zustand store `{ trial, now, startMock(bank, seed, recentMocks?), answer, skip, next,
 back, flag, finish, tick, setHidden(hidden), reset }`. Each action reads `clock.now()` once and applies a trial
-rule; `setHidden(false)` also checks time-up. The screen ticks every 250 ms and on `visibilitychange`.
+rule; `setHidden(false)` also checks time-up. `resume(trial)` continues a saved
+session: it ends the hidden spell the old page opened while unloading, then checks time-up. `saveFailed` /
+`reportSaveError()` let the home screen say saving is off. The screen ticks every 250 ms and on `visibilitychange`.
 
 ## Grand Trial keys (`src/ui/screens/GrandTrial.tsx`)
 
@@ -169,5 +173,92 @@ Answer buttons are named by their visible text ("A Quantity A is greater"); `ari
 
 `window.__umtymp`: `state()` → `{ screen: 'home' | 'trial' | 'result', index, itemId, total, remainingMs,
 endReason, answers[{ itemId, status, choice }], hiddenCount }` · `seed(n)` starts a mock with seed `n` ·
-`answer(letter)` · `clock.advance(ms)` only with `?clock=fake` (the fake clock replaces the real one and the hook
-ticks the store). `loadFixture(name)` arrives with saved history (tasks 10–11).
+`answer(letter)` · `flush()` resolves once every change so far is saved · `clock.advance(ms)` only with
+`?clock=fake` (the fake clock replaces the real one and the hook
+ticks the store). `?bank=repeat` pads the seed bank 4× under ids like `copy-a-frac-0001`
+(`src/dev/devBank.ts`) so a full 50-item mock runs before the real bank is big enough. `loadFixture(name)` arrives
+with the metrics (task 11).
+
+## Local storage (`src/data/db.ts`, schema v1)
+
+Dexie database `umtymp`. Changing a table needs the owner (`CLAUDE.md` §7) and a new `version(n)` with an upgrade;
+version 1 is never edited.
+
+| Table | Key / indexes | Row |
+|---|---|---|
+| `profiles` | `id` | `{ id, displayName, house: 'owlcrest' \| 'emberwing' \| 'foxglen' \| 'starhorn' \| null, mascotColor }`; nothing else about a child |
+| `sessions` | `id`; `startedAt`, `profileId` | Session snapshot: `mode`, `itemIds` (order), `index`, `shownAt`, `lastShownAt`, `flags`, `timer` (`TimerState`), `endReason`, `startedAt`, `profileId` (null until profiles exist) |
+| `attempts` | `[sessionId+position]`; `sessionId`, `itemId` | One `AttemptEvent` per item per session |
+
+## Attempt repository (`src/data/attempts.ts`)
+
+```ts
+createAttemptRepo(db) → {
+  saveTrial(trial): Promise<void>            // session row + all events, one transaction (upsert)
+  loadActive(bank): Promise<TrialState | null> // newest unfinished session; null if the bank lost one of its items
+  listFinished(): Promise<FinishedSession[]> // mocks only, newest first: { sessionId, startedAt, total, correct, endReason, itemIds }
+}
+connectPersistence(store, repo, onError) → { flush(): Promise<void>; disconnect(): void }
+```
+
+- Saves whenever `trial` changes (answer, skip, flag, move, hide/show, end), never on ticks that change nothing; writes
+  run in order. A failed write calls `onError` and the trial continues.
+- **Unload limit:** a browser abandons an IndexedDB write still running when the page unloads, and nothing can make
+  unload wait for it. A save takes 0.5 ms median, 2.6 ms max (50 events, dev build, 2026-11-04), so only an action
+  in the last few milliseconds before a reload or tab close can be lost. Browser tests call the `flush()` hook before
+  reloading for that reason.
+- Boot (`main.tsx`): open the database (failure → run without saving, home says so), resume `loadActive`, connect
+  persistence. The home screen lists `listFinished()` and passes their `itemIds` (oldest first) to `startMock` so a
+  new mock avoids the last 3 mocks' items.
+
+## Metrics (`src/core/analytics/metrics.ts`)
+
+Pure functions of `AttemptEvent[]`. `METRICS`: `minAttempts` 5 · `slowSeconds` 35 · `paceSecondsPerQuestion` 30 ·
+`paceMarkMs` 5 min · `staminaWindowMs` 10 min · `staminaDropPoints` 15. Every rate is `null` below 5 answers; counts
+are always given.
+
+| # | Function | Definition |
+|---|---|---|
+| 1 | `timeMs(e)`, `slowEvents(events)`, `medianTimeBy(events, 'tag' \| 'level')` | `answeredAt − shownAt` for **answered** items only (skips are near-instant and would skew medians); slow = more than 35 s; median per tag/level, null below 5 |
+| 2 | `paceMarks(events, { startedAt, endedAt })` | At each 5-min mark up to `endedAt`: answered so far (by `answeredAt`, inclusive) vs `floor(mark / 30 s)`; `behind` when fewer |
+| 3 | `accuracy(events)`, `accuracyBy(events, 'tag' \| 'level')` | correct ÷ **answered**; skipped and unanswered are not attempts. `{ attempted, correct, accuracy }` per group |
+| 4 | `trapSusceptibility(events)`, `trapSusceptibilityByTrap(events)` | Share of D-key items answered A/B/C (the `CLAUDE.md` pattern); per trap: wrong ÷ answered among items carrying it |
+| 5 | `falseDRate(events)` | Share of answered A/B/C-key items answered D |
+| 6 | `stamina(events, { startedAt, durationMs })` | Accuracy of answers in `[start, start+10 min)` vs `[end−10 min, end]`; null if the session is under 20 min or a window has < 5 answers; `dropPoints` rounded to 1/10 000 point (floating point made 95 % − 80 % read 14.999…); `tip` at ≥ 15 |
+| 7 | `skips(events)` | `{ skipped, unanswered, tags }`, tags counted over skipped + unanswered items |
+
+An item with several tags counts under each. Metrics are computed here only, never in components.
+
+## Coach (`src/core/analytics/coach.ts`)
+
+```ts
+interface SessionRecord { sessionId; mode; startedAt; durationMs: number | null; endReason: EndReason | null; events }
+coach(history: SessionRecord[]) → CoachFeedback
+  | { kind: 'feedback'; strength; bottleneck; drill: DrillFocus; strengthText; bottleneckText; habitText }
+  | { kind: 'not_enough_data'; answered; neededPerTopic: 5 }
+```
+
+- **Not enough data:** no topic has 5 answers yet → Hoot says so and suggests a full mock.
+- **Strength:** the topic with the best accuracy (≥ 5 answers), compared as exact fractions; ties → more answers,
+  then vocabulary order.
+- **Bottleneck = most questions lost**, among: a trap (wrong answers), D questions answered A/B/C, D chosen on
+  fixed-answer questions, questions left when the latest mock **timed out**, a stamina tip on the latest mock
+  (drop × 20 questions in 10 min), a topic (wrong answers; never the strength topic). Each needs ≥ 5 answers. Equal
+  losses go to the more specific habit, in that order. Nothing lost → `challenge` with a drill one level up (max 5);
+  its text says "Nothing slipped" only when every answer was right.
+- **Drill:** the trap or topic itself; D misses → their most common trap (no trap → level 3); false D, time-out and
+  stamina → the most common topic among those questions.
+- Time and stamina use the latest finished mock only; everything else uses the whole history.
+
+## Habit badges (`src/core/analytics/badges.ts`)
+
+`earnedBadges(history) → { id, title, evidence }[]`, from finished sessions only. Habits and progress, never
+comparison with others.
+
+| Id | Earned when |
+|---|---|
+| `first_trial` | A mock is finished |
+| `finished_in_time` | A finished mock has no unanswered question |
+| `steady_pace` | A finished mock is on the 30 s line at every 5-minute mark (at least one mark) |
+| `negative_tester` | 5 right answers on `negative_numbers` trap items |
+| `d_detector` | ≥ 10 D-key questions answered, ≥ 80 % right (compared as whole numbers) |

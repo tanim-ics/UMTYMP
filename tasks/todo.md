@@ -4,7 +4,41 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 10 (saving attempts locally). Tasks 8 and 9 committed and pushed.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 13 (results and review screen). Tasks 10–12 and Checkpoint B committed and pushed.
+
+**Handoff (after Task 12):** `coach.ts` (strength, biggest bottleneck by questions lost, habit, drill; texts in
+Professor Hoot's voice) and `badges.ts` (5 habit badges). Rules in `docs/CONTRACTS.md`. 27 tests: 14 coach fixtures
+(incl. empty, too little data, each bottleneck kind, challenge, tie-breaks, newest-first history, early finish) + 7
+badge cases; `badges.ts` 100 %, `coach.ts` 100 % lines (uncovered branches are type-only fallbacks that can't fire).
+Mutation checks: 2 of 6 survived at first, which exposed a redundant tie-break list (removed: the push order already
+decides ties) and an untested early-finish case (test added); now all red. Rates are compared as exact fractions.
+
+**Handoff (after Task 11):** `src/core/analytics/metrics.ts`: all 7 metrics, definitions in `docs/CONTRACTS.md`
+(attempted = answered; time per question from answered items only; pace by `answeredAt`; stamina windows first and
+last 10 min of a ≥ 20 min session). Fixtures in `tests/fixtures/histories.ts` (`ev`, `many`); 26 tests, every value
+hand-computed; `metrics.ts` 100 % lines. Found: floating point made an exact 15-point stamina drop read 14.999… (no
+tip) → failing test, then rounded. Task 12 should compare rates the same careful way. Mutation checks 5/5 red.
+`loadFixture` dev hook is still open; it fits Task 13 (results/review screens), where a fixture history is shown.
+
+**Handoff (Checkpoint B):** `?bank=repeat` (dev only, `src/dev/devBank.ts`) pads the 20 seed items 4× so a full
+mock fills the 6/10/14/12/8 mix. `tests/e2e/checkpoint.spec.ts`: 50 items by keyboard, reload after 25 (resumes at
+question 26 with 25 answers), finish, history shows "of 50 correct" after another reload. Found: Chromium lost the
+last action when Playwright reloaded within milliseconds of it (the browser abandons IndexedDB writes in flight at
+unload). Measured save time 0.5 ms median / 2.6 ms max; recorded as a limit in `docs/CONTRACTS.md`; tests now wait
+for the `flush()` hook before reloading. 20 E2E × 3 repeats = 60/60 green; full check green (218 unit tests, shipped
+audit 0, dev moderate 7 under cap 11). Production image has no dev code (searched for padding ids, hooks, fake clock,
+mathjs: 0 hits).
+
+**Handoff (after Task 10):** Dexie schema v1 (`src/data/db.ts`: profiles, sessions, attempts) and
+`src/data/attempts.ts` (repo + `connectPersistence`). Every change to the trial is saved as it happens; a reload
+resumes the newest unfinished mock; finished mocks are listed on home and feed the "avoid last 3 mocks" rule.
+**Clock change:** `systemClock` is now `performance.timeOrigin + performance.now()` (monotonic within a page,
+comparable across reloads); `elapsedMs` clamps at 0. New deps: dexie (stack), fake-indexeddb (dev, for the unit
+tests the plan names). Tests: 214 unit/component + 18 E2E (new `tests/e2e/reload.spec.ts`: resume with clock
+running, history after reload, finished mock not resumed) on Chromium + WebKit. Mutation checks 4/4 red. Seen live:
+a reload left the timer "hidden" forever (the old page hides as it unloads) → fixed with a failing test first.
+Not tested live: storage blocked or full (unit-tested: app keeps working, home says saving is off). After adding a
+dependency, restart `dev` with `docker compose up -d --build -V dev`.
 
 **Handoff (after Task 9):** plain Grand Trial: pure rules in `src/core/session/trial.ts` (+ `AttemptEvent` in
 `attempt.ts`), Zustand store `src/store/session.ts`, `MathView` (KaTeX 0.19, HTML + MathML), `GrandTrial` screen with
@@ -143,26 +177,26 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 7, 8 · **Files:** `src/ui/screens/GrandTrial.tsx`, `src/ui/components/MathView.tsx`, `src/store/session.ts`, `src/dev/testHooks.ts`, `tests/e2e/trial.spec.ts` · **Size:** M
 
 ### Task 10: Saving attempts locally
-- [ ] Dexie schema v1 (profiles, sessions, attempts); every answer saved as it happens
-- [ ] Reload mid-mock resumes with the clock still running; finished mocks listed
+- [x] Dexie schema v1 (profiles, sessions, attempts); every answer saved as it happens
+- [x] Reload mid-mock resumes with the clock still running; finished mocks listed
 - **Verify:** unit tests (fake IndexedDB); E2E reload test
 - **Depends on:** 9 · **Files:** `src/data/db.ts`, `src/data/attempts.ts`, `tests/unit/data.test.ts`, `tests/e2e/reload.spec.ts` · **Size:** M
 
 ### Checkpoint B — after tasks 7–10
-- [ ] A full 50-item mock (seed bank repeated in dev) runs end to end and survives reload; E2E green; commit
+- [x] A full 50-item mock (seed bank repeated in dev) runs end to end and survives reload; E2E green; commit
 
 ---
 
 ## Phase 2 — Insights
 
 ### Task 11: Metrics
-- [ ] All 7 metrics from `CLAUDE.md` §4 as pure functions; `null` below 5 attempts
+- [x] All 7 metrics from `CLAUDE.md` §4 as pure functions; `null` below 5 attempts
 - **Verify:** unit tests against hand-computed fixtures
 - **Depends on:** 9 · **Files:** `src/core/analytics/metrics.ts`, `tests/unit/metrics.test.ts`, `tests/fixtures/histories.ts` · **Size:** S
 
 ### Task 12: Coach and habit badges
-- [ ] Picks one strength, the biggest bottleneck and one habit + drill target; "not enough data" case
-- [ ] Habit badges (e.g. finished in time, tested a negative) from events
+- [x] Picks one strength, the biggest bottleneck and one habit + drill target; "not enough data" case
+- [x] Habit badges (e.g. finished in time, tested a negative) from events
 - **Verify:** ≥ 10 fixture histories give the expected output
 - **Depends on:** 11 · **Files:** `src/core/analytics/coach.ts`, `src/core/analytics/badges.ts`, `tests/unit/coach.test.ts` · **Size:** M
 
