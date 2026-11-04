@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UMTYMP Prep Goals</title>
+<style>
+  :root {
+    --bg: #f7f7f4; --surface: #ffffff; --text: #1d1d1b; --muted: #5f5f5a; --line: #d9d8d2;
+    --c1: #2f6fb2; --c1-soft: #e4eef8;
+    --c2: #2e8a5b; --c2-soft: #e3f2ea;
+    --c3: #b06a1c; --c3-soft: #f8ecdd;
+    --c4: #7a4fb0; --c4-soft: #efe7f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161615; --surface: #20201e; --text: #ecebe6; --muted: #a3a29b; --line: #3a3a36;
+      --c1: #7fb0e6; --c1-soft: #1d2a38;
+      --c2: #74c79c; --c2-soft: #1b2e24;
+      --c3: #e2a764; --c3-soft: #33261a;
+      --c4: #b897e3; --c4-soft: #2a2236;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161615; --surface: #20201e; --text: #ecebe6; --muted: #a3a29b; --line: #3a3a36;
+    --c1: #7fb0e6; --c1-soft: #1d2a38;
+    --c2: #74c79c; --c2-soft: #1b2e24;
+    --c3: #e2a764; --c3-soft: #33261a;
+    --c4: #b897e3; --c4-soft: #2a2236;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.3rem; margin: 48px 0 12px; }
+  h3 { font-size: 1.05rem; margin: 0 0 6px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--muted); font-size: 1.1rem; max-width: 680px; }
+  .note { color: var(--muted); font-size: .9rem; }
+
+  /* Architecture diagram */
+  .arch { display: flex; flex-direction: column; align-items: stretch; gap: 0; margin-top: 16px; }
+  .layer-label {
+    font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 8px; font-weight: 600;
+  }
+  .box {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  }
+  .objective { border: 2px solid var(--text); text-align: center; }
+  .objective strong { font-size: 1.1rem; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .row .box { font-size: .92rem; }
+  .row .box b { display: block; margin-bottom: 2px; }
+  .arrow { display: flex; justify-content: center; padding: 6px 0; color: var(--muted); }
+  .arrow svg { width: 22px; height: 28px; }
+  .g1 { background: var(--c1-soft); border-color: var(--c1); }
+  .g2 { background: var(--c2-soft); border-color: var(--c2); }
+  .g3 { background: var(--c3-soft); border-color: var(--c3); }
+  .g4 { background: var(--c4-soft); border-color: var(--c4); }
+  .tag { font-size: .78rem; color: var(--muted); }
+  .outcome { text-align: center; border: 2px dashed var(--c2); }
+
+  /* Coaching loop */
+  .loop-wrap { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: center; }
+  .loop svg { width: 100%; height: auto; display: block; }
+  .loop text { fill: var(--text); font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .loop .sub { fill: var(--muted); font-weight: 400; font-size: 11px; }
+  .loop .node { fill: var(--surface); stroke: var(--line); }
+  .loop .ring { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+  ol.steps { margin: 0; padding-left: 20px; }
+  ol.steps li { margin-bottom: 6px; }
+
+  /* Detail cards */
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-left-width: 4px; border-radius: 10px; padding: 16px 18px; }
+  .card.c1 { border-left-color: var(--c1); }
+  .card.c2 { border-left-color: var(--c2); }
+  .card.c3 { border-left-color: var(--c3); }
+  .card.c4 { border-left-color: var(--c4); }
+  .card ul { margin: 6px 0 0; padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+  .example {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px;
+  }
+  .qc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; text-align: center; }
+  .qc div { border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 1.15rem; }
+  .qc small { display: block; color: var(--muted); font-size: .75rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+  td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+
+  @media (max-width: 760px) {
+    h1 { font-size: 1.6rem; }
+    .row { grid-template-columns: 1fr 1fr; }
+    .loop-wrap { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 420px) {
+    .row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>UMTYMP Test Prep: goals and what students learn</h1>
+<p class="lead">A practice app for the quantitative-comparison section of the UMTYMP qualifying exam.
+It teaches students to <strong>think about math instead of grinding through arithmetic</strong>, and to do it fast.</p>
+<p class="note">Exam format assumed here (50 questions in 25 minutes) still needs to be confirmed against official UMTYMP sources.</p>
+
+<h2>1. The big picture</h2>
+<p>Read top to bottom: one objective, four goals that serve it, the app features that deliver each goal, and what the student takes away.</p>
+
+<div class="arch" role="img" aria-label="Architecture: objective, four goals, app features, learning areas, outcome">
+  <p class="layer-label">Objective</p>
+  <div class="box objective">
+    <strong>Do well on the UMTYMP quantitative-comparison section</strong><br>
+    <span class="tag">fast, accurate and calm, at about 30 seconds per question</span>
+  </div>
+
+  <div class="arrow" aria-hidden="true"><svg viewBox="0 0 22 28"><path d="M11 0v22M3 15l8 9 8-9" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <p class="layer-label">Goals</p>
+  <div class="row">
+    <div class="box g1"><b>Realistic practice</b>Same count, same clock, same pressure as the real exam</div>
+    <div class="box g2"><b>Shortcuts</b>Every question solvable in under 30 s by logic</div>
+    <div class="box g3"><b>Trap spotting</b>Negatives, zero, fractions, square roots</div>
+    <div class="box g4"><b>Data coaching</b>Feedback from the student's own results</div>
+  </div>
+
+  <div class="arrow" aria-hidden="true"><svg viewBox="0 0 22 28"><path d="M11 0v22M3 15l8 9 8-9" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <p class="layer-label">How the app delivers it</p>
+  <div class="row">
+    <div class="box"><b>Timed mock exams</b><span class="tag">no pause, keyboard and tap answers</span></div>
+    <div class="box"><b>Shortcut explanations</b><span class="tag">the fast route shown after every question</span></div>
+    <div class="box"><b>Trap-tagged questions</b><span class="tag">each trap comes with the habit that beats it</span></div>
+    <div class="box"><b>Coach + drills</b><span class="tag">time, accuracy and trap tracking → 10-question drills</span></div>
+  </div>
+
+  <div class="arrow" aria-hidden="true"><svg viewBox="0 0 22 28"><path d="M11 0v22M3 15l8 9 8-9" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <p class="layer-label">What the student develops</p>
+  <div class="row">
+    <div class="box g1"><b>Exam skills</b>Pacing, calm, stamina, smart skipping</div>
+    <div class="box g2"><b>Reasoning habits</b>Test cases, compare instead of compute</div>
+    <div class="box g3"><b>Number sense</b>How powers, fractions and roots change size and sign</div>
+    <div class="box g4"><b>Self-awareness</b>Knowing strengths, fixing one weak spot at a time</div>
+  </div>
+
+  <div class="arrow" aria-hidden="true"><svg viewBox="0 0 22 28"><path d="M11 0v22M3 15l8 9 8-9" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+
+  <p class="layer-label">Outcome</p>
+  <div class="box outcome">
+    <strong>Faster at the exam, and better at mathematical thinking</strong><br>
+    <span class="tag">habits like testing cases and checking assumptions last well beyond UMTYMP</span>
+  </div>
+</div>
+
+<h2>2. What a question looks like</h2>
+<div class="example">
+  <p>Each question shows two quantities. The student picks one of four answers.</p>
+  <div class="qc">
+    <div><small>Quantity A</small>x²</div>
+    <div><small>Quantity B</small>x</div>
+  </div>
+  <p class="note" style="text-align:center">Condition: x ≠ 0</p>
+  <table>
+    <tr><th>A</th><td>Quantity A is greater</td></tr>
+    <tr><th>B</th><td>Quantity B is greater</td></tr>
+    <tr><th>C</th><td>The two are equal</td></tr>
+    <tr><th>D</th><td>Cannot be determined</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>Shortcut:</strong> try x = 2 (A is bigger), then x = ½ (B is bigger).
+  Two different results, so the answer is <strong>D</strong>. No calculation needed, about 15 seconds.</p>
+  <p class="note">Many students answer A here because they forget fractions. That is the "fraction between 0 and 1" trap.</p>
+</div>
+
+<h2>3. The coaching loop</h2>
+<div class="loop-wrap">
+  <div class="loop">
+    <svg viewBox="0 0 340 300" role="img" aria-label="Loop: practice, measure, coach, drill, back to practice">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0L10 5L0 10z" fill="currentColor" style="color:var(--muted)"/>
+        </marker>
+      </defs>
+      <path class="ring" d="M228 57 A110 110 0 0 1 279 132" marker-end="url(#ah)"/>
+      <path class="ring" d="M274 186 A110 110 0 0 1 230 243" marker-end="url(#ah)"/>
+      <path class="ring" d="M112 243 A110 110 0 0 1 66 188" marker-end="url(#ah)"/>
+      <path class="ring" d="M61 134 A110 110 0 0 1 110 57" marker-end="url(#ah)"/>
+      <rect class="node" x="115" y="18" width="110" height="46" rx="8"/>
+      <text x="170" y="38" text-anchor="middle">Practice</text>
+      <text class="sub" x="170" y="54" text-anchor="middle">mock or drill</text>
+      <rect class="node" x="230" y="137" width="104" height="46" rx="8"/>
+      <text x="282" y="157" text-anchor="middle">Measure</text>
+      <text class="sub" x="282" y="173" text-anchor="middle">time, accuracy</text>
+      <rect class="node" x="115" y="236" width="110" height="46" rx="8"/>
+      <text x="170" y="256" text-anchor="middle">Coach</text>
+      <text class="sub" x="170" y="272" text-anchor="middle">strength + bottleneck</text>
+      <rect class="node" x="6" y="137" width="104" height="46" rx="8"/>
+      <text x="58" y="157" text-anchor="middle">Drill</text>
+      <text class="sub" x="58" y="173" text-anchor="middle">10 targeted Qs</text>
+    </svg>
+  </div>
+  <div>
+    <ol class="steps">
+      <li><strong>Practice:</strong> the student takes a mock exam or a short drill.</li>
+      <li><strong>Measure:</strong> the app records the time per question, the topic, which traps caught them, and whether they slowed down near the end.</li>
+      <li><strong>Coach:</strong> the results screen says three things: one real strength, the biggest bottleneck, and one habit to fix it. Every claim has a number behind it.</li>
+      <li><strong>Drill:</strong> a 10-question drill on exactly that weak spot. Then the loop starts again.</li>
+    </ol>
+    <p class="note" style="margin-top:10px">Example: "Exponents: 18 s average, 9/10 correct. Inequalities are costing you 45 s each. Always test x = 2, 0 and −1. Here's a 10-question drill."</p>
+  </div>
+</div>
+
+<h2>4. What the student learns, in detail</h2>
+<div class="cards">
+  <div class="card c2">
+    <h3>Reasoning habits</h3>
+    <ul>
+      <li><strong>Test cases first:</strong> try 2, 0, −1 and ½ before answering. If two cases disagree, the answer is D.</li>
+      <li><strong>Compare, don't compute:</strong> cancel what both sides share, estimate sizes, skip exact values.</li>
+      <li><strong>Read the conditions:</strong> "x ≠ 0", "x is an integer" and "not drawn to scale" change the answer.</li>
+      <li><strong>Proof thinking:</strong> "always bigger" needs a reason; "it depends" needs two examples that disagree.</li>
+    </ul>
+  </div>
+  <div class="card c3">
+    <h3>Number sense</h3>
+    <ul>
+      <li>Squaring a number between 0 and 1 makes it <em>smaller</em>.</li>
+      <li>An even power hides the sign: (−3)² = 3².</li>
+      <li>√ always means the non-negative root.</li>
+      <li>Zero and negative numbers break "obvious" patterns.</li>
+    </ul>
+  </div>
+  <div class="card c1">
+    <h3>Exam skills</h3>
+    <ul>
+      <li><strong>Pacing:</strong> a feel for 30 seconds per question and when to move on.</li>
+      <li><strong>Calm under the clock:</strong> the timed format becomes familiar.</li>
+      <li><strong>Stamina:</strong> staying accurate in the last 10 minutes, not just the first 10.</li>
+      <li><strong>Smart skipping:</strong> when to skip, when to guess, and not over-using D.</li>
+    </ul>
+  </div>
+  <div class="card c4">
+    <h3>Self-awareness</h3>
+    <ul>
+      <li>Sees real strengths and weak spots per topic, with numbers.</li>
+      <li>Fixes one bottleneck at a time instead of "study more".</li>
+      <li>Builds confidence: feedback names the habit to change, never "you're slow".</li>
+    </ul>
+  </div>
+</div>
+
+<h2>5. For parents</h2>
+<p>Parents see honest progress by topic. The app works offline with no account. Cloud sync is optional,
+set up by a parent, and stores nothing about the child except a display name. No ads, no trackers.</p>
+
+</main>
+</body>
+</html>

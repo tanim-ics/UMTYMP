@@ -1,0 +1,6 @@
+# Paths exempt from the floor guard's pattern checks (suppressions, stubs, skips).
+# Docs describe these rules in words, and the guard contains the patterns it looks for.
+# CONSTRAINTS.md weakening checks still run on every file. Adding a line here needs owner OK.
+*.md
+app-goals.html
+tools/floor-guard.mjs

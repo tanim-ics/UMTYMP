@@ -1,0 +1,46 @@
+{
+  "name": "umtymp-prep",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --coverage",
+    "verify": "node --experimental-strip-types --no-warnings tools/verify-questions.ts",
+    "floor": "node tools/floor-guard.mjs",
+    "secrets": "gitleaks dir . --redact --no-banner --config .gitleaks.toml",
+    "audit:shipped": "npm audit --omit=dev --audit-level=moderate",
+    "audit:dev": "npm audit --audit-level=high && node tools/audit-ratchet.mjs 11",
+    "audit": "npm run audit:shipped && npm run audit:dev",
+    "check:fast": "npm run typecheck && npm run lint && npm run format:check && npm run floor && npm run secrets",
+    "check:task": "npm run check:fast && npm run test && npm run verify",
+    "check:full": "npm run check:task && npm run audit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^6.4.5",
+    "vitest": "^5.1.0"
+  }
+}

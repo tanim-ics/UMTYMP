@@ -1,0 +1,7 @@
+# Docs are hand-formatted; Prettier would rewrap their tables.
+*.md
+app-goals.html
+package-lock.json
+dist
+node_modules
+coverage

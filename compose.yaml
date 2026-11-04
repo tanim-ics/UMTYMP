@@ -1,0 +1,31 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: dev
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/app
+      # Keep the container's node_modules instead of the (empty) host folder.
+      - /app/node_modules
+
+  # One-off checks: `docker compose run --rm check npm run check:task`.
+  check:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: check
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run check:task
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: web
+    ports:
+      - '8080:80'

@@ -1,0 +1,35 @@
+/* Design tokens. Screens use only these variables so the magic-school theme (task 19) can
+   replace the values without touching components. */
+:root {
+  --color-bg: #f6efdf;
+  --color-surface: #fffaf0;
+  --color-text: #2b2238;
+  --color-muted: #6b5f75;
+  --color-accent: #5b3fa8;
+  --color-border: #d9cdb4;
+
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius: 16px;
+  --space: 16px;
+  --tap-target: 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #151230;
+    --color-surface: #221d45;
+    --color-text: #f3eefc;
+    --color-muted: #b7aecb;
+    --color-accent: #c6b3ff;
+    --color-border: #3b3466;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}

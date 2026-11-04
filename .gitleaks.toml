@@ -1,0 +1,7 @@
+# Default gitleaks rules, minus folders that hold third-party or generated files.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Third-party and generated files"
+paths = ['''node_modules''', '''dist''', '''coverage''', '''package-lock\.json''']
