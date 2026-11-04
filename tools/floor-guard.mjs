@@ -105,7 +105,9 @@ const SUPPRESSIONS =
   /@ts-ignore|@ts-nocheck|@ts-expect-error|eslint-disable|istanbul ignore|v8 ignore|c8 ignore|gitleaks:allow|prettier-ignore/;
 const STUBS =
   /throw new Error\(.*[Nn]ot implemented|catch\s*\(\w*\)\s*\{\s*\}|catch\s*\{\s*\}|\bTODO\b/;
-const SKIPS = /\.(skip|todo|only)\b|\bxit\(|\bxdescribe\(/;
+// Test-framework skips only (Vitest, Jest, Mocha, Playwright), so an app feature called "skip" is not flagged.
+const SKIPS =
+  /\b(it|test|describe|suite|bench)(\.\w+)*\.(skip|skipIf|runIf|todo|only|fixme)\b|\bx(it|test|describe)\(/;
 
 for (const { file: f, text } of added) {
   if (isConstraints(f) && /^\| *(W|E)\d+ *\|/.test(text)) flag('new-exception', f, text);

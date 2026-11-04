@@ -32,6 +32,8 @@ of the change that was failing.
 | Coverage: core | at least 95% lines, branches, functions, statements in `src/core/` | `npm run test` | task end | Timer, metrics and verifier decide what students are told |
 | Questions | 100% of the bank passes the verifier | `npm run verify` | task end | A wrong key teaches a wrong habit |
 | Timer | Drift under 100 ms over 25 min of irregular frames | `npm run test` (`tests/unit/timer.test.ts`) | task end | 0.1 s is below what a student can see on a seconds display |
+| Accessibility: Grand Trial | 0 serious or critical axe-core issues (WCAG 2.1 A/AA) on home, trial and result, light and dark, Chromium and WebKit | `npm run check:a11y` in the `e2e` container | full check | External rule set (axe-core); every screen joins in task 22 |
+| Keyboard: Grand Trial | A full mock is possible with the keyboard only, on Chromium and WebKit | `npm run e2e` (`tests/e2e/trial.spec.ts`) in the `e2e` container | full check | Students who can't or don't use a mouse must be able to take the whole exam |
 | Dependencies: shipped | 0 advisories at moderate or above in packages that reach the browser | `npm run audit:shipped` | full check | Owner chose stricter than "high"; this is what reaches children; external advisory database |
 | Dependencies: dev tools | 0 high or critical advisories | `npm run audit:dev` | full check | Dev tools run only in our containers; high and critical still block |
 | Dependencies: dev moderate | at most 11 moderate advisories (ratchet) | `npm run audit:dev` (`tools/audit-ratchet.mjs 11`) | full check | Owner decision 2026-11-03: all 11 are one minimatch issue inside ESLint with no fix released; the count may only go down |
@@ -39,6 +41,8 @@ of the change that was failing.
 Stages: **fast** = `npm run check:fast` (every edit, a few seconds) · **task** = `npm run check:task` (before a task
 counts as done, at most 90 s; measured 3 s on 2026-11-03) · **full** = `npm run check:full` (before a checkpoint
 or merge; no time limit; needs network). All run in Docker: `docker compose run --rm check npm run <script>`.
+Browser rows run in the `e2e` container (Playwright image, Chromium + WebKit): `docker compose run --rm e2e`
+(all browser specs, includes `@a11y`) is part of the full check.
 
 ## Scheduled (agreed numbers, not yet enforceable)
 

@@ -97,3 +97,77 @@ msUntilTimeUp(s, now) → number | null                    // null when untimed 
 - Hiding the tab never stops the clock; it only records `hiddenCount` and `hiddenMs` for the attempt log.
 - The screen calls `checkTimeUp` on each tick and on `visibilitychange`, and may schedule one wake-up from
   `msUntilTimeUp`.
+
+## Exam settings (`src/core/config/exam.ts`)
+
+`EXAM`: `questionCount` 50 (official) · `durationMs` 25 min (assumption: 50 × 30 s) · `levelMix` 6/10/14/12/8 ·
+`recentMocksToAvoid` 3 · `drillLength` 10 · `practiceLength` 5–50. Exam constants live nowhere else.
+
+## Set builders (`src/core/questions/build.ts`, `src/core/random.ts`)
+
+```ts
+interface BuiltSet { items: QuestionItem[]; missing: number }         // missing = requested − returned
+interface BuiltMock extends BuiltSet { reusedRecent: number }
+seededShuffle<T>(list, seed) → T[]
+buildMock(bank, { seed, recentMocks?: string[][] }) → BuiltMock        // recentMocks oldest → newest, item ids
+buildDrill(bank, { seed, focus: {kind:'tag',tag} | {kind:'trap',trap} | {kind:'level',level} }) → BuiltSet
+buildPractice(bank, { seed, length, tags?, traps?, levels? }) → BuiltSet   // throws RangeError outside 5–50
+```
+
+- Pure and seeded (mulberry32 in `random.ts`, shared with the verifier): same bank + options + seed → same items in
+  the same order. Inputs are never changed. No item appears twice in a set.
+- **Mock:** each level gets its `levelMix` count, fresh items first, then items from the last 3 mocks; only then does a
+  short level borrow from the nearest levels (easier first on a tie), again fresh before recent. The difficulty mix
+  is kept ahead of freshness. The final order is shuffled because the official difficulty order is unknown.
+- **Drill:** 10 items matching the focus, sorted easiest first (stable, so same-level items keep their shuffle).
+- **Practice:** an item matches when it has any chosen tag, any chosen trap and any chosen level; an empty filter
+  allows all.
+- A small bank never throws: the builders return what exists and report `missing`; the screen decides what to say.
+
+## `AttemptEvent` (`src/core/session/attempt.ts`)
+
+One per item per session, created or updated the moment the student answers or skips; the rest are added as
+`unanswered` when the session ends. Changing this shape needs the owner (`CLAUDE.md` §7) and a storage migration
+once task 10 saves it.
+
+| Field | Meaning |
+|---|---|
+| `sessionId`, `mode` | Which session; `mock` · `drill` · `practice` |
+| `itemId`, `position` | The item and its 0-based place in the session |
+| `level`, `tags`, `trap`, `correctAnswer` | Copied from the item so metrics never need the bank |
+| `choice` | `A`–`D`, or `null` when skipped or unanswered |
+| `status` | `answered` · `skipped` (pressed Skip) · `unanswered` (session ended first) |
+| `correct` | `choice === correctAnswer` |
+| `shownAt`, `answeredAt` | Monotonic ms: last display of the item before the final answer/skip, and that answer/skip. Time per question = `answeredAt − shownAt`. `answeredAt` is `null` when unanswered; `shownAt` is `null` if never shown |
+| `answerChanges` | Switches from one letter to another; pressing the chosen letter again is not a new answer and keeps `answeredAt` |
+| `flagged` | The item's flag at its last update |
+
+## Trial rules (`src/core/session/trial.ts`)
+
+`startTrial({ sessionId, mode, items, durationMs }, now)` → `TrialState`; actions `answerItem(s, letter, now)`,
+`skipItem`, `nextItem`, `backItem` (`(s, now)`), `toggleFlag(s)`, `finishTrial(s, 'completed' | 'time_up')`,
+`tickTrial(s, now)`. All pure; a no-op returns the same object.
+
+- Skip records `skipped` only if the item has no event yet, then moves on; answering a skipped item turns it into an
+  answer. Next/Back stop at the ends.
+- After the trial ends every action is a no-op. `tickTrial` ends a timed trial at time-up.
+
+## Session store (`src/store/session.ts`)
+
+`createSessionStore(clock)` → Zustand store `{ trial, now, startMock(bank, seed, recentMocks?), answer, skip, next,
+back, flag, finish, tick, setHidden(hidden), reset }`. Each action reads `clock.now()` once and applies a trial
+rule; `setHidden(false)` also checks time-up. The screen ticks every 250 ms and on `visibilitychange`.
+
+## Grand Trial keys (`src/ui/screens/GrandTrial.tsx`)
+
+`1`–`4` or `A`–`D` answer (any case) · `Enter`/`→` next · `←` back · `S` skip · `F` flag · keys with Ctrl/Alt/Meta
+are ignored. On the last item `Enter` moves focus to **Finish trial** and a second `Enter` presses it, so one stray
+key never ends a mock. A focused control button handles its own `Enter`; a focused answer button does not.
+Answer buttons are named by their visible text ("A Quantity A is greater"); `aria-pressed` marks the choice.
+
+## Dev test hooks (`src/dev/testHooks.ts`, dev builds only)
+
+`window.__umtymp`: `state()` → `{ screen: 'home' | 'trial' | 'result', index, itemId, total, remainingMs,
+endReason, answers[{ itemId, status, choice }], hiddenCount }` · `seed(n)` starts a mock with seed `n` ·
+`answer(letter)` · `clock.advance(ms)` only with `?clock=fake` (the fake clock replaces the real one and the hook
+ticks the store). `loadFixture(name)` arrives with saved history (tasks 10–11).

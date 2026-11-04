@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 // Coverage thresholds mirror docs/CONSTRAINTS.md; that file wins if they ever disagree.
 export default defineConfig({
   test: {
-    include: ['tests/unit/**/*.test.ts'],
+    include: ['tests/unit/**/*.test.{ts,tsx}'],
     environment: 'node',
     coverage: {
       provider: 'v8',

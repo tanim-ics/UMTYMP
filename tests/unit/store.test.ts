@@ -1,0 +1,133 @@
+import { describe, expect, it } from 'vitest';
+import { EXAM } from '../../src/core/config/exam.ts';
+import type { QuestionItem } from '../../src/core/questions/schema.ts';
+import { createFakeClock } from '../../src/core/timer/clock.ts';
+import { remainingMs } from '../../src/core/timer/session.ts';
+import { createSessionStore } from '../../src/store/session.ts';
+
+const bank: QuestionItem[] = [1, 2, 3].map((n) => ({
+  id: `test-${String(n).padStart(4, '0')}`,
+  quantity_a: '1',
+  quantity_b: '2',
+  condition: null,
+  correct_answer: 'B',
+  tags: ['arithmetic'],
+  difficulty: 1,
+  target_seconds: 5,
+  shortcut_explanation: 'Look.',
+  full_explanation: 'Proof.',
+  reviewed_by: 'test',
+}));
+
+function setup() {
+  const clock = createFakeClock(1000);
+  const store = createSessionStore(clock);
+  return { clock, store, s: () => store.getState() };
+}
+
+describe('session store', () => {
+  it('starts with no trial', () => {
+    expect(setup().s().trial).toBeNull();
+  });
+
+  it('starts a mock from the bank with the exam duration', () => {
+    const { s } = setup();
+    s().startMock(bank, 7);
+    const trial = s().trial;
+    expect(trial?.mode).toBe('mock');
+    expect(trial?.items).toHaveLength(3);
+    expect(trial?.timer.durationMs).toBe(EXAM.durationMs);
+    expect(trial?.sessionId).toMatch(/^mock-/);
+  });
+
+  it('gives each mock its own session id', () => {
+    const { s } = setup();
+    s().startMock(bank, 7);
+    const first = s().trial?.sessionId;
+    s().startMock(bank, 7);
+    expect(s().trial?.sessionId).not.toBe(first);
+  });
+
+  it('does not start a mock from an empty bank', () => {
+    const { s } = setup();
+    s().startMock([], 1);
+    expect(s().trial).toBeNull();
+  });
+
+  it('stamps every action with the clock reading', () => {
+    const { clock, s } = setup();
+    s().startMock(bank, 1);
+    clock.advance(4000);
+    s().answer('B');
+    expect(s().trial?.events[0]).toMatchObject({ shownAt: 1000, answeredAt: 5000, correct: true });
+  });
+
+  it('moves, skips, flags and finishes through the trial rules', () => {
+    const { s } = setup();
+    s().startMock(bank, 1);
+    s().flag();
+    s().skip();
+    expect(s().trial?.index).toBe(1);
+    s().next();
+    s().back();
+    expect(s().trial?.index).toBe(1);
+    s().finish();
+    expect(s().trial?.endReason).toBe('completed');
+    expect(s().trial?.events[0]).toMatchObject({ status: 'skipped', flagged: true });
+  });
+
+  it('tick updates the shown time and ends the mock when time is up', () => {
+    const { clock, s } = setup();
+    s().startMock(bank, 1);
+    clock.advance(60_000);
+    s().tick();
+    const trial = s().trial;
+    expect(trial && remainingMs(trial.timer, s().now)).toBe(EXAM.durationMs - 60_000);
+    clock.advance(EXAM.durationMs);
+    s().tick();
+    expect(s().trial?.endReason).toBe('time_up');
+  });
+
+  it('records a hidden tab without stopping the clock', () => {
+    const { clock, s } = setup();
+    s().startMock(bank, 1);
+    s().setHidden(true);
+    clock.advance(30_000);
+    s().setHidden(false);
+    expect(s().trial?.timer.hiddenCount).toBe(1);
+    expect(s().trial?.timer.hiddenMs).toBe(30_000);
+  });
+
+  it('ends a mock whose time ran out while the tab was hidden, on return', () => {
+    const { clock, s } = setup();
+    s().startMock(bank, 1);
+    s().setHidden(true);
+    clock.advance(EXAM.durationMs + 1);
+    s().setHidden(false);
+    expect(s().trial?.endReason).toBe('time_up');
+  });
+
+  it('actions without a trial do nothing', () => {
+    const { s } = setup();
+    for (const act of [
+      () => s().answer('A'),
+      s().skip,
+      s().next,
+      s().back,
+      s().flag,
+      s().finish,
+      s().tick,
+      () => s().setHidden(true),
+    ]) {
+      act();
+    }
+    expect(s().trial).toBeNull();
+  });
+
+  it('reset returns to no trial', () => {
+    const { s } = setup();
+    s().startMock(bank, 1);
+    s().reset();
+    expect(s().trial).toBeNull();
+  });
+});

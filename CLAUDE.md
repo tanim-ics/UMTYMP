@@ -127,7 +127,7 @@ export function trapSusceptibility(events: readonly AttemptEvent[], minAttempts 
 | Production build | `docker compose up --build web` → http://localhost:8080 |
 | Fast check (after each edit) | `docker compose run --rm check npm run check:fast` → types, ESLint, Prettier, floor guard, gitleaks |
 | Task check (before calling a task done, ≤ 90 s) | `docker compose run --rm check npm run check:task` → fast + Vitest with coverage + `npm run verify` |
-| Full check (before a checkpoint or merge) | `docker compose run --rm check npm run check:full` → task + dependency audits (browser tests join later) |
+| Full check (before a checkpoint or merge) | `docker compose run --rm check npm run check:full` → task + audits; then `docker compose run --rm e2e` (Playwright, axe) |
 | Verify question bank | `docker compose run --rm check npm run verify` |
 
 **Read `docs/CONSTRAINTS.md` before writing code. Do not weaken it to make a change pass.** It is the source of truth.

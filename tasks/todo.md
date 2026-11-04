@@ -4,7 +4,28 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 8 (mock and drill builders).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 10 (saving attempts locally). Tasks 8 and 9 committed and pushed.
+
+**Handoff (after Task 9):** plain Grand Trial: pure rules in `src/core/session/trial.ts` (+ `AttemptEvent` in
+`attempt.ts`), Zustand store `src/store/session.ts`, `MathView` (KaTeX 0.19, HTML + MathML), `GrandTrial` screen with
+result view, `App` home, `src/ui/bank.ts` (bank bundled via `import.meta.glob`), dev hooks `src/dev/testHooks.ts`
+(`?clock=fake`). New deps (ADR 0001 stack): katex, zustand; dev: @testing-library/react + dom, jsdom (Testing
+Library's DOM, not named in the ADR), @playwright/test, @axe-core/playwright. New `e2e` compose service on the
+Playwright 1.64.1 image. Tests: 188 unit/component (all `src/` files ≥ 94% lines) + 12 E2E (6 specs × Chromium,
+WebKit). axe found a real WCAG 2.5.3 issue (answer-button names didn't match their text), fixed. Floor-guard skip
+pattern narrowed to test-framework calls (it flagged the app's Skip button); proven to still catch `it.skip`,
+`describe.only`, `test.todo`, `test.fixme`, `it.skipIf`, `xit`. Mutation checks: 4/4 red. Seen in the browser:
+KaTeX text is invisible until its font loads (KaTeX uses `font-display: block`); revisit with offline caching
+(task 23) and Lighthouse (task 24), along with the 523 kB JS bundle. Not tested live: hiding the tab (Playwright
+can't; covered by unit tests). Dev-tool moderate advisories fell 11 → 7; lowering the ratchet cap needs the owner.
+`loadFixture` hook waits for tasks 10–11.
+
+**Handoff (after Task 8):** `src/core/config/exam.ts` (`EXAM` constants), `src/core/questions/build.ts`
+(`buildMock`, `buildDrill`, `buildPractice`, `seededShuffle`) and `src/core/random.ts` (seeded PRNG + shuffle, now
+also used by the verifier; verify output unchanged at 4591 checks). Contract in `docs/CONTRACTS.md`. 26 new tests
+(125 total), new files 100% covered. Mutation checks: counting 4 past mocks instead of 3 → 2 red; no borrowing
+between levels → 1 red; no drill ramp → 1 red. Assumption: mock order is shuffled (official order unknown); the mix
+is kept ahead of freshness when the bank is short. Task 8 uncommitted (owner moved straight to Task 9).
 
 **Handoff (after Task 7):** `src/core/timer/clock.ts` (`Clock`, `systemClock`, `createFakeClock`) and
 `session.ts` (immutable `TimerState` + pure functions of `now`; contract in `docs/CONTRACTS.md`). 24 new tests (99
@@ -109,15 +130,15 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 2 · **Files:** `src/core/timer/clock.ts`, `src/core/timer/session.ts`, `tests/unit/timer.test.ts` · **Size:** S
 
 ### Task 8: Mock and drill builders
-- [ ] Seeded shuffle; mock uses the level mix (6/10/14/12/8) and avoids items from the last 3 mocks while possible
-- [ ] Drill builder: 10 items by tag, trap or level; practice builder: filters + length 5–50
+- [x] Seeded shuffle; mock uses the level mix (6/10/14/12/8) and avoids items from the last 3 mocks while possible
+- [x] Drill builder: 10 items by tag, trap or level; practice builder: filters + length 5–50
 - **Verify:** unit tests: same seed → same set; no repeats; graceful fallback when the bank is small
 - **Depends on:** 4 · **Files:** `src/core/questions/build.ts`, `src/core/config/exam.ts`, `tests/unit/build.test.ts` · **Size:** S
 
 ### Task 9: Grand Trial screen (plain)
-- [ ] Shows one item with KaTeX, timer, answer buttons with words + letters; tap and keys `1`–`4`/`A`–`D`, `Enter`/`→`, `S`, `F`, back
-- [ ] Time-up ends the mock; each answer creates an `AttemptEvent` in the Zustand store
-- [ ] Dev-only test hooks on `window.__umtymp`
+- [x] Shows one item with KaTeX, timer, answer buttons with words + letters; tap and keys `1`–`4`/`A`–`D`, `Enter`/`→`, `S`, `F`, back
+- [x] Time-up ends the mock; each answer creates an `AttemptEvent` in the Zustand store
+- [x] Dev-only test hooks on `window.__umtymp`
 - **Verify:** component tests for keys; E2E: full mock with fake clock on Chromium + WebKit
 - **Depends on:** 7, 8 · **Files:** `src/ui/screens/GrandTrial.tsx`, `src/ui/components/MathView.tsx`, `src/store/session.ts`, `src/dev/testHooks.ts`, `tests/e2e/trial.spec.ts` · **Size:** M
 

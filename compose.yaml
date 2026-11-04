@@ -22,6 +22,18 @@ services:
       - /app/node_modules
     command: npm run check:task
 
+  # Browser tests against the dev server it starts itself: `docker compose run --rm e2e`.
+  e2e:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: e2e
+    volumes:
+      - .:/app
+      - /app/node_modules
+    # Chromium needs more shared memory than Docker's 64 MB default.
+    ipc: host
+
   web:
     build:
       context: .

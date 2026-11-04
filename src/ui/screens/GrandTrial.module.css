@@ -1,0 +1,114 @@
+/* Plain version (task 9): calm and still. Only the timer text changes while a trial runs; no animation. */
+.screen {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--space);
+  display: grid;
+  gap: var(--space);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+  flex-wrap: wrap;
+}
+
+.timer {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.condition {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.quantities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space);
+}
+
+.quantity {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: calc(var(--space) * 1.5);
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.quantity h2 {
+  margin: 0 0 var(--space);
+  font-size: 1rem;
+  color: var(--color-muted);
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space);
+}
+
+.button {
+  min-height: var(--tap-target);
+  min-width: var(--tap-target);
+  padding: 0 var(--space);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.answer {
+  composes: button;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 12px var(--space);
+}
+
+.letter {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Chosen is shown three ways: thicker accent border, filled letter, and the word "chosen". */
+.chosen {
+  border-color: var(--color-accent);
+  border-width: 4px;
+}
+
+.chosenMark {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.nav {
+  display: flex;
+  gap: var(--space);
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.result {
+  text-align: center;
+}
