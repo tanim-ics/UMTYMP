@@ -3,8 +3,16 @@
 Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `docker compose run --rm check npm run check:task`.
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
-**Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–4 (uncommitted; owner skipped the
-Task 1 checkpoint commit). **Next:** Task 5 (answer-key verifier, high risk; adds `mathjs`, approved in ADR 0001).
+**Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–5 (1–4 committed as `2c0352d`, pushed to
+`github.com/tanim-ics/UMTYMP`; Task 5 uncommitted). **Next:** Task 6 (content guide and 20 seed items).
+
+**Handoff (after Task 5):** `verifyItem` in `src/core/questions/evaluate.ts` proves keys with `mathjs` (dev
+dependency, no new advisories; dev moderate still 11). Domain format and proof rules are in `docs/CONTRACTS.md`.
+37 new tests (74 total); `evaluate.ts` 99% lines; the one uncovered line re-throws unexpected (non-verifier) errors.
+Proven on real files: correct bank → exit 0 with 507 value checks; wrong C key → `key is A but x = 0 gives C`; wrong
+witness → `witness 2 says B but x = 3 gives A`; figure item without `reviewed_by` → exit 1. Mutation check: dropping
+the edge values turns the ½ and 1 edge tests red. Not checked by machine: that `domain` matches the displayed
+`condition`, so reviewers must compare them.
 
 **Handoff (after Task 4):** owner approved `zod` (shipped audit still 0). Also added `@types/node` (dev) for the
 tools. Schema in `src/core/questions/schema.ts`, vocabulary in `vocabulary.ts`, pure `parseBank` in `load.ts`;
@@ -60,9 +68,9 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 2 · **Files:** `src/core/questions/schema.ts`, `src/core/questions/load.ts`, `tests/unit/questions.test.ts`, `docs/CONTRACTS.md` · **Size:** M
 
 ### Task 5: Answer-key verifier (high risk)
-- [ ] `npm run verify` evaluates `expr_a`/`expr_b` with `mathjs` over ≥ 500 random values per variable in its domain, plus edge values (−1, 0, ½, 1, 2, large)
-- [ ] Rejects a wrong `A`/`B`/`C` key with a counter-example; checks `D` witnesses disagree; enforces level time limits
-- [ ] Items without `expr_*` must have `reviewed_by`
+- [x] `npm run verify` evaluates `expr_a`/`expr_b` with `mathjs` over ≥ 500 random values per variable in its domain, plus edge values (−1, 0, ½, 1, 2, large)
+- [x] Rejects a wrong `A`/`B`/`C` key with a counter-example; checks `D` witnesses disagree; enforces level time limits
+- [x] Items without `expr_*` must have `reviewed_by`
 - **Verify:** unit tests with known-good and known-wrong items (incl. x² vs x, √(x²) vs x)
 - **Depends on:** 4 · **Files:** `tools/verify-questions.ts`, `src/core/questions/evaluate.ts`, `tests/unit/verify.test.ts` · **Size:** M
 

@@ -1,7 +1,8 @@
 // Question-bank verifier: `npm run verify`. Exit 0 when every item is valid, 1 when any is not,
-// 2 when it could not run. Task 4 checks the schema; task 5 adds the answer-key math checks.
+// 2 when it could not run. Checks the schema, then proves every answer key (src/core/questions/evaluate.ts).
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { verifyItem } from '../src/core/questions/evaluate.ts';
 import { parseBank, type BankFile } from '../src/core/questions/load.ts';
 
 const BANK_DIR = 'content/questions';
@@ -34,10 +35,18 @@ try {
 
 const { items, errors } = parseBank(files);
 for (const e of errors) problems.push(`${e.file} [${e.id ?? 'no id'}] ${e.message}`);
+let checks = 0;
+for (const item of items) {
+  const result = verifyItem(item);
+  checks += result.checks;
+  for (const p of result.problems) problems.push(`[${item.id}] ${p}`);
+}
 
 if (problems.length > 0) {
   console.error(`verify-questions: ${problems.length} problem(s) in ${BANK_DIR}:`);
   for (const p of problems) console.error('  ' + p);
   process.exit(1);
 }
-console.log(`verify-questions: ${items.length} item(s) in ${files.length} file(s), all valid`);
+console.log(
+  `verify-questions: ${items.length} item(s) in ${files.length} file(s), all valid, ${checks} value checks`,
+);

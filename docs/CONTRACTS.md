@@ -14,7 +14,7 @@ rejected so typos fail loudly. Vocabulary lives in `src/core/questions/vocabular
 | `quantity_a`, `quantity_b` | string | KaTeX LaTeX shown to the student; not blank |
 | `condition` | string \| null | KaTeX LaTeX, e.g. `x \neq 0`; `null` when there is none |
 | `expr_a`, `expr_b` | string, optional | `mathjs` expressions the verifier evaluates; both or neither |
-| `domain` | object, optional | Variable → allowed values, e.g. `{"x": "real, x != 0"}` (format fixed in task 5) |
+| `domain` | object, optional | Variable → allowed values, e.g. `{"x": "real, x != 0"}`; format below |
 | `correct_answer` | `A` \| `B` \| `C` \| `D` | A greater · B greater · equal · not enough information |
 | `tags` | string[] | At least one, no repeats, all from `TAGS` |
 | `trap` | string \| null, optional | From `TRAPS` |
@@ -23,7 +23,7 @@ rejected so typos fail loudly. Vocabulary lives in `src/core/questions/vocabular
 | `witnesses` | array, only for `D` | At least 2, each `{ relation: "A"\|"B"\|"C", <variable>: number, … }`, with at least 2 different relations |
 | `shortcut_explanation` | string | The fast route; at most 3 sentences (a decimal point is not a sentence end) |
 | `full_explanation` | string | The full reasoning or proof |
-| `reviewed_by` | string, optional | Who checked an item the verifier can't evaluate (rule enforced in task 5) |
+| `reviewed_by` | string, optional | Who checked an item the verifier can't evaluate; required when `expr_*` are absent |
 
 ## Bank parsing (`src/core/questions/load.ts`)
 
@@ -42,6 +42,31 @@ function parseBank(files: readonly BankFile[]): { items: QuestionItem[]; errors:
 
 ## Verifier CLI (`npm run verify`)
 
-Reads `content/questions/*.json` (sorted), runs `parseBank`, prints every problem. Exit `0` all valid (an empty or
-missing bank is valid), `1` any problem (including invalid JSON), `2` could not read the folder. Task 5 adds the
-answer-key math checks on top.
+Reads `content/questions/*.json` (sorted), runs `parseBank`, then `verifyItem` on every valid item, and prints every
+problem (`file [id] …` for schema problems, `[id] …` for key problems; ids are unique). Exit `0` all valid (an empty or
+missing bank is valid), `1` any problem (including invalid JSON), `2` could not read the folder.
+
+## Domain format
+
+`"<kind>[, <rule>, …]"` per variable. `kind` is `real` or `integer`. Each rule is a `mathjs` boolean expression and may
+use any variable of the item: `"real, 0 < x < 1"`, `"integer, x > 0"`, `{"x": "real", "y": "real, y < x"}`.
+No `domain` means the item has no variables. The domain must say what the displayed `condition` says (a human check).
+
+## Answer-key proof (`src/core/questions/evaluate.ts`)
+
+```ts
+const SAMPLES_PER_ITEM = 500;
+interface VerifyResult { problems: string[]; checks: number }   // checks = value assignments evaluated
+function verifyItem(item: QuestionItem): VerifyResult;          // pure, deterministic (seeded by item id)
+```
+
+- **No `expr_*`:** passes only with `reviewed_by`.
+- **`A`/`B`/`C`:** the key must hold at every edge combination inside the domain (real: −1, 0, ½, 1, 2, −½, −2,
+  ±10⁶; integer: −1, 0, 1, 2, −2, ±10⁶) and at 500 random domain values (mixed small, fractional and large
+  magnitudes). The first failure is reported as a counter-example: `key is A but x = 0 gives C`.
+- **`D`:** every witness must give a value to each domain variable (and no others), lie inside the domain, and really
+  produce its stated `relation`. The schema already requires two different relations.
+- Equality uses a relative tolerance of 10⁻⁹, so `0.1 + 0.2` equals `0.3`.
+- Also reported: unreadable expressions or rules, a `kind` other than `real`/`integer`, a domain with no values or
+  too narrow to find 500, and a result that is not a finite real number (e.g. `sqrt(x)` at a negative x).
+- `mathjs` is a dev dependency: only the verifier imports this file, so it never ships in the app bundle.
