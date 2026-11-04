@@ -4,6 +4,8 @@ import type { Level } from '../questions/vocabulary.ts';
 export const EXAM = {
   /** Official: 50 questions. */
   questionCount: 50,
+  /** Official: "an average of 30 seconds" per question. */
+  secondsPerQuestion: 30,
   /** Assumption: 50 × the official average of 30 s. A setting, not an official limit. */
   durationMs: 25 * 60_000,
   /** Our default mix of levels in a full mock (docs/SPEC.md); sums to questionCount. */

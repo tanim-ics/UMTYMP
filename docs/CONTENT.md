@@ -67,6 +67,9 @@ An id is `<prefix>-NNNN`, numbered per prefix. Use the prefix of the item's main
 | `integer_assumption` | Assuming a variable is a whole number | "Unless it says integer, test a fraction." |
 | `order_of_operations` | Misreading −2⁴ or a fraction bar | "Exponents before the minus sign." |
 
+Students see each trap by its `TRAP_NAMES` name in `vocabulary.ts` (e.g. `fraction_0_1` → "fractions between 0
+and 1"); a new trap needs one there too.
+
 The default test set for any variable item is **2, 0, −1, ½** (plus a large number when size matters). If two of
 them give different relations, the answer is D.
 

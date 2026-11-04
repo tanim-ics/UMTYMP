@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openApp } from './helpers.ts';
 
 // The real clock on purpose: the point is that time keeps running across a reload.
 async function open(page: Page) {
-  await page.goto('/');
-  await page.waitForFunction(() => window.__umtymp !== undefined);
+  await openApp(page);
 }
 
 /** Seconds left on the trial timer, read from the screen. */

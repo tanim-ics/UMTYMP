@@ -2,7 +2,13 @@
 // Every answer or skip updates `events` at once, so the store can save each one as it happens.
 import type { QuestionItem } from '../questions/schema.ts';
 import type { Answer } from '../questions/vocabulary.ts';
-import { checkTimeUp, startTimer, type TimerState } from '../timer/session.ts';
+import {
+  checkTimeUp,
+  pauseTimer,
+  resumeTimer,
+  startTimer,
+  type TimerState,
+} from '../timer/session.ts';
 import type { AttemptEvent, SessionMode } from './attempt.ts';
 
 export type EndReason = 'completed' | 'time_up';
@@ -49,6 +55,11 @@ export function startTrial(
   };
 }
 
+/** Input is accepted only while the trial runs: not after it ended, and not while a drill is paused. */
+function acceptsInput(state: TrialState): boolean {
+  return state.endReason === null && state.timer.pausedAt === null;
+}
+
 function eventAt(state: TrialState, position: number): AttemptEvent | undefined {
   return state.events.find((e) => e.position === position);
 }
@@ -80,8 +91,10 @@ function moveTo(state: TrialState, index: number, now: number): TrialState {
 }
 
 export function answerItem(state: TrialState, choice: Answer, now: number): TrialState {
-  if (state.endReason !== null) return state;
+  if (!acceptsInput(state)) return state;
   const previous = eventAt(state, state.index);
+  // A drill shows the shortcut right after an answer, so changing it afterwards would only copy the key.
+  if (state.mode === 'drill' && previous?.status === 'answered') return state;
   const changed = previous?.status === 'answered' && previous.choice !== choice;
   if (previous?.status === 'answered' && !changed) return state;
   const base = baseEvent(state, state.index);
@@ -98,7 +111,7 @@ export function answerItem(state: TrialState, choice: Answer, now: number): Tria
 
 /** Records a skip (unless the item already has an answer) and moves to the next item. */
 export function skipItem(state: TrialState, now: number): TrialState {
-  if (state.endReason !== null) return state;
+  if (!acceptsInput(state)) return state;
   const skipped =
     eventAt(state, state.index) === undefined
       ? withEvent(state, {
@@ -115,20 +128,43 @@ export function skipItem(state: TrialState, now: number): TrialState {
 }
 
 export function nextItem(state: TrialState, now: number): TrialState {
-  return state.endReason === null ? moveTo(state, state.index + 1, now) : state;
+  return acceptsInput(state) ? moveTo(state, state.index + 1, now) : state;
 }
 
 export function backItem(state: TrialState, now: number): TrialState {
-  return state.endReason === null ? moveTo(state, state.index - 1, now) : state;
+  return acceptsInput(state) ? moveTo(state, state.index - 1, now) : state;
 }
 
 export function toggleFlag(state: TrialState): TrialState {
-  if (state.endReason !== null) return state;
+  if (!acceptsInput(state)) return state;
   const flagged = !state.flags[state.index];
   const flags = state.flags.map((f, i) => (i === state.index ? flagged : f));
   const event = eventAt(state, state.index);
   const next = { ...state, flags };
   return event === undefined ? next : withEvent(next, { ...event, flagged });
+}
+
+/** Pauses a drill or practice session (a mock throws: it never pauses). */
+export function pauseTrial(state: TrialState, now: number): TrialState {
+  if (state.endReason !== null) return state;
+  const timer = pauseTimer(state.timer, now);
+  return timer === state.timer ? state : { ...state, timer };
+}
+
+/**
+ * Resumes a paused session. The current item's display time moves forward by the pause, so time per question
+ * (answeredAt − shownAt) counts only time the question was on screen.
+ */
+export function resumeTrial(state: TrialState, now: number): TrialState {
+  const pausedAt = state.timer.pausedAt;
+  if (state.endReason !== null || pausedAt === null) return state;
+  const pause = now - pausedAt;
+  return {
+    ...state,
+    timer: resumeTimer(state.timer, now),
+    shownAt: state.shownAt + pause,
+    lastShownAt: state.lastShownAt.map((t, i) => (i === state.index && t !== null ? t + pause : t)),
+  };
 }
 
 /** Ends the session and records every item without an event as unanswered (docs/SPEC.md S1). */

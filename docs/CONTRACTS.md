@@ -102,7 +102,8 @@ msUntilTimeUp(s, now) → number | null                    // null when untimed 
 
 ## Exam settings (`src/core/config/exam.ts`)
 
-`EXAM`: `questionCount` 50 (official) · `durationMs` 25 min (assumption: 50 × 30 s) · `levelMix` 6/10/14/12/8 ·
+`EXAM`: `questionCount` 50 (official) · `secondsPerQuestion` 30 (official average; also the metrics' pace line) ·
+`durationMs` 25 min (assumption: 50 × 30 s) · `levelMix` 6/10/14/12/8 ·
 `recentMocksToAvoid` 3 · `drillLength` 10 · `practiceLength` 5–50. Exam constants live nowhere else.
 
 ## Set builders (`src/core/questions/build.ts`, `src/core/random.ts`)
@@ -114,6 +115,7 @@ seededShuffle<T>(list, seed) → T[]
 buildMock(bank, { seed, recentMocks?: string[][] }) → BuiltMock        // recentMocks oldest → newest, item ids
 buildDrill(bank, { seed, focus: {kind:'tag',tag} | {kind:'trap',trap} | {kind:'level',level} }) → BuiltSet
 buildPractice(bank, { seed, length, tags?, traps?, levels? }) → BuiltSet   // throws RangeError outside 5–50
+countMatching(bank, { tags?, traps?, levels? }) → number                  // what a Spellbook set can draw from
 ```
 
 - Pure and seeded (mulberry32 in `random.ts`, shared with the verifier): same bank + options + seed → same items in
@@ -153,12 +155,19 @@ once task 10 saves it.
 - Skip records `skipped` only if the item has no event yet, then moves on; answering a skipped item turns it into an
   answer. Next/Back stop at the ends.
 - After the trial ends every action is a no-op. `tickTrial` ends a timed trial at time-up.
+- `pauseTrial(s, now)` / `resumeTrial(s, now)`: drills and practice only (a mock throws). While paused, answer,
+  skip, move and flag are no-ops; resuming moves the current item's `shownAt` forward by the pause, so time per
+  question counts only time on screen.
+- In a **drill** an answer is final once given: the shortcut is shown right after it.
 
 ## Session store (`src/store/session.ts`)
 
 `createSessionStore(clock)` → Zustand store `{ trial, now, startMock(bank, seed, recentMocks?), answer, skip, next,
 back, flag, finish, tick, setHidden(hidden), reset }`. Each action reads `clock.now()` once and applies a trial
-rule; `setHidden(false)` also checks time-up. `resume(trial)` continues a saved
+rule; `setHidden(false)` also checks time-up. `startDrill(bank, focus, seed)` starts an untimed 10-item drill and, when
+the current trial is a finished mock, keeps it in `returnTo`; `backToResults()` returns to it (or home);
+`pause()` / `unpause()`. `startPractice(bank, { tags, traps, levels, length, timed }, seed)`: mode `practice`,
+timed = 30 s × the questions actually drawn, untimed = no countdown; answers can change; no pause. `resume(trial)` continues a saved
 session: it ends the hidden spell the old page opened while unloading, then checks time-up. `saveFailed` /
 `reportSaveError()` let the home screen say saving is off. The screen ticks every 250 ms and on `visibilitychange`.
 
@@ -172,12 +181,12 @@ Answer buttons are named by their visible text ("A Quantity A is greater"); `ari
 ## Dev test hooks (`src/dev/testHooks.ts`, dev builds only)
 
 `window.__umtymp`: `state()` → `{ screen: 'home' | 'trial' | 'result', index, itemId, total, remainingMs,
-endReason, answers[{ itemId, status, choice }], hiddenCount }` · `seed(n)` starts a mock with seed `n` ·
+endReason, answers[{ itemId, status, choice, correct }], hiddenCount }` · `seed(n)` starts a mock with seed `n` ·
 `answer(letter)` · `flush()` resolves once every change so far is saved · `clock.advance(ms)` only with
 `?clock=fake` (the fake clock replaces the real one and the hook
-ticks the store). `?bank=repeat` pads the seed bank 4× under ids like `copy-a-frac-0001`
-(`src/dev/devBank.ts`) so a full 50-item mock runs before the real bank is big enough. `loadFixture(name)` arrives
-with the metrics (task 11).
+ticks the store). `loadFixture('all-right' | 'all-wrong' | 'not-enough-data')` shows the results of a
+finished sample mock built from the bank (`src/dev/fixtures.ts`); it is saved like a real mock. `?bank=repeat` pads the seed bank 4× under ids like `copy-a-frac-0001`
+(`src/dev/devBank.ts`) so a full 50-item mock runs before the real bank is big enough. 
 
 ## Local storage (`src/data/db.ts`, schema v1)
 
@@ -194,11 +203,12 @@ version 1 is never edited.
 
 ```ts
 createAttemptRepo(db) → {
-  saveTrial(trial): Promise<void>            // session row + all events, one transaction (upsert)
-  loadActive(bank): Promise<TrialState | null> // newest unfinished session; null if the bank lost one of its items
-  listFinished(): Promise<FinishedSession[]> // mocks only, newest first: { sessionId, startedAt, total, correct, endReason, itemIds }
+  saveTrial(trial, profileId): Promise<void>        // session row + all events, one transaction (upsert)
+  loadActive(bank, profileId): Promise<TrialState | null> // the profile's newest unfinished session
+  listFinished(profileId): Promise<FinishedSession[]> // the profile's mocks, newest first
+  listHistory(profileId): Promise<SessionRecord[]>    // the profile's finished sessions, oldest first (coach input)
 }
-connectPersistence(store, repo, onError) → { flush(): Promise<void>; disconnect(): void }
+connectPersistence(store, repo, onError) → { flush(): Promise<void>; disconnect(): void }   // saves under store.profileId
 ```
 
 - Saves whenever `trial` changes (answer, skip, flag, move, hide/show, end), never on ticks that change nothing; writes
@@ -233,7 +243,7 @@ An item with several tags counts under each. Metrics are computed here only, nev
 
 ```ts
 interface SessionRecord { sessionId; mode; startedAt; durationMs: number | null; endReason: EndReason | null; events }
-coach(history: SessionRecord[]) → CoachFeedback
+coach(history: SessionRecord[], { latestSessionId? }) → CoachFeedback
   | { kind: 'feedback'; strength; bottleneck; drill: DrillFocus; strengthText; bottleneckText; habitText }
   | { kind: 'not_enough_data'; answered; neededPerTopic: 5 }
 ```
@@ -241,6 +251,8 @@ coach(history: SessionRecord[]) → CoachFeedback
 - **Not enough data:** no topic has 5 answers yet → Hoot says so and suggests a full mock.
 - **Strength:** the topic with the best accuracy (≥ 5 answers), compared as exact fractions; ties → more answers,
   then vocabulary order.
+  If no topic has a right answer yet, the strength is the effort (`{ kind: 'effort', answered, total }`): Hoot
+  never calls "0 of 8 right" a strength.
 - **Bottleneck = most questions lost**, among: a trap (wrong answers), D questions answered A/B/C, D chosen on
   fixed-answer questions, questions left when the latest mock **timed out**, a stamina tip on the latest mock
   (drop × 20 questions in 10 min), a topic (wrong answers; never the strength topic). Each needs ≥ 5 answers. Equal
@@ -248,7 +260,8 @@ coach(history: SessionRecord[]) → CoachFeedback
   its text says "Nothing slipped" only when every answer was right.
 - **Drill:** the trap or topic itself; D misses → their most common trap (no trap → level 3); false D, time-out and
   stamina → the most common topic among those questions.
-- Time and stamina use the latest finished mock only; everything else uses the whole history.
+- Time and stamina use the latest finished mock only (the one named by `latestSessionId`, else the one that
+  started last); everything else uses the whole history.
 
 ## Habit badges (`src/core/analytics/badges.ts`)
 
@@ -262,3 +275,59 @@ comparison with others.
 | `steady_pace` | A finished mock is on the 30 s line at every 5-minute mark (at least one mark) |
 | `negative_tester` | 5 right answers on `negative_numbers` trap items |
 | `d_detector` | ≥ 10 D-key questions answered, ≥ 80 % right (compared as whole numbers) |
+
+## Results and review (`src/core/analytics/review.ts`, `src/ui/screens/Results.tsx`, `Review.tsx`)
+
+`resultSummary(events)` → `{ total, correct, wrong, skipped, unanswered, slow }` (wrong = answered but not right).
+`matchesFilter(e, 'all' | 'wrong' | 'slow' | 'flagged')`, `filterCounts(events)`. **"Wrong" means wrong or missed**:
+skipped and unanswered questions count, because they are the ones to look at again. "Slow" is the metric's > 35 s.
+
+- Results: score, summary line, how it ended; **Review answers** and **Back to start**.
+- Review: every question in exam order with verdict in words (Right · Wrong · Skipped · No answer), flag, condition,
+  quantities, your answer and the key (letter + words), time (with "slow"), shortcut and full explanation. One
+  filter at a time (`aria-pressed`), each with its count; an empty filter says "Nothing to show here".
+- Answer words live in `src/ui/answers.ts`, shared by the trial and the review.
+
+## Coach card and potion drill (`src/ui/components/CoachCard.tsx`, `src/ui/screens/PotionDrill.tsx`)
+
+- The results of a **mock** show the coach card: strength, biggest leak, "Habit to try" and **Brew a potion: …**
+  (disabled with a note when the bank has no questions for it). Input: `listHistory()` plus the shown mock, counted
+  once, named as the latest. Not enough data → "needs at least 5 answers in one topic … A full Grand Trial".
+- The drill: "Potion question n of N", a count-up timer, **Pause (P)**. Paused hides the question. After each answer:
+  "Right!" or "Not quite. The answer is B, …", then the shortcut (`role="status"`); the answer buttons lock.
+  Keys as in the mock, plus `P`. Its results say "Potion brewed!", have no coach card, and **Back to trial
+  results** returns to the mock.
+- Shared pieces: `components/Question.tsx` (question, answers, nav) and `components/useTrialControls.ts` (keys,
+  tick, hidden tab).
+
+## Spellbook (`src/ui/screens/Spellbook.tsx`) and labels (`src/ui/labels.ts`)
+
+- Checkboxes for every topic, trap ("… trap", so names stay unique: `absolute_value` is both) and level ("Level 3:
+  Adept"); a length box (whole number 5–50, otherwise an error and Start is disabled); **Timed: 30 seconds per
+  question**. A live count says how many questions match; fewer than the length → "The set will have N questions".
+  Start closes the Spellbook, so the results' **Back to start** goes home.
+- Practice runs on the mock's session screen ("Spellbook practice", **Finish practice**); untimed shows a count-up
+  clock labelled "Time spent". Results say "Practice complete!", with no coach card.
+- Student-facing names: `LEVEL_NAMES` (Apprentice … Archmage) and `TRAP_NAMES` (e.g. `fraction_0_1` → "fractions
+  between 0 and 1") in `src/core/questions/vocabulary.ts`, used by the coach's sentences and `labels.ts`.
+
+## Profiles (`src/data/profiles.ts`, `src/ui/screens/Profiles.tsx`)
+
+```ts
+HOUSES: { id: 'owlcrest' | 'emberwing' | 'foxglen' | 'starhorn'; name; mascot }[]
+MASCOT_COLORS: { id; name; hex }[]          // always shown with the name, never colour alone
+validateName(raw) · validateProfile({ displayName, house, mascotColor }) → { ok, value } | { ok: false, error }
+createProfileRepo(db) → { list(), create(input), rename(id, name), remove(id) }
+```
+
+- A profile row is exactly `{ id, displayName, house, mascotColor }` (checked by the E2E storage test). Names: trimmed,
+  1–20 characters, one line. The form asks for a nickname and warns against a full real name.
+- `create`: the **first** profile adopts sessions saved before profiles existed (`profileId` null). `remove`: the
+  profile, its sessions and their answers, in one transaction; nobody else's.
+- Store: `profileId` + `setProfile(id | null)` (switching forgets the session on screen; it stays saved). Every session
+  is saved under `profileId`; resume, history, the coach and the last-3-mocks rule see only that student.
+- App (`data` prop): no profiles → Welcome form; one → picked automatically on the **first load only**; otherwise
+  "Who's playing?". Choosing a student resumes their unfinished mock. Home shows "Playing as …" and **Switch student**.
+  **Manage students (for parents)**: rename, and delete behind an `alertdialog` that names what is lost.
+- No active-profile memory between visits (no new storage): each visit starts at "Who's playing?", which suits a
+  shared family device.

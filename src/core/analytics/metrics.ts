@@ -1,5 +1,6 @@
 // The seven metrics of CLAUDE.md §4, as pure functions of AttemptEvent[]. A rate is null when it rests on fewer than
 // `minAttempts` answers, so no screen can make a claim about a topic from one or two questions.
+import { EXAM } from '../config/exam.ts';
 import type { Tag, Trap } from '../questions/vocabulary.ts';
 import type { AttemptEvent } from '../session/attempt.ts';
 
@@ -8,8 +9,8 @@ export const METRICS = {
   minAttempts: 5,
   /** An answer slower than this is flagged in review. */
   slowSeconds: 35,
-  /** The pace line: the official average per question (docs/EXAM_FACTS.md). */
-  paceSecondsPerQuestion: 30,
+  /** The pace line: the official average per question (docs/EXAM_FACTS.md), from the exam constants. */
+  paceSecondsPerQuestion: EXAM.secondsPerQuestion,
   paceMarkMs: 5 * 60_000,
   staminaWindowMs: 10 * 60_000,
   /** A first-to-last accuracy drop of at least this many percentage points earns a stamina tip. */

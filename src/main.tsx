@@ -1,7 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createFakeClock, systemClock } from './core/timer/clock.ts';
-import { connectPersistence, createAttemptRepo, type AttemptRepo } from './data/attempts.ts';
+import { connectPersistence, createAttemptRepo } from './data/attempts.ts';
+import { createProfileRepo } from './data/profiles.ts';
 import { openDb } from './data/db.ts';
 import { createSessionStore } from './store/session.ts';
 import { App } from './ui/App.tsx';
@@ -15,11 +16,11 @@ const fakeClock = import.meta.env.DEV && params.get('clock') === 'fake' ? create
 const store = createSessionStore(fakeClock ?? systemClock);
 
 /** Opens local storage; null when the browser blocks IndexedDB, and the app then runs without saving. */
-async function openRepo(): Promise<AttemptRepo | null> {
+async function openData() {
   try {
     const db = openDb();
     await db.open();
-    return createAttemptRepo(db);
+    return { attempts: createAttemptRepo(db), profiles: createProfileRepo(db) };
   } catch {
     return null;
   }
@@ -34,17 +35,13 @@ async function loadAppBank() {
 
 async function boot() {
   const bank = await loadAppBank();
-  const repo = await openRepo();
+  const data = await openData();
   let flush = () => Promise.resolve();
-  if (repo !== null) {
-    // Resume a mock left open by a reload or a closed tab; its clock kept running meanwhile.
-    const saved = await repo.loadActive(bank).catch(() => null);
-    if (saved !== null) {
-      store.getState().resume(saved);
-      // Opened in a background tab: the student isn't back yet.
-      if (document.visibilityState === 'hidden') store.getState().setHidden(true);
-    }
-    ({ flush } = connectPersistence(store, repo, () => store.getState().reportSaveError()));
+  if (data !== null) {
+    // Sessions are saved under the student chosen on "Who's playing?"; App resumes their unfinished mock.
+    ({ flush } = connectPersistence(store, data.attempts, () =>
+      store.getState().reportSaveError(),
+    ));
   }
   if (import.meta.env.DEV) {
     const { installTestHooks } = await import('./dev/testHooks.ts');
@@ -54,7 +51,7 @@ async function boot() {
   if (!root) throw new Error('Missing #root element');
   createRoot(root).render(
     <StrictMode>
-      <App bank={bank} store={store} history={repo ?? undefined} storageAvailable={repo !== null} />
+      <App bank={bank} store={store} data={data ?? undefined} storageAvailable={data !== null} />
     </StrictMode>,
   );
 }

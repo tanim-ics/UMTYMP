@@ -107,32 +107,39 @@ export function buildDrill(
   return { ...set, items: set.items.sort((a, b) => a.difficulty - b.difficulty) };
 }
 
-/**
- * Spellbook practice: any of the chosen tags, any of the chosen traps and any of the chosen levels; an empty or
- * missing filter allows everything.
- */
+export interface PracticeFilters {
+  tags?: readonly Tag[];
+  traps?: readonly Trap[];
+  levels?: readonly Level[];
+}
+
+/** Any of the chosen tags, any of the chosen traps and any of the chosen levels; an empty filter allows all. */
+function matchesPractice(item: QuestionItem, filters: PracticeFilters): boolean {
+  const { tags = [], traps = [], levels = [] } = filters;
+  return (
+    (tags.length === 0 || item.tags.some((t) => tags.includes(t))) &&
+    (traps.length === 0 || (item.trap != null && traps.includes(item.trap))) &&
+    (levels.length === 0 || levels.includes(item.difficulty))
+  );
+}
+
+/** How many bank items a Spellbook set could draw from. */
+export function countMatching(bank: readonly QuestionItem[], filters: PracticeFilters): number {
+  return bank.filter((i) => matchesPractice(i, filters)).length;
+}
+
+/** Spellbook practice: `length` items matching the filters (see `matchesPractice`). */
 export function buildPractice(
   bank: readonly QuestionItem[],
-  options: {
-    seed: number;
-    length: number;
-    tags?: readonly Tag[];
-    traps?: readonly Trap[];
-    levels?: readonly Level[];
-  },
+  options: PracticeFilters & { seed: number; length: number },
 ): BuiltSet {
   const { min, max } = EXAM.practiceLength;
-  const { length, tags = [], traps = [], levels = [] } = options;
+  const { length } = options;
   if (!Number.isInteger(length) || length < min || length > max) {
     throw new RangeError(
       `practice length must be a whole number from ${min} to ${max}, not ${length}`,
     );
   }
-  const matching = bank.filter(
-    (i) =>
-      (tags.length === 0 || i.tags.some((t) => tags.includes(t))) &&
-      (traps.length === 0 || (i.trap != null && traps.includes(i.trap))) &&
-      (levels.length === 0 || levels.includes(i.difficulty)),
-  );
+  const matching = bank.filter((i) => matchesPractice(i, options));
   return pick(matching, length, makeRandom(options.seed));
 }

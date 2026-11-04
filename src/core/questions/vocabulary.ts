@@ -35,8 +35,30 @@ export const TRAPS = [
 ] as const;
 export type Trap = (typeof TRAPS)[number];
 
+/** How a trap is named to students, in Hoot's sentences and on the screens ("the … trap"). */
+export const TRAP_NAMES: Readonly<Record<Trap, string>> = {
+  negative_numbers: 'negative numbers',
+  zero: 'zero',
+  fraction_0_1: 'fractions between 0 and 1',
+  principal_root: 'square root',
+  even_power: 'even power',
+  absolute_value: 'absolute value',
+  not_to_scale: 'not-to-scale figure',
+  integer_assumption: 'whole-number assumption',
+  order_of_operations: 'order of operations',
+};
+
 export const LEVELS = [1, 2, 3, 4, 5] as const;
 export type Level = (typeof LEVELS)[number];
+
+/** Level names shown to students (docs/SPEC.md → Difficulty levels). */
+export const LEVEL_NAMES: Readonly<Record<Level, string>> = {
+  1: 'Apprentice',
+  2: 'Novice',
+  3: 'Adept',
+  4: 'Expert',
+  5: 'Archmage',
+};
 
 /** Longest `target_seconds` allowed per level (docs/SPEC.md → Difficulty levels). */
 export const LEVEL_TIME_LIMITS: Readonly<Record<Level, number>> = {

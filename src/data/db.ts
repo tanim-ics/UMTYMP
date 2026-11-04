@@ -17,6 +17,7 @@ export interface ProfileRow {
 /** Everything needed to rebuild a session except its items, which come back from the bundled bank by id. */
 export interface SessionRow {
   id: string;
+  /** Owner; null only for sessions saved before the first profile existed (the first profile adopts them). */
   profileId: string | null;
   mode: SessionMode;
   itemIds: string[];

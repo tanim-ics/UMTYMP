@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { openApp } from './helpers.ts';
 
 const MOCK_MS = 25 * 60_000;
 
@@ -13,15 +14,22 @@ interface TrialSnapshot {
 
 /** Opens the app with the fake clock, so time moves only through the test hook. */
 async function open(page: Page) {
-  await page.goto('/?clock=fake');
-  await page.waitForFunction(() => window.__umtymp !== undefined);
+  await openApp(page, '?clock=fake');
 }
 
 const snapshot = (page: Page) => page.evaluate(() => window.__umtymp?.state() as TrialSnapshot);
 
 test('a full Grand Trial can be done with the keyboard only', async ({ page }) => {
   await open(page);
-  await page.keyboard.press('Tab');
+  // Tab to Start (Switch student comes first); keyboard only.
+  for (
+    let i = 0;
+    i < 5 &&
+    !(await page.getByTestId('home.start').evaluate((el) => el === document.activeElement));
+    i++
+  ) {
+    await page.keyboard.press('Tab');
+  }
   await expect(page.getByTestId('home.start')).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('trial.position')).toBeVisible();

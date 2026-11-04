@@ -3,6 +3,7 @@
 import type { QuestionItem } from '../core/questions/schema.ts';
 import type { Answer } from '../core/questions/vocabulary.ts';
 import type { FakeClock } from '../core/timer/clock.ts';
+import { buildFixture, FIXTURES, type FixtureName } from './fixtures.ts';
 import { remainingMs } from '../core/timer/session.ts';
 import type { SessionStoreApi } from '../store/session.ts';
 
@@ -12,6 +13,8 @@ export interface TestHooks {
   answer(letter: Answer): void;
   /** Resolves when every change so far is saved (tests reload only after this). */
   flush(): Promise<void>;
+  /** Shows the results of a finished sample mock: `all-right`, `all-wrong` or `not-enough-data`. */
+  loadFixture(name: FixtureName): void;
   clock?: { advance(ms: number): void };
 }
 
@@ -31,7 +34,8 @@ export function installTestHooks(options: {
   window.__umtymp = {
     state() {
       const { trial, now } = store.getState();
-      if (trial === null) return { screen: 'home', bankSize: bank.length };
+      const { profileId } = store.getState();
+      if (trial === null) return { screen: 'home', bankSize: bank.length, profileId };
       return {
         screen: trial.endReason === null ? 'trial' : 'result',
         index: trial.index,
@@ -43,13 +47,20 @@ export function installTestHooks(options: {
           itemId: e.itemId,
           status: e.status,
           choice: e.choice,
+          correct: e.correct,
         })),
         hiddenCount: trial.timer.hiddenCount,
+        profileId,
       };
     },
     seed: (n) => store.getState().startMock(bank, n),
     answer: (letter) => store.getState().answer(letter),
     flush,
+    loadFixture(name) {
+      if (!FIXTURES.includes(name))
+        throw new Error(`unknown fixture "${name}"; use ${FIXTURES.join(', ')}`);
+      store.getState().resume(buildFixture(name, bank, store.getState().now));
+    },
     ...(fakeClock === null
       ? {}
       : {

@@ -4,6 +4,8 @@ import {
   backItem,
   finishTrial,
   nextItem,
+  pauseTrial,
+  resumeTrial,
   skipItem,
   startTrial,
   tickTrial,
@@ -209,5 +211,58 @@ describe('ending the trial', () => {
     trial = answerItem(trial, 'D', 3);
     trial = answerItem(backItem(backItem(trial, 4), 5), 'A', 6);
     expect(trial.events.map((e) => e.position)).toEqual([0, 2]);
+  });
+});
+
+describe('drills: pause and the answer lock', () => {
+  function drill(now = 0) {
+    return startTrial({ sessionId: 'd1', mode: 'drill', items, durationMs: null }, now);
+  }
+
+  it('a mock cannot pause', () => {
+    expect(() => pauseTrial(start(), 10)).toThrow(/mock/i);
+  });
+
+  it('time per question leaves out the pause', () => {
+    let trial = drill(0);
+    trial = pauseTrial(trial, 4000); // 4 s of thinking, then a 60 s break
+    trial = resumeTrial(trial, 64_000);
+    trial = answerItem(trial, 'A', 70_000); // 6 more seconds
+    const e = trial.events[0];
+    expect(e && e.answeredAt !== null && e.shownAt !== null && e.answeredAt - e.shownAt).toBe(
+      10_000,
+    );
+  });
+
+  it('nothing can be answered, skipped, moved or flagged while paused', () => {
+    const paused = pauseTrial(drill(0), 1000);
+    expect(answerItem(paused, 'A', 2000)).toBe(paused);
+    expect(skipItem(paused, 2000)).toBe(paused);
+    expect(nextItem(paused, 2000)).toBe(paused);
+    expect(backItem(paused, 2000)).toBe(paused);
+    expect(toggleFlag(paused)).toBe(paused);
+  });
+
+  it('pausing twice or resuming a running drill changes nothing', () => {
+    const running = drill(0);
+    expect(resumeTrial(running, 10)).toBe(running);
+    const paused = pauseTrial(running, 10);
+    expect(pauseTrial(paused, 20)).toBe(paused);
+  });
+
+  it('a finished drill cannot pause or resume', () => {
+    const done = finishTrial(drill(0), 'completed');
+    expect(pauseTrial(done, 10)).toBe(done);
+    expect(resumeTrial(done, 10)).toBe(done);
+  });
+
+  it('a drill answer is final once given, because the shortcut is shown right after', () => {
+    const answered = answerItem(drill(0), 'B', 1000);
+    expect(answerItem(answered, 'A', 2000)).toBe(answered);
+  });
+
+  it('a mock answer can still be changed', () => {
+    const changed = answerItem(answerItem(start(0), 'B', 1000), 'A', 2000);
+    expect(changed.events[0]?.choice).toBe('A');
   });
 });

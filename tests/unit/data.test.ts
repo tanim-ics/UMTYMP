@@ -68,15 +68,15 @@ describe('attempt repository', () => {
     let trial = answerItem(mock('m1'), 'B', 2000);
     trial = toggleFlag(nextItem(trial, 3000));
     trial = { ...trial, timer: markHidden(trial.timer, 3500) };
-    await repo.saveTrial(trial);
-    expect(await repo.loadActive(bank)).toEqual(trial);
+    await repo.saveTrial(trial, 'p1');
+    expect(await repo.loadActive(bank, 'p1')).toEqual(trial);
   });
 
   it('saves every answer as an attempt row', async () => {
     const db = freshDb();
     const repo = createAttemptRepo(db);
     // Answer item 1, move to item 2, skip it.
-    await repo.saveTrial(skipItem(nextItem(answerItem(mock('m1'), 'B', 2000), 2200), 2500));
+    await repo.saveTrial(skipItem(nextItem(answerItem(mock('m1'), 'B', 2000), 2200), 2500), 'p1');
     const rows = await db.attempts.where('sessionId').equals('m1').sortBy('position');
     expect(rows.map((r) => [r.itemId, r.status, r.choice])).toEqual([
       ['test-0001', 'answered', 'B'],
@@ -88,8 +88,8 @@ describe('attempt repository', () => {
     const db = freshDb();
     const repo = createAttemptRepo(db);
     const first = answerItem(mock('m1'), 'A', 2000);
-    await repo.saveTrial(first);
-    await repo.saveTrial(answerItem(first, 'B', 3000));
+    await repo.saveTrial(first, 'p1');
+    await repo.saveTrial(answerItem(first, 'B', 3000), 'p1');
     const rows = await db.attempts.toArray();
     expect(rows).toHaveLength(1);
     expect(rows[0]).toMatchObject({ choice: 'B', answerChanges: 1 });
@@ -97,30 +97,33 @@ describe('attempt repository', () => {
 
   it('returns null when there is no unfinished session', async () => {
     const repo = createAttemptRepo(freshDb());
-    expect(await repo.loadActive(bank)).toBeNull();
-    await repo.saveTrial(finishTrial(mock('m1'), 'completed'));
-    expect(await repo.loadActive(bank)).toBeNull();
+    expect(await repo.loadActive(bank, 'p1')).toBeNull();
+    await repo.saveTrial(finishTrial(mock('m1'), 'completed'), 'p1');
+    expect(await repo.loadActive(bank, 'p1')).toBeNull();
   });
 
   it('resumes the newest unfinished session', async () => {
     const repo = createAttemptRepo(freshDb());
-    await repo.saveTrial(mock('old', 1000));
-    await repo.saveTrial(mock('new', 5000));
-    expect((await repo.loadActive(bank))?.sessionId).toBe('new');
+    await repo.saveTrial(mock('old', 1000), 'p1');
+    await repo.saveTrial(mock('new', 5000), 'p1');
+    expect((await repo.loadActive(bank, 'p1'))?.sessionId).toBe('new');
   });
 
   it('does not resume a session whose items are no longer in the bank', async () => {
     const repo = createAttemptRepo(freshDb());
-    await repo.saveTrial(mock('m1'));
-    expect(await repo.loadActive(bank.slice(1))).toBeNull();
+    await repo.saveTrial(mock('m1'), 'p1');
+    expect(await repo.loadActive(bank.slice(1), 'p1')).toBeNull();
   });
 
   it('lists finished mocks newest first with their score', async () => {
     const repo = createAttemptRepo(freshDb());
-    await repo.saveTrial(finishTrial(answerItem(mock('first', 1000), 'B', 1500), 'completed'));
-    await repo.saveTrial(finishTrial(mock('second', 9000, bank.slice(1, 4)), 'time_up'));
-    await repo.saveTrial(mock('running', 20_000));
-    const list = await repo.listFinished();
+    await repo.saveTrial(
+      finishTrial(answerItem(mock('first', 1000), 'B', 1500), 'completed'),
+      'p1',
+    );
+    await repo.saveTrial(finishTrial(mock('second', 9000, bank.slice(1, 4)), 'time_up'), 'p1');
+    await repo.saveTrial(mock('running', 20_000), 'p1');
+    const list = await repo.listFinished('p1');
     expect(list).toEqual([
       {
         sessionId: 'second',
@@ -147,8 +150,32 @@ describe('attempt repository', () => {
       { sessionId: 'd1', mode: 'drill', items: bank, durationMs: null },
       1000,
     );
-    await repo.saveTrial(finishTrial(drill, 'completed'));
-    expect(await repo.listFinished()).toEqual([]);
+    await repo.saveTrial(finishTrial(drill, 'completed'), 'p1');
+    expect(await repo.listFinished('p1')).toEqual([]);
+  });
+});
+
+describe('history for the coach', () => {
+  it('returns finished sessions of every mode, oldest first, with their events', async () => {
+    const repo = createAttemptRepo(freshDb());
+    const drill = startTrial(
+      { sessionId: 'd1', mode: 'drill', items: bank, durationMs: null },
+      5000,
+    );
+    await repo.saveTrial(finishTrial(answerItem(drill, 'B', 6000), 'completed'), 'p1');
+    await repo.saveTrial(finishTrial(answerItem(mock('m1', 1000), 'B', 2000), 'time_up'), 'p1');
+    await repo.saveTrial(mock('running', 9000), 'p1');
+    const history = await repo.listHistory('p1');
+    expect(history.map((h) => [h.sessionId, h.mode, h.endReason, h.events.length])).toEqual([
+      ['m1', 'mock', 'time_up', 3],
+      ['d1', 'drill', 'completed', 4],
+    ]);
+    expect(history[0]).toMatchObject({ startedAt: 1000, durationMs: EXAM.durationMs });
+    expect(history[1]?.durationMs).toBeNull();
+  });
+
+  it('is empty before anything is finished', async () => {
+    expect(await createAttemptRepo(freshDb()).listHistory('p1')).toEqual([]);
   });
 });
 
@@ -156,6 +183,7 @@ describe('saving from the live store', () => {
   function setup(repo = createAttemptRepo(freshDb())) {
     const clock = createFakeClock(1000);
     const store = createSessionStore(clock);
+    store.getState().setProfile('p1');
     const errors: unknown[] = [];
     const persistence = connectPersistence(store, repo, (e) => errors.push(e));
     return { clock, store, repo, persistence, errors, s: () => store.getState() };
@@ -166,7 +194,7 @@ describe('saving from the live store', () => {
     s().startMock(bank, 1);
     s().answer('B');
     await persistence.flush();
-    const saved = await repo.loadActive(bank);
+    const saved = await repo.loadActive(bank, 'p1');
     expect(saved?.events).toHaveLength(1);
     expect(saved).toEqual(s().trial);
   });
@@ -174,7 +202,10 @@ describe('saving from the live store', () => {
   it('does not write on ticks that change nothing', async () => {
     let writes = 0;
     const real = createAttemptRepo(freshDb());
-    const counting = { ...real, saveTrial: (t: TrialState) => ((writes += 1), real.saveTrial(t)) };
+    const counting = {
+      ...real,
+      saveTrial: (t: TrialState, p: string | null) => ((writes += 1), real.saveTrial(t, p)),
+    };
     const { s, persistence } = setup(counting);
     s().startMock(bank, 1);
     await persistence.flush();
@@ -200,7 +231,10 @@ describe('saving from the live store', () => {
   it('stops saving after disconnect', async () => {
     let writes = 0;
     const real = createAttemptRepo(freshDb());
-    const counting = { ...real, saveTrial: (t: TrialState) => ((writes += 1), real.saveTrial(t)) };
+    const counting = {
+      ...real,
+      saveTrial: (t: TrialState, p: string | null) => ((writes += 1), real.saveTrial(t, p)),
+    };
     const { s, persistence } = setup(counting);
     persistence.disconnect();
     s().startMock(bank, 1);
@@ -212,6 +246,7 @@ describe('saving from the live store', () => {
     const repo = createAttemptRepo(freshDb());
     const clock = createFakeClock(1000);
     const before = createSessionStore(clock);
+    before.getState().setProfile('p1');
     const persistence = connectPersistence(before, repo, () => {});
     before.getState().startMock(bank, 1);
     before.getState().answer('B');
@@ -219,7 +254,8 @@ describe('saving from the live store', () => {
 
     clock.advance(90_000); // the page is gone for 90 s
     const after = createSessionStore(clock);
-    const saved = await repo.loadActive(bank);
+    after.getState().setProfile('p1');
+    const saved = await repo.loadActive(bank, 'p1');
     if (saved === null) throw new Error('nothing to resume');
     after.getState().resume(saved);
     const trial = after.getState().trial;
@@ -231,6 +267,7 @@ describe('saving from the live store', () => {
     const repo = createAttemptRepo(freshDb());
     const clock = createFakeClock(1000);
     const before = createSessionStore(clock);
+    before.getState().setProfile('p1');
     const persistence = connectPersistence(before, repo, () => {});
     before.getState().startMock(bank, 1);
     before.getState().setHidden(true); // the browser hides the page as it unloads
@@ -238,7 +275,8 @@ describe('saving from the live store', () => {
 
     clock.advance(4000);
     const after = createSessionStore(clock);
-    const saved = await repo.loadActive(bank);
+    after.getState().setProfile('p1');
+    const saved = await repo.loadActive(bank, 'p1');
     if (saved === null) throw new Error('nothing to resume');
     after.getState().resume(saved);
     expect(after.getState().trial?.timer).toMatchObject({
@@ -255,19 +293,21 @@ describe('saving from the live store', () => {
     const repo = createAttemptRepo(freshDb());
     const clock = createFakeClock(1000);
     const before = createSessionStore(clock);
+    before.getState().setProfile('p1');
     const persistence = connectPersistence(before, repo, () => {});
     before.getState().startMock(bank, 1);
     await persistence.flush();
 
     clock.advance(EXAM.durationMs + 5000);
     const after = createSessionStore(clock);
+    after.getState().setProfile('p1');
     const afterPersistence = connectPersistence(after, repo, () => {});
-    const saved = await repo.loadActive(bank);
+    const saved = await repo.loadActive(bank, 'p1');
     if (saved === null) throw new Error('nothing to resume');
     after.getState().resume(saved);
     await afterPersistence.flush();
     expect(after.getState().trial?.endReason).toBe('time_up');
-    expect(await repo.loadActive(bank)).toBeNull();
-    expect((await repo.listFinished())[0]?.endReason).toBe('time_up');
+    expect(await repo.loadActive(bank, 'p1')).toBeNull();
+    expect((await repo.listFinished('p1'))[0]?.endReason).toBe('time_up');
   });
 });

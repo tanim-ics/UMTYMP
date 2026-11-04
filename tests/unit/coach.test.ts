@@ -82,6 +82,18 @@ describe('coach: strength, bottleneck, habit, drill', () => {
     );
   });
 
+  it('4b. a trap is named in words, not by its id', () => {
+    const events = join(
+      many(10, () => ({ tags: ['fractions'] })),
+      many(5, () => ({ tags: ['exponents'], trap: 'fraction_0_1', choice: 'B' })),
+    );
+    const feedback = coach([session(events)]);
+    if (feedback.kind !== 'feedback') throw new Error('expected feedback');
+    expect(feedback.bottleneckText).toBe(
+      'Biggest leak: the fractions between 0 and 1 trap caught you 5 times in 5 (100%).',
+    );
+  });
+
   it('5. missing "not enough information" questions teaches the four test values', () => {
     const events = join(
       many(10, () => ({ tags: ['fractions'] })),
@@ -230,6 +242,43 @@ describe('coach: strength, bottleneck, habit, drill', () => {
 });
 
 describe('coach: edge cases', () => {
+  it('with no right answer anywhere, the strength is the effort, never "0 of 8 right"', () => {
+    const events = join(
+      many(8, () => ({ tags: ['inequalities'], choice: 'B' })),
+      many(6, () => ({ tags: ['roots'], choice: 'C' })),
+    );
+    const feedback = coach([session(events)]);
+    expect(feedback).toMatchObject({
+      kind: 'feedback',
+      strength: { kind: 'effort', answered: 14 },
+    });
+    if (feedback.kind !== 'feedback') throw new Error('expected feedback');
+    expect(feedback.strengthText).toBe('Strongest spell: you answered 14 of 14 questions.');
+    // Every topic is now a candidate leak; the bigger one wins.
+    expect(feedback.bottleneck).toMatchObject({ kind: 'tag', tag: 'inequalities', lost: 8 });
+  });
+
+  it('the screen can name the latest session, whatever the start times say', () => {
+    const shown = session(
+      many(12, () => ({ tags: ['fractions'] })),
+      { sessionId: 'shown', startedAt: 0 },
+    );
+    const older = session(
+      join(
+        many(6, () => ({ tags: ['roots'] })),
+        many(9, () => ({ status: 'unanswered' })),
+      ),
+      {
+        sessionId: 'older',
+        startedAt: 1e12, // e.g. saved on a different clock
+        endReason: 'time_up',
+      },
+    );
+    expect(coach([older, shown], { latestSessionId: 'shown' })).toMatchObject({
+      bottleneck: { kind: 'challenge' },
+    });
+  });
+
   it('works on a drill-only history: no time or stamina claims without a finished mock', () => {
     const drill = session(
       join(

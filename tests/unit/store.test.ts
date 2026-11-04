@@ -130,4 +130,82 @@ describe('session store', () => {
     s().reset();
     expect(s().trial).toBeNull();
   });
+
+  it('a potion drill from the results keeps the mock to come back to', () => {
+    const { s } = setup();
+    s().startMock(bank, 1);
+    s().finish();
+    const mock = s().trial;
+    s().startDrill(bank, { kind: 'tag', tag: 'arithmetic' }, 2);
+    expect(s().trial?.mode).toBe('drill');
+    expect(s().trial?.timer.durationMs).toBeNull();
+    expect(s().trial?.items).toHaveLength(3);
+    expect(s().returnTo).toBe(mock);
+    s().finish();
+    s().backToResults();
+    expect(s().trial).toBe(mock);
+    expect(s().returnTo).toBeNull();
+  });
+
+  it('a drill started from home has nothing to go back to', () => {
+    const { s } = setup();
+    s().startDrill(bank, { kind: 'level', level: 1 }, 2);
+    expect(s().returnTo).toBeNull();
+    s().finish();
+    s().backToResults();
+    expect(s().trial).toBeNull();
+  });
+
+  it('does not start a drill with no matching questions', () => {
+    const { s } = setup();
+    s().startDrill(bank, { kind: 'tag', tag: 'geometry' }, 2);
+    expect(s().trial).toBeNull();
+  });
+
+  it('pauses and resumes a drill on the clock', () => {
+    const { clock, s } = setup();
+    s().startDrill(bank, { kind: 'level', level: 1 }, 2);
+    s().pause();
+    expect(s().trial?.timer.pausedAt).toBe(clock.now());
+    clock.advance(5000);
+    s().unpause();
+    expect(s().trial?.timer.pausedMs).toBe(5000);
+  });
+
+  it('reset also forgets the mock kept for later', () => {
+    const { s } = setup();
+    s().startMock(bank, 1);
+    s().finish();
+    s().startDrill(bank, { kind: 'level', level: 1 }, 2);
+    s().reset();
+    expect(s().returnTo).toBeNull();
+  });
+
+  it('starts untimed practice from the chosen filters', () => {
+    const { s } = setup();
+    s().startPractice(bank, { levels: [1], length: 5, timed: false }, 3);
+    expect(s().trial?.mode).toBe('practice');
+    expect(s().trial?.timer.durationMs).toBeNull();
+    expect(s().trial?.items).toHaveLength(3); // the bank only has 3
+  });
+
+  it('timed practice gets 30 s per question', () => {
+    const { s } = setup();
+    s().startPractice(bank, { length: 5, timed: true }, 3);
+    expect(s().trial?.timer.durationMs).toBe(3 * 30_000);
+  });
+
+  it('does not start practice when nothing matches', () => {
+    const { s } = setup();
+    s().startPractice(bank, { tags: ['geometry'], length: 5, timed: false }, 3);
+    expect(s().trial).toBeNull();
+  });
+
+  it('switching profile forgets the session on screen', () => {
+    const { s } = setup();
+    s().startMock(bank, 1);
+    s().setProfile('ali');
+    expect(s().profileId).toBe('ali');
+    expect(s().trial).toBeNull();
+  });
 });

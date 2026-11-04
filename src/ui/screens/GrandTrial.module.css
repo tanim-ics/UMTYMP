@@ -112,3 +112,95 @@
 .result {
   text-align: center;
 }
+
+.reviewList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space);
+  text-align: left;
+}
+
+.reviewList > li {
+  /* Explanations are paragraphs: left-aligned text is easier to read than the centred quantity cards. */
+  text-align: left;
+  font-size: 1rem;
+}
+
+.reviewList h2 {
+  font-size: 1.25rem;
+  margin: 0 0 8px;
+}
+
+fieldset {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px var(--space);
+}
+
+legend {
+  font-weight: 700;
+  padding: 0 8px;
+}
+
+/* A whole label is the tap target, at least 48 px tall. */
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--tap-target);
+  cursor: pointer;
+}
+
+.choice input[type='checkbox'],
+.choice input[type='radio'] {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--color-accent);
+}
+
+.number {
+  width: 5em;
+  min-height: var(--tap-target);
+  font: inherit;
+  padding: 0 8px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.text {
+  min-height: var(--tap-target);
+  font: inherit;
+  padding: 0 12px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.swatchLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-text);
+}
+
+/* The chosen option shows by weight and an outline, not only by the small dot or tick. */
+.choice:has(input:checked) {
+  font-weight: 700;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}

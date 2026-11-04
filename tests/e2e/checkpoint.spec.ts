@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { openApp } from './helpers.ts';
 
 // Checkpoint B: a full 50-item mock (seed bank repeated, dev only) runs end to end and survives a reload.
 // Real clock on purpose, so the reload happens while time is really running.
@@ -22,8 +23,7 @@ test('Checkpoint B: a full 50-item mock runs end to end and survives a reload', 
   page,
 }) => {
   test.setTimeout(120_000);
-  await page.goto('/?bank=repeat');
-  await page.waitForFunction(() => window.__umtymp !== undefined);
+  await openApp(page, '?bank=repeat');
   await page.getByTestId('home.start').click();
   expect((await snapshot(page)).total).toBe(50);
 

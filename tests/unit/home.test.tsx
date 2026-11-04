@@ -44,7 +44,10 @@ const finished: FinishedSession[] = [
 
 function renderHome(options: { list?: FinishedSession[]; storageAvailable?: boolean } = {}) {
   const store = createSessionStore(createFakeClock());
-  const history = { listFinished: () => Promise.resolve(options.list ?? finished) };
+  const history = {
+    listFinished: () => Promise.resolve(options.list ?? finished),
+    listHistory: () => Promise.resolve([]),
+  };
   render(
     <App
       bank={bank}
@@ -85,7 +88,10 @@ describe('home: past Grand Trials', () => {
   it('refreshes the list after a trial ends', async () => {
     const store = createSessionStore(createFakeClock());
     let list: FinishedSession[] = [];
-    const history = { listFinished: () => Promise.resolve(list) };
+    const history = {
+      listFinished: () => Promise.resolve(list),
+      listHistory: () => Promise.resolve([]),
+    };
     render(<App bank={bank} store={store} seed={1} history={history} storageAvailable />);
     fireEvent.click(await screen.findByTestId('home.start'));
     fireEvent.click(screen.getByTestId('trial.finish'));

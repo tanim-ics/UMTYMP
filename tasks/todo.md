@@ -4,7 +4,45 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 13 (results and review screen). Tasks 10–12 and Checkpoint B committed and pushed.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 17 (export, import, reset). Tasks 13–16 and Checkpoint C committed and pushed.
+
+**Handoff (after Task 16):** student profiles: `src/data/profiles.ts` (houses, named colours, validation, repo with
+adopt-on-first and cascade delete), `Profiles.tsx` (Welcome, Who's playing?, manage/rename/delete with confirm),
+App profile gate; attempt repo and persistence are per profile. Tests: 362 unit/component + 52 E2E (new
+`tests/e2e/profiles.spec.ts`: create → switch → delete, per-student history, real-IndexedDB check that profile rows
+have only id/displayName/house/mascotColor, axe light/dark; every spec now opens through `tests/e2e/helpers.ts`).
+Mutation checks 5/5 red. Seen live: radio buttons tiny and the checked choice hard to see → 24 px controls plus a
+bold, outlined chosen option (Spellbook too). **Open for the owner:** the floor guard flags 8 `assertion-removed`
+lines in `tests/unit/data.test.ts`; each assertion is still there, rewritten to pass a profile id (same matcher).
+Cleared by pushing (the guard compares with `origin/main`); refining the rule for same-matcher rewrites is still
+an option. I did not change the guard.
+
+**Handoff (after Task 15):** Spellbook (`Spellbook.tsx`): topics, traps, levels, timed/untimed, length 5–50, live
+match count; practice runs on the mock's session screen (count-up clock when untimed). Store `startPractice`; core
+`countMatching`; `EXAM.secondsPerQuestion` (the metrics' pace line now reads it instead of its own 30). Names for
+students: `LEVEL_NAMES`, `TRAP_NAMES` (vocabulary) and `src/ui/labels.ts`. Tests: 335 unit/component + 44 E2E (new
+`tests/e2e/spellbook.spec.ts`: untimed level-3 set of 5, keyboard-only start, axe light/dark). Mutation checks 4/4
+red. Found and fixed (failing tests first): Back to start after practice returned to the Spellbook; two checkboxes
+both named "Absolute value"; trap names generated from ids ("Fraction 0 1 trap") on screen and in Hoot's sentences.
+
+**Handoff (after Task 14):** coach card on mock results, potion drill (untimed, pause hides the question, shortcut
+after each answer, answer locks), back to the mock's results. Core: `pauseTrial`/`resumeTrial`, drill answer lock,
+no input while paused; store `startDrill`/`backToResults`/`pause`/`unpause`/`returnTo`; repo `listHistory`.
+`loadFixture` dev hook done (`all-right`, `all-wrong`, `not-enough-data`). Mock and drill screens share
+`Question.tsx` and `useTrialControls.ts`. Tests: 318 unit/component + 36 E2E (new `tests/e2e/drill.spec.ts`: mock →
+coach → drill with pause → back; fixtures; axe on coach card and drill, light/dark). Mutation checks: 1 of 4 survived
+(the mock counted twice when storage already has it) → test added, now red. Seen live, both fixed with failing
+tests first: a 0 % "strength" ("0 of 8 right") → effort strength instead; the coach picked an older mock as latest
+when clocks differed → the card names the shown mock. Owner may want to read Hoot's wording on the card.
+
+**Handoff (after Task 13):** `Results.tsx` replaces the bare result view; `Review.tsx` lists every question with
+filters (All / Wrong or missed / Slow / Flagged). Filter and summary rules are pure in `src/core/analytics/review.ts`
+(no metric logic in components). 19 new unit/component tests (290 total) + `tests/e2e/review.spec.ts` (review after a
+real mock, keyboard-only review, axe on results and review in light/dark): 28 E2E green on Chromium + WebKit.
+Mutation checks 3/3 red. Seen live: review cards were centred (inherited from quantity cards), hard to read for
+paragraphs → left-aligned. Owner may want to look at: "Wrong or missed" includes skipped and unanswered questions.
+`loadFixture` hook moved to Task 14 (coach card shows saved history). A test-helper infinite loop hung one run; the
+helper is now bounded.
 
 **Handoff (after Task 12):** `coach.ts` (strength, biggest bottleneck by questions lost, habit, drill; texts in
 Professor Hoot's voice) and `badges.ts` (5 habit badges). Rules in `docs/CONTRACTS.md`. 27 tests: 14 coach fixtures
@@ -201,29 +239,29 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 11 · **Files:** `src/core/analytics/coach.ts`, `src/core/analytics/badges.ts`, `tests/unit/coach.test.ts` · **Size:** M
 
 ### Task 13: Results and review screen
-- [ ] Score, then every item with answer, key, shortcut, explanation; filters wrong / slow (> 35 s) / flagged
+- [x] Score, then every item with answer, key, shortcut, explanation; filters wrong / slow (> 35 s) / flagged
 - **Verify:** component test of filters; E2E after a mock
 - **Depends on:** 10, 11 · **Files:** `src/ui/screens/Results.tsx`, `src/ui/screens/Review.tsx`, `tests/e2e/review.spec.ts` · **Size:** M
 
 ### Task 14: Coach card and potion drill
-- [ ] Coach card on results with "Brew a potion" → 10-item drill; drill may pause and shows the shortcut after each answer
+- [x] Coach card on results with "Brew a potion" → 10-item drill; drill may pause and shows the shortcut after each answer
 - **Verify:** E2E: mock → coach → drill → back to results
 - **Depends on:** 12, 13 · **Files:** `src/ui/components/CoachCard.tsx`, `src/ui/screens/PotionDrill.tsx`, `tests/e2e/drill.spec.ts` · **Size:** M
 
 ### Task 15: Spellbook practice
-- [ ] Choose topics, traps, levels 1–5, timed/untimed, length 5–50; runs through the same session screen
+- [x] Choose topics, traps, levels 1–5, timed/untimed, length 5–50; runs through the same session screen
 - **Verify:** E2E for an untimed level-3 set of 5
 - **Depends on:** 9 · **Files:** `src/ui/screens/Spellbook.tsx`, `tests/e2e/spellbook.spec.ts` · **Size:** S
 
 ### Checkpoint C — after tasks 11–15
-- [ ] Mock → review → coach → drill loop works on Chromium + WebKit; owner tries it; commit
+- [x] Mock → review → coach → drill loop works on Chromium + WebKit; owner tries it (2026-11-04: "seems good"); committed with Tasks 13–16
 
 ---
 
 ## Phase 3 — Profiles and data
 
 ### Task 16: Profiles and house choice
-- [ ] First run: display name, house (Owlcrest/Emberwing/Foxglen/Starhorn), colour; parent can add, rename, delete profiles
+- [x] First run: display name, house (Owlcrest/Emberwing/Foxglen/Starhorn), colour; parent can add, rename, delete profiles
 - **Verify:** E2E for create → switch → delete; no other personal fields exist in storage
 - **Depends on:** 10 · **Files:** `src/ui/screens/Profiles.tsx`, `src/data/profiles.ts`, `tests/e2e/profiles.spec.ts` · **Size:** M
 

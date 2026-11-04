@@ -4,6 +4,7 @@ import {
   buildDrill,
   buildMock,
   buildPractice,
+  countMatching,
   seededShuffle,
 } from '../../src/core/questions/build.ts';
 import type { QuestionItem } from '../../src/core/questions/schema.ts';
@@ -248,5 +249,21 @@ describe('buildPractice', () => {
     expect(ids(buildPractice(mixed, options).items)).toEqual(
       ids(buildPractice(mixed, options).items),
     );
+  });
+});
+
+describe('countMatching', () => {
+  const mixed = [
+    ...bank(2),
+    item('frac-0001', 1, ['fractions']),
+    item('frac-0002', 3, ['fractions', 'inequalities'], 'fraction_0_1'),
+  ];
+
+  it('counts what buildPractice would draw from, with the same filter rules', () => {
+    expect(countMatching(mixed, {})).toBe(12);
+    expect(countMatching(mixed, { tags: ['fractions'] })).toBe(2);
+    expect(countMatching(mixed, { tags: ['fractions'], levels: [3] })).toBe(1);
+    expect(countMatching(mixed, { traps: ['fraction_0_1'] })).toBe(1);
+    expect(countMatching(mixed, { traps: ['zero'] })).toBe(0);
   });
 });

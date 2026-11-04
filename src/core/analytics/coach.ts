@@ -1,7 +1,14 @@
 // Professor Hoot's feedback (CLAUDE.md §4): one strength with its number, the biggest bottleneck with its number,
 // one habit and a 10-question drill. Pure: the same history always gives the same feedback.
 import type { DrillFocus } from '../questions/build.ts';
-import { TAGS, TRAPS, type Level, type Tag, type Trap } from '../questions/vocabulary.ts';
+import {
+  TAGS,
+  TRAP_NAMES,
+  TRAPS,
+  type Level,
+  type Tag,
+  type Trap,
+} from '../questions/vocabulary.ts';
 import type { AttemptEvent, SessionMode } from '../session/attempt.ts';
 import type { EndReason } from '../session/trial.ts';
 import {
@@ -23,11 +30,13 @@ export interface SessionRecord {
   events: readonly AttemptEvent[];
 }
 
-export interface Strength {
-  tag: Tag;
-  correct: number;
-  attempted: number;
-}
+/**
+ * The best topic, or, when no topic has a single right answer yet, the effort itself: Hoot never calls
+ * "0 of 8 right" a strength.
+ */
+export type Strength =
+  | { kind: 'topic'; tag: Tag; correct: number; attempted: number }
+  | { kind: 'effort'; answered: number; total: number };
 
 /** `lost` is the number of questions the bottleneck cost; the biggest one is chosen. */
 export type Bottleneck =
@@ -81,21 +90,34 @@ function mostCommon<T extends string>(values: readonly T[], order: readonly T[])
   return best;
 }
 
-function latestMock(history: readonly SessionRecord[]): SessionRecord | null {
+/** The named session when the screen knows it; otherwise the finished mock that started last. */
+function latestMock(
+  history: readonly SessionRecord[],
+  latestSessionId?: string,
+): SessionRecord | null {
   const mocks = history.filter((s) => s.mode === 'mock' && s.endReason !== null);
+  const named = mocks.find((s) => s.sessionId === latestSessionId);
+  if (named !== undefined) return named;
   return mocks.reduce<SessionRecord | null>(
     (latest, s) => (latest === null || s.startedAt > latest.startedAt ? s : latest),
     null,
   );
 }
 
+type TopicStrength = Extract<Strength, { kind: 'topic' }>;
+
 /** Best accuracy among topics with enough answers; compared as exact fractions, then by more answers. */
-function findStrength(events: readonly AttemptEvent[]): Strength | null {
-  let best: Strength | null = null;
+function bestTopic(events: readonly AttemptEvent[]): TopicStrength | null {
+  let best: TopicStrength | null = null;
   for (const tag of TAGS) {
     const group = accuracyBy(events, 'tag')[tag];
     if (group === undefined || group.accuracy === null) continue;
-    const candidate = { tag, correct: group.correct, attempted: group.attempted };
+    const candidate: TopicStrength = {
+      kind: 'topic',
+      tag,
+      correct: group.correct,
+      attempted: group.attempted,
+    };
     if (
       best === null ||
       candidate.correct * best.attempted > best.correct * candidate.attempted ||
@@ -159,7 +181,7 @@ function bottlenecks(
     Tag,
     { attempted: number; correct: number; accuracy: number | null },
   ][]) {
-    if (group.accuracy === null || tag === strength.tag) continue;
+    if (group.accuracy === null || (strength.kind === 'topic' && tag === strength.tag)) continue;
     found.push({
       kind: 'tag',
       tag,
@@ -224,7 +246,7 @@ function describe(b: Bottleneck): { text: string; habit: string } {
   switch (b.kind) {
     case 'trap':
       return {
-        text: `Biggest leak: the ${label(b.trap)} trap caught you ${b.lost} times in ${b.attempted} (${pct(b.lost, b.attempted)}%).`,
+        text: `Biggest leak: the ${TRAP_NAMES[b.trap]} trap caught you ${b.lost} times in ${b.attempted} (${pct(b.lost, b.attempted)}%).`,
         habit: TRAP_HABITS[b.trap],
       };
     case 'd_key':
@@ -265,19 +287,33 @@ function describe(b: Bottleneck): { text: string; habit: string } {
   }
 }
 
-/** History oldest or newest first, any mix of modes. Time and stamina come from the latest finished mock. */
-export function coach(history: readonly SessionRecord[]): CoachFeedback {
+function strengthText(strength: Strength): string {
+  return strength.kind === 'topic'
+    ? `Strongest spell: ${title(strength.tag)}, ${strength.correct} of ${strength.attempted} right (${pct(strength.correct, strength.attempted)}%).`
+    : `Strongest spell: you answered ${strength.answered} of ${strength.total} questions.`;
+}
+
+/**
+ * History in any order and any mix of modes. Time and stamina come from the latest finished mock: the one named by
+ * `latestSessionId` (the results screen passes the mock it shows), else the one that started last.
+ */
+export function coach(
+  history: readonly SessionRecord[],
+  options: { latestSessionId?: string } = {},
+): CoachFeedback {
   const events = history.flatMap((s) => s.events);
-  const strength = findStrength(events);
-  if (strength === null) {
+  const topic = bestTopic(events);
+  if (topic === null) {
     return {
       kind: 'not_enough_data',
       answered: events.filter((e) => e.status === 'answered').length,
       neededPerTopic: METRICS.minAttempts,
     };
   }
-  const latest = latestMock(history);
   const answered = events.filter((e) => e.status === 'answered');
+  const strength: Strength =
+    topic.correct > 0 ? topic : { kind: 'effort', answered: answered.length, total: events.length };
+  const latest = latestMock(history, options.latestSessionId);
   const bottleneck: Bottleneck = pickBiggest(bottlenecks(events, latest, strength)) ?? {
     kind: 'challenge',
     lost: 0,
@@ -290,7 +326,7 @@ export function coach(history: readonly SessionRecord[]): CoachFeedback {
     strength,
     bottleneck,
     drill: drillFor(bottleneck, events, latest),
-    strengthText: `Strongest spell: ${title(strength.tag)}, ${strength.correct} of ${strength.attempted} right (${pct(strength.correct, strength.attempted)}%).`,
+    strengthText: strengthText(strength),
     bottleneckText: text,
     habitText: habit,
   };
