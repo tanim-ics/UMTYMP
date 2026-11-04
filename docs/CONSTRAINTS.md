@@ -31,6 +31,7 @@ of the change that was failing.
 | Coverage: app | at least 90% lines, branches, functions, statements in `src/` (entry and dev hooks excluded) | `npm run test` | task end | Owner chose stricter than the 80% default; the app is new, so it can start high |
 | Coverage: core | at least 95% lines, branches, functions, statements in `src/core/` | `npm run test` | task end | Timer, metrics and verifier decide what students are told |
 | Questions | 100% of the bank passes the verifier | `npm run verify` | task end | A wrong key teaches a wrong habit |
+| Timer | Drift under 100 ms over 25 min of irregular frames | `npm run test` (`tests/unit/timer.test.ts`) | task end | 0.1 s is below what a student can see on a seconds display |
 | Dependencies: shipped | 0 advisories at moderate or above in packages that reach the browser | `npm run audit:shipped` | full check | Owner chose stricter than "high"; this is what reaches children; external advisory database |
 | Dependencies: dev tools | 0 high or critical advisories | `npm run audit:dev` | full check | Dev tools run only in our containers; high and critical still block |
 | Dependencies: dev moderate | at most 11 moderate advisories (ratchet) | `npm run audit:dev` (`tools/audit-ratchet.mjs 11`) | full check | Owner decision 2026-11-03: all 11 are one minimatch issue inside ESLint with no fix released; the count may only go down |

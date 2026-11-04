@@ -4,7 +4,15 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 7.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 8 (mock and drill builders).
+
+**Handoff (after Task 7):** `src/core/timer/clock.ts` (`Clock`, `systemClock`, `createFakeClock`) and
+`session.ts` (immutable `TimerState` + pure functions of `now`; contract in `docs/CONTRACTS.md`). 24 new tests (99
+total), both files 100% covered. Drift test: 25 min of jittered frames, error < 100 ms (it is 0 by design: time is
+derived, not accumulated). Mutation checks: ignoring pauses → 2 tests red; removing the time-up cap → 5 red. The
+timer-drift rule is now an Enforced row in `docs/CONSTRAINTS.md`. Its Scheduled row stays: the floor guard flags
+any deleted row (it compares numbers by position, so dropping "Task 7" reads as a lost threshold); removing it
+needs the owner's OK. Committed and pushed.
 
 **Handoff (after Task 6):** `docs/CONTENT.md` (rules, levels, tags with id prefixes, traps with habits, domain format,
 5 worked examples) and `content/questions/seed.json`: 20 original items, 4 per level, answers A 6 / B 5 / C 5 / D 4;
@@ -95,8 +103,8 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 ## Phase 1 — Exam core
 
 ### Task 7: Session clock
-- [ ] `Clock` interface (real = `performance.now()`, fake for tests); countdown, time-up event, pause for drills only
-- [ ] Drift < 100 ms over a simulated 25 min; correct after a simulated hidden tab
+- [x] `Clock` interface (real = `performance.now()`, fake for tests); countdown, time-up event, pause for drills only
+- [x] Drift < 100 ms over a simulated 25 min; correct after a simulated hidden tab
 - **Verify:** unit tests with fake clock
 - **Depends on:** 2 · **Files:** `src/core/timer/clock.ts`, `src/core/timer/session.ts`, `tests/unit/timer.test.ts` · **Size:** S
 

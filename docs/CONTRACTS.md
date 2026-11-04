@@ -70,3 +70,30 @@ function verifyItem(item: QuestionItem): VerifyResult;          // pure, determi
 - Also reported: unreadable expressions or rules, a `kind` other than `real`/`integer`, a domain with no values or
   too narrow to find 500, and a result that is not a finite real number (e.g. `sqrt(x)` at a negative x).
 - `mathjs` is a dev dependency: only the verifier imports this file, so it never ships in the app bundle.
+
+## Clock and session timer (`src/core/timer/`)
+
+```ts
+interface Clock { now(): number }                        // monotonic ms; never Date.now()
+const systemClock: Clock;                                // performance.now()
+function createFakeClock(start?: number): Clock & { advance(ms: number): void };  // tests, dev hook
+
+type TimerMode = 'mock' | 'drill';
+type TimerStatus = 'running' | 'paused' | 'time_up';
+interface TimerState { mode; durationMs: number | null; startedAt; pausedAt; pausedMs; hiddenAt; hiddenMs;
+                       hiddenCount; timeUpFired }       // all readonly
+startTimer({ mode, durationMs }, now) → TimerState       // durationMs null = untimed, counts up
+elapsedMs(s, now) · remainingMs(s, now) → number | null · timerStatus(s, now) · hiddenMs(s, now)
+pauseTimer(s, now) · resumeTimer(s, now) · markHidden(s, now) · markVisible(s, now) → TimerState
+checkTimeUp(s, now) → { state, fired }                   // fired is true exactly once
+msUntilTimeUp(s, now) → number | null                    // null when untimed or paused
+```
+
+- Pure functions of `now`; state is immutable (a change returns a new object, a no-op returns the same one).
+- Time is derived from the clock on every read, never accumulated per tick, so frame jitter and a throttled hidden
+  tab cannot cause drift.
+- `elapsedMs` excludes pauses and stops at the duration; `remainingMs` never goes below 0.
+- A mock cannot pause (`pauseTimer` throws). A drill can, unless its time is up. A paused timer never reaches time-up.
+- Hiding the tab never stops the clock; it only records `hiddenCount` and `hiddenMs` for the attempt log.
+- The screen calls `checkTimeUp` on each tick and on `visibilitychange`, and may schedule one wake-up from
+  `msUntilTimeUp`.
