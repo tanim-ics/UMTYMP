@@ -131,6 +131,11 @@ describe('verifyItem: integer domains', () => {
     expect(problems(item).join(' ')).toMatch(/x = 1 gives C/);
   });
 
+  it('reads a rule whose function call contains a comma', () => {
+    const item = { expr_a: '(-1)^n', expr_b: '-1', domain: { n: 'integer, mod(n, 2) == 1' } };
+    expect(problems({ ...item, correct_answer: 'C' })).toEqual([]);
+  });
+
   it('only tries whole numbers', () => {
     // x² >= x holds for every integer but fails at x = ½.
     expect(problems({ expr_a: 'x^2 >= x ? 1 : 0', expr_b: '0', domain: { x: 'integer' } })).toEqual(

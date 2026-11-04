@@ -3,8 +3,15 @@
 Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `docker compose run --rm check npm run check:task`.
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
-**Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–5 (1–4 committed as `2c0352d`, pushed to
-`github.com/tanim-ics/UMTYMP`; Task 5 uncommitted). **Next:** Task 6 (content guide and 20 seed items).
+**Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 7.
+
+**Handoff (after Task 6):** `docs/CONTENT.md` (rules, levels, tags with id prefixes, traps with habits, domain format,
+5 worked examples) and `content/questions/seed.json`: 20 original items, 4 per level, answers A 6 / B 5 / C 5 / D 4;
+all pass `npm run verify` (4591 value checks). Writing them found a verifier bug: domain rules were split on every
+comma, breaking `mod(n, 2) == 1`; fixed with a failing test first (75 tests). Coverage gaps expected at 20 items: no
+item yet for traps `zero` or `not_to_scale`, and most tags appear at fewer than 3 levels; content batches C1–C8 close
+that. Not machine-checked: that each `domain` matches its displayed `condition` (owner review).
 
 **Handoff (after Task 5):** `verifyItem` in `src/core/questions/evaluate.ts` proves keys with `mathjs` (dev
 dependency, no new advisories; dev moderate still 11). Domain format and proof rules are in `docs/CONTRACTS.md`.
@@ -75,13 +82,13 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 4 · **Files:** `tools/verify-questions.ts`, `src/core/questions/evaluate.ts`, `tests/unit/verify.test.ts` · **Size:** M
 
 ### Task 6: Content guide and seed bank
-- [ ] `docs/CONTENT.md`: tag, trap and level vocabulary, writing rules, 5 worked examples (one per level)
-- [ ] 20 original seed items (4 per level) pass the verifier
+- [x] `docs/CONTENT.md`: tag, trap and level vocabulary, writing rules, 5 worked examples (one per level)
+- [x] 20 original seed items (4 per level) pass the verifier
 - **Verify:** `npm run verify` green; owner reads the 20 items
 - **Depends on:** 5 · **Files:** `docs/CONTENT.md`, `content/questions/seed.json` · **Size:** S
 
 ### Checkpoint A — after tasks 1–6
-- [ ] Task check green in Docker; verifier proves all seed items; owner reviews seed items; checkpoint commit
+- [x] Task check green in Docker; verifier proves all seed items; owner reviews seed items; checkpoint commit (owner approved 2026-11-04)
 
 ---
 

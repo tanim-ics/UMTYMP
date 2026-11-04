@@ -59,12 +59,31 @@ function compileOrThrow(text: string, label: string): EvalFunction {
   }
 }
 
+/** Splits on commas outside brackets, so a rule like `mod(n, 2) == 1` stays whole. */
+function splitTopLevel(spec: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let current = '';
+  for (const char of spec) {
+    if (char === '(' || char === '[') depth++;
+    if (char === ')' || char === ']') depth--;
+    if (char === ',' && depth === 0) {
+      parts.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current.trim());
+  return parts;
+}
+
 /** Domain format: `"real"` or `"integer"`, then optional comma-separated mathjs rules, e.g. `"real, 0 < x < 1"`. */
 function parseDomain(domain: Record<string, string> | undefined): Domain {
   const variables: Variable[] = [];
   const rules: Domain['rules'] = [];
   for (const [name, spec] of Object.entries(domain ?? {})) {
-    const [kind = '', ...ruleTexts] = spec.split(',').map((part) => part.trim());
+    const [kind = '', ...ruleTexts] = splitTopLevel(spec);
     if (kind !== 'real' && kind !== 'integer') {
       throw new VerifyError(`domain.${name}: must start with real or integer, not "${kind}"`);
     }
