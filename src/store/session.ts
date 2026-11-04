@@ -23,7 +23,12 @@ export interface SessionStore {
   trial: TrialState | null;
   /** The clock reading at the last action or tick; screens derive the timer text from it. */
   now: number;
+  /** True once a save to this browser's storage has failed; the home screen then says answers aren't kept. */
+  saveFailed: boolean;
+  reportSaveError(): void;
   startMock(bank: readonly QuestionItem[], seed: number, recentMocks?: readonly string[][]): void;
+  /** Continues a saved session after a reload: closes the reload's hidden spell, ends it if time ran out. */
+  resume(trial: TrialState): void;
   answer(choice: Answer): void;
   skip(): void;
   next(): void;
@@ -50,6 +55,8 @@ export function createSessionStore(clock: Clock): SessionStoreApi {
     return {
       trial: null,
       now: clock.now(),
+      saveFailed: false,
+      reportSaveError: () => set({ saveFailed: true }),
       startMock(bank, seed, recentMocks) {
         const { items } = buildMock(bank, { seed, recentMocks });
         if (items.length === 0) return;
@@ -60,6 +67,13 @@ export function createSessionStore(clock: Clock): SessionStoreApi {
           trial: startTrial({ sessionId, mode: 'mock', items, durationMs: EXAM.durationMs }, now),
           now,
         });
+      },
+      resume(trial) {
+        const now = clock.now();
+        // The old page was hidden as it unloaded; the new page is the student coming back, so that hidden spell
+        // ends now. Otherwise hidden time would grow for the rest of the mock and later switches go unrecorded.
+        const back = { ...trial, timer: markVisible(trial.timer, now) };
+        set({ trial: tickTrial(back, now), now });
       },
       answer: (choice) => apply((t, now) => answerItem(t, choice, now)),
       skip: () => apply(skipItem),

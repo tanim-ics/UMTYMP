@@ -43,7 +43,8 @@ export function startTimer(
 
 /** Time spent in the session, excluding pauses, and never more than the duration. */
 export function elapsedMs(state: TimerState, now: number): number {
-  const raw = (state.pausedAt ?? now) - state.startedAt - state.pausedMs;
+  // Clamped at 0: across a reload, a device clock moved backwards could otherwise give negative time.
+  const raw = Math.max(0, (state.pausedAt ?? now) - state.startedAt - state.pausedMs);
   return state.durationMs === null ? raw : Math.min(raw, state.durationMs);
 }
 

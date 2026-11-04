@@ -29,6 +29,12 @@ describe('clocks', () => {
     expect(() => createFakeClock().advance(-1)).toThrow(/backwards/);
   });
 
+  it('the system clock reads on the epoch scale, so readings from before a reload still compare', () => {
+    const reading = systemClock.now();
+    expect(reading).toBeGreaterThan(1.6e12); // after 2020: a time origin, not "ms since this page loaded"
+    expect(Math.abs(reading - (performance.timeOrigin + performance.now()))).toBeLessThan(50);
+  });
+
   it('the system clock is monotonic', () => {
     const first = systemClock.now();
     expect(systemClock.now()).toBeGreaterThanOrEqual(first);
@@ -76,6 +82,12 @@ describe('countdown', () => {
     const truth = MOCK_MS - clock.now();
     expect(shown).not.toBeNull();
     expect(Math.abs((shown ?? 0) - truth)).toBeLessThan(100);
+  });
+
+  it('never shows negative elapsed time if the device clock moved back between reloads', () => {
+    const timer = startTimer({ mode: 'mock', durationMs: MOCK_MS }, 10_000);
+    expect(elapsedMs(timer, 4000)).toBe(0);
+    expect(remainingMs(timer, 4000)).toBe(MOCK_MS);
   });
 
   it('untimed practice counts up and never runs out', () => {

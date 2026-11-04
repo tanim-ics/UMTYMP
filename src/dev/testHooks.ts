@@ -10,6 +10,8 @@ export interface TestHooks {
   state(): unknown;
   seed(n: number): void;
   answer(letter: Answer): void;
+  /** Resolves when every change so far is saved (tests reload only after this). */
+  flush(): Promise<void>;
   clock?: { advance(ms: number): void };
 }
 
@@ -23,8 +25,9 @@ export function installTestHooks(options: {
   store: SessionStoreApi;
   bank: readonly QuestionItem[];
   fakeClock: FakeClock | null;
+  flush: () => Promise<void>;
 }): void {
-  const { store, bank, fakeClock } = options;
+  const { store, bank, fakeClock, flush } = options;
   window.__umtymp = {
     state() {
       const { trial, now } = store.getState();
@@ -46,6 +49,7 @@ export function installTestHooks(options: {
     },
     seed: (n) => store.getState().startMock(bank, n),
     answer: (letter) => store.getState().answer(letter),
+    flush,
     ...(fakeClock === null
       ? {}
       : {

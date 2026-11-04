@@ -4,10 +4,11 @@ export interface Clock {
 }
 
 /**
- * The real clock. `performance.now()` is monotonic and exists in browsers and Node alike, so this keeps
- * `src/core` runnable in tests without a DOM.
+ * The real clock: `performance.timeOrigin + performance.now()`. Within a page it is the monotonic high-resolution
+ * clock; adding the page's time origin puts readings on the epoch scale, so a mock saved before a reload can be
+ * resumed with its clock still running. Both exist in browsers and Node, so `src/core` stays testable without a DOM.
  */
-export const systemClock: Clock = { now: () => performance.now() };
+export const systemClock: Clock = { now: () => performance.timeOrigin + performance.now() };
 
 export interface FakeClock extends Clock {
   advance(ms: number): void;
