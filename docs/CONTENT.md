@@ -16,6 +16,10 @@ decision: propose it to the owner, then add it here and in `vocabulary.ts` toget
 6. **`D` items** have two `witnesses` with different relations, chosen to show the student the two cases.
 7. **`npm run verify` passes**, then the owner reads the item.
 8. **Tone.** Encouraging and concrete for a 10–13-year-old; name the habit, never the student's mistake.
+9. **Speakable.** Screen readers hear each formula in words (`src/core/questions/spoken.ts`), so `quantity_*` and
+   `condition` use only: numbers, single letters, `+ - = < > : ,`, `( )`, `| |`, `^`, `{ }`, `\frac`, `\sqrt`,
+   `\times`, `\cdot`, `\div`, `\neq`, `\le(q)`, `\ge(q)`, `\%` and `\text{…}`. A unit test fails on anything else;
+   add it to the reader first.
 
 **Bank balance.** Across a batch, keep each answer near 25% so guessing one letter never pays. Every tag and trap
 should appear at ≥ 3 levels (`docs/SPEC.md`).

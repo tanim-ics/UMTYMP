@@ -4,7 +4,27 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 22 (accessibility pass). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Checkpoint E (owner reviews the look on a laptop and an iPad), then Task 23. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05.
+
+**Handoff (after Task 22):** `tests/e2e/a11y.spec.ts` walks every screen (Welcome, home, who's playing, manage,
+delete confirmation, Settings, reset confirmation, castle map empty and after a mock, Grand Trial with and without a
+"Given" line, results after finishing and after time-up, review, coach card, drill, drill feedback, drill paused,
+Spellbook, its length error, a practice session) in light and dark on Chromium and WebKit. On each it runs axe
+(WCAG 2.1 A/AA, 0 serious/critical) plus the CLAUDE.md §7 rules axe doesn't check: every control has a
+`<screen>.<control>` test id and a 48 px target (a radio's label counts), Tab reaches every control, and each shows a
+solid ring of at least 2 px. **Found and fixed:** text fields, radios and the file picker showed only the browsers'
+thin default ring; they now get the same 3 px accent ring as buttons (`GrandTrial.module.css`). **Spoken math:**
+`spokenMath` (`src/core/questions/spoken.ts`, pure) turns bank LaTeX into words ("x squared", "open bracket negative
+2 close bracket to the power 4", "…, end fraction"), so −2⁴ and (−2)⁴ sound different. `MathView` is then
+`role="img"` with that label, or keeps KaTeX's MathML when there is no spoken form. A unit test fails if any bank
+formula has no spoken form; `docs/CONTENT.md` rule 9 lists the allowed LaTeX. A keyboard-only spec goes from the first
+visit (sign-up form) through a mock to the review and back home. Tests: `tests/unit/spoken.test.ts` (38),
+`tests/unit/mathView.test.tsx` (2), `tests/e2e/a11y.spec.ts` (12 per browser). Mutation checks: no focus ring on
+inputs → 6 findings per run; `--tap-target` 40 px → every control flagged. `docs/CONSTRAINTS.md`: two new enforced
+rows (every screen; keyboard from first visit to review). The old Grand Trial rows and the scheduled Accessibility
+and Keyboard rows are left as they were: the floor guard blocks editing a row, so tidying them is the owner's call. **Not tested:** a real
+screen reader (VoiceOver/NVDA) reading the labels; the scheduled Keyboard row (Task 9) is stale like the Timer row.
+**For the owner (Checkpoint E):** the look on a laptop and an iPad; try VoiceOver on the iPad on one question.
 
 **Handoff (after Task 21):** the Task 20 art is on the screens through `src/ui/components/Art.tsx` (decorative,
 `alt=""`, fixed sizes): castle banner and the student's crest on home, a crest per house on Welcome, a still Hoot on
@@ -377,7 +397,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 20 · **Files:** `src/ui/components/*`, `src/ui/screens/*` (style files only) · **Size:** M
 
 ### Task 22: Accessibility pass
-- [ ] axe-core: zero serious/critical issues on every screen, both themes; full keyboard-only mock; spoken-form math labels
+- [x] axe-core: zero serious/critical issues on every screen, both themes; full keyboard-only mock; spoken-form math labels
 - **Verify:** E2E axe suite + keyboard-only spec
 - **Depends on:** 21 · **Files:** `tests/e2e/a11y.spec.ts`, fixes in touched components · **Size:** M
 

@@ -89,7 +89,12 @@
   opacity: 0.6;
 }
 
-.button:focus-visible {
+/* Every control gets the same ring when the keyboard reaches it: the browsers' own rings on fields, radios and the
+   file picker are 1 px or drawn by the system, and can vanish on the night sky (Task 22). */
+.button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
 }

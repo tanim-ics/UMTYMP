@@ -406,3 +406,13 @@ nothing on a timed test can move; its only animation is the results celebration 
 Where: home (castle banner, the student's crest), Welcome (a crest per house), Grand Trial (a still Hoot), potion
 drill (potion), Spellbook (book), castle map (banner), results (celebration), coach card (Hoot).
 
+**Accessibility (Task 22).** Every control — buttons, fields, radios, the file picker — shows the same 3 px
+`--color-accent` ring on `:focus-visible`. `spokenMath(latex): string | null` (`src/core/questions/spoken.ts`, pure)
+turns a bank formula into words: `x^2` → "x squared", `(-2)^4` → "open bracket negative 2 close bracket to the
+power 4", `\frac{x + 1}{y + 1}` → "the fraction x plus 1 over y plus 1, end fraction". It returns null for LaTeX
+outside the subset in `docs/CONTENT.md` (rule 9). `<MathView latex testId>` renders KaTeX and, when there is a
+spoken form, is `role="img"` with that form as its `aria-label`; otherwise it keeps KaTeX's MathML for screen
+readers. `tests/e2e/a11y.spec.ts` checks every screen (both themes, Chromium and WebKit) for axe, a
+`<screen>.<control>` test id and a 48 px target on every control (a radio's label is its target), Tab reaching
+every control (once per radio group) and a solid ring of at least 2 px on each.
+
