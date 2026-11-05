@@ -4,7 +4,17 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Checkpoint D (every Release 1 story without the theme; E2E green; commit). Tasks 17 and 18 committed.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 19 (theme system). Checkpoint D passed and committed 2026-11-05.
+
+**Handoff (Checkpoint D):** every Release 1 story mapped to a browser test, Chromium + WebKit:
+S1 `trial`, `checkpoint`, `reload`, `release1` · S2 `review` · S3 `drill` (coach, fixtures incl. not enough data) ·
+S4 `drill` · S5 `spellbook`, `release1` · S6 `castle` · S7 + P1 `profiles` · P2 `transfer` · C1 `npm run verify`.
+New `tests/e2e/release1.spec.ts` for details only unit tests had: answering by tap with going back to change an
+answer; a hidden tab keeps the clock running and is recorded; a timed Spellbook set counts down and ends at time-up
+with the rest unanswered. Results: full check green (413 unit, verifier 20/20, floor guard clean, no leaks, shipped
+audit 0, dev 7 moderate under cap 11); E2E 74/74; production image has no dev code (0 hits). **Not shown in a
+browser:** no repeats across the last 3 mocks: the bank has 20 items, fewer than one mock, so it is proven in unit
+tests only (`build.test.ts`) until content batches grow the bank.
 
 **Handoff (after Task 18):** castle map: `src/core/analytics/progress.ts` (`mockTrend`, `progressTable`, `towers`;
 `medianTime` added to metrics) and `CastleMap.tsx`, opened from Home. Six towers: five from the habit badges plus
@@ -295,7 +305,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 11, 16 · **Files:** `src/ui/screens/CastleMap.tsx`, `src/core/analytics/progress.ts`, `tests/unit/progress.test.ts` · **Size:** M
 
 ### Checkpoint D — after tasks 16–18
-- [ ] Every Release 1 story works without the theme; E2E green; commit
+- [x] Every Release 1 story works without the theme; E2E green (74/74, 2026-11-05); commit
 
 ---
 
