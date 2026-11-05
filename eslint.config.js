@@ -19,6 +19,19 @@ export default tseslint.config(
     },
   },
   {
+    // zod must come from src/core/zod.ts, which turns off its eval probe before any schema is built (Task 24).
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/core/zod.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [{ name: 'zod', message: "Import { z } from 'src/core/zod.ts' (CSP: no eval)." }],
+        },
+      ],
+    },
+  },
+  {
     files: ['tools/**/*.{ts,mjs}', '*.config.{js,ts}'],
     languageOptions: { globals: { ...globals.node } },
   },

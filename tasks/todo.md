@@ -4,7 +4,25 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 24 (performance and nginx). Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 25 (CI and franchise-name check), then the question bank C1–C8. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05.
+
+**Handoff (after Task 24):** budgets from `docs/CONSTRAINTS.md` (Lighthouse performance ≥ 95: the task line said 90, the
+owner raised it). **Before → after:** Lighthouse (mobile, slow 4G, 4× CPU, on the nginx image) performance 69 → 98–99,
+LCP 5101 → 2101–2251 ms, accessibility 100, CLS 0; answer → next p95 61 → 28–31 ms (57 samples, 4× CPU). What it took:
+nginx gzip (the 683 kB script went out raw); KaTeX split into its own chunk and loaded 1.5 s after the first screen
+(it had competed with that screen; any formula on screen loads it at once); the first screen's three fonts preloaded
+(they were requested only after the script rendered the heading). **Headers:** `docker/security-headers.conf`, included
+in every nginx location, read by `vite preview` via `tools/security-headers.ts`. The browser test found two
+violations: an inlined `data:` KaTeX font (now never inlined) and zod's `new Function` probe (zod comes only from
+`src/core/zod.ts` with `jitless`; ESLint enforces it). New: `tools/lighthouse.mjs` (`npm run check:lighthouse`,
+Lighthouse 13.5.0 dev dependency, the tool CONSTRAINTS names; 13.6.0 was under two weeks old),
+`tests/e2e/perf.spec.ts` (project `perf`, runs alone after the others), `tests/e2e/headers.spec.ts` (Chromium and
+WebKit), `tests/unit/securityHeaders.test.ts` (6, includes the nginx include trap), `mathView.test.tsx` +2. Projects
+`offline-*` renamed `prod-*`. Three new CONSTRAINTS rows (Responsiveness, Page performance, Security headers); the
+scheduled rows are left (the floor guard blocks editing them). The floor guard reads a changed `vitest` import line as
+a removed assertion, so new imports go on their own line (owner decision on that rule still open). **Seen once, not
+reproduced in 7 runs:** `castle.spec` a11y (WebKit, dark) failed in a slow 2.1-minute run, likely its 90 s limit on a
+50-question mock. **Not done:** HSTS (needs https); Lighthouse is a separate command, not inside `docker compose run e2e`.
 
 **Handoff (after Task 23):** `vite-plugin-pwa` 2.0.0 (in the ADR 0001 stack; dev dependency, ships only the
 generated service worker and `workbox-window`) makes production builds installable and offline: manifest, icons in
@@ -438,8 +456,8 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** E · **Files:** `vite.config.ts`, `src/main.tsx`, `tests/e2e/offline.spec.ts` · **Size:** S
 
 ### Task 24: Performance and nginx hardening
-- [ ] Answer → next < 50 ms p95 with 4× CPU throttle; Lighthouse performance ≥ 90, accessibility ≥ 95
-- [ ] nginx security headers (CSP, no-sniff, referrer policy), long-cache hashed assets
+- [x] Answer → next < 50 ms p95 with 4× CPU throttle; Lighthouse performance ≥ 90, accessibility ≥ 95 (CONSTRAINTS: ≥ 95)
+- [x] nginx security headers (CSP, no-sniff, referrer policy), long-cache hashed assets
 - **Verify:** Playwright timing test; Lighthouse in the e2e container
 - **Depends on:** 23 · **Files:** `docker/nginx.conf`, `tests/e2e/perf.spec.ts` · **Size:** S
 

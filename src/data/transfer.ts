@@ -2,7 +2,7 @@
 // The file holds the same things the database does and nothing more: the three profile fields, sessions and
 // answers. Import checks every field with zod (unknown fields are refused) and always creates a new student with
 // new ids, so an import can never overwrite or mix with anyone's progress.
-import { z } from 'zod';
+import { z } from '../core/zod.ts';
 import { ANSWERS, LEVELS, TAGS, TRAPS } from '../core/questions/vocabulary.ts';
 import type { AttemptRow, ProfileRow, SessionRow, UmtympDb } from './db.ts';
 import { newId } from './ids.ts';

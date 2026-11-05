@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '../zod.ts';
 import { ANSWERS, LEVEL_TIME_LIMITS, LEVELS, TAGS, TRAPS, type Level } from './vocabulary.ts';
 
 const nonBlank = z.string().trim().min(1, 'must not be empty');

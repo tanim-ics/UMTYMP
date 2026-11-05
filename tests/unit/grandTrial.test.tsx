@@ -1,11 +1,16 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
+import { beforeAll } from 'vitest';
 import { EXAM } from '../../src/core/config/exam.ts';
 import type { QuestionItem } from '../../src/core/questions/schema.ts';
 import { createFakeClock } from '../../src/core/timer/clock.ts';
 import { createSessionStore } from '../../src/store/session.ts';
 import { App } from '../../src/ui/App.tsx';
+import { loadMath } from '../../src/ui/components/MathView.tsx';
+
+// KaTeX loads after the first screen in the app (Task 24); these tests look at its output, so load it first.
+beforeAll(() => loadMath());
 
 afterEach(cleanup);
 

@@ -428,3 +428,25 @@ version waits until every tab of the app is closed, so an update never reloads a
 fall back to `index.html`. Service workers need a secure context (https or localhost): from an iPad at a plain-IP
 address the app runs but doesn't install or cache. `index.html` adds `theme-color` and `apple-touch-icon` (iPad
 Safari's home-screen icon).
+
+## Performance and security headers (`docker/`, `vite.config.ts`, Task 24)
+
+**Headers.** `docker/security-headers.conf` is the one list: CSP `default-src 'self'; script-src 'self';
+style-src 'self' 'unsafe-inline'` (KaTeX positions glyphs with style attributes) `; img-src 'self'; font-src 'self';
+connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';
+frame-ancestors 'none'`, plus `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, a
+`Permissions-Policy` that turns off camera, microphone, geolocation, payment and USB, `Cross-Origin-Opener-Policy:
+same-origin` and `X-Frame-Options: DENY`. Every `location` in `nginx.conf` includes it (nginx drops server-level
+`add_header` in a location that sets its own); `vite preview` reads it through `tools/security-headers.ts`. No HSTS:
+the image serves plain http; add it where https is terminated. nginx gzips text; `/assets/` (hashed) is cached for a
+year, everything else `no-cache`.
+
+**Rules that keep the policy.** zod is imported only through `src/core/zod.ts` (`jitless`, so it never probes
+`new Function`; ESLint `no-restricted-imports` enforces it). Fonts are never inlined as `data:` URLs
+(`build.assetsInlineLimit`).
+
+**Loading.** KaTeX (code, CSS, fonts; about a third of the app) is a separate chunk. `loadMath()`
+(`src/ui/components/MathView.tsx`) loads it once; `main.tsx` starts it 1.5 s after the first screen mounts, and any
+`MathView` on screen starts it at once (a resumed mock doesn't wait). Before it arrives, `MathView` is an empty
+placeholder that already has its spoken label; it renders synchronously once loaded. The build preloads Grenze 600
+and Nunito 400/700, the first screen's fonts.

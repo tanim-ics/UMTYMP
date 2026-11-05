@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createFakeClock, systemClock } from './core/timer/clock.ts';
 import { connectPersistence, createAttemptRepo } from './data/attempts.ts';
@@ -7,6 +7,7 @@ import { createTransfer } from './data/transfer.ts';
 import { openDb } from './data/db.ts';
 import { createSessionStore } from './store/session.ts';
 import { App } from './ui/App.tsx';
+import { loadMath } from './ui/components/MathView.tsx';
 import { loadBank } from './ui/bank.ts';
 import './ui/theme/tokens.css';
 
@@ -38,6 +39,23 @@ async function loadAppBank() {
   return repeatBank(bank, 4);
 }
 
+/** How long after the first screen mounts KaTeX starts loading; less than anyone takes to reach a question. */
+const MATH_DELAY_MS = 1500;
+
+/**
+ * Starts loading KaTeX shortly after the first screen is up. No first screen needs it, and fetching it alongside
+ * that screen slowed it down on a slow connection (Task 24). Filling in Welcome or reading home takes longer than
+ * the delay, so it's ready before the first question. The first screen renders after IndexedDB opens, which is
+ * after the page's load event, hence an effect, not `load`.
+ */
+function LoadMathAfterPaint() {
+  useEffect(() => {
+    const timer = setTimeout(() => void loadMath(), MATH_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
+  return null;
+}
+
 async function boot() {
   const bank = await loadAppBank();
   const data = await openData();
@@ -62,6 +80,7 @@ async function boot() {
   if (!root) throw new Error('Missing #root element');
   createRoot(root).render(
     <StrictMode>
+      <LoadMathAfterPaint />
       <App
         bank={bank}
         store={store}

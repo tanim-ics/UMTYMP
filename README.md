@@ -38,7 +38,8 @@ first visit. Installing and offline need `https` or `localhost`: opened from ano
 (`http://192.168.…`), the app runs but won't install or work offline.
 
 Tests: `docker compose run --rm check npm run check:task` (unit tests and checks) and `docker compose run --rm e2e`
-(browser tests).
+(browser tests). Lighthouse on the production image: `docker compose up -d --build web`, then
+`docker compose run --rm e2e npm run check:lighthouse`.
 
 ## When Docker won't start the app
 

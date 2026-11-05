@@ -2,8 +2,11 @@ import { defineConfig, devices } from '@playwright/test';
 
 // Runs inside the `e2e` container (docker compose run --rm e2e). Most specs use the dev server, because the test
 // hooks on window.__umtymp exist only in dev builds. The offline spec needs the service worker, which only the
-// production build has, so it runs against `vite preview` of a fresh build on its own port.
+// production build has, so it runs against `vite preview` of a fresh build on its own port; so do the security
+// header and timing specs (Task 24), which must see what students get.
 const PREVIEW = 'http://localhost:4173';
+const PROD_SPECS = /(offline|headers|perf)\.spec/;
+const OTHER_PROJECTS = ['chromium', 'webkit', 'prod-chromium', 'prod-webkit'];
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -27,17 +30,24 @@ export default defineConfig({
     },
   ],
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: /offline\.spec/ },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: /offline\.spec/ },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: PROD_SPECS },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: PROD_SPECS },
     {
-      name: 'offline-chromium',
+      name: 'prod-chromium',
       use: { ...devices['Desktop Chrome'], baseURL: PREVIEW, serviceWorkers: 'allow' },
-      testMatch: /offline\.spec/,
+      testMatch: /(offline|headers)\.spec/,
     },
     {
-      name: 'offline-webkit',
+      name: 'prod-webkit',
       use: { ...devices['Desktop Safari'], baseURL: PREVIEW, serviceWorkers: 'allow' },
-      testMatch: /offline\.spec/,
+      testMatch: /(offline|headers)\.spec/,
+    },
+    {
+      // The timing spec runs alone, after everything else: other tests sharing the CPU would be measured too.
+      name: 'perf',
+      use: { ...devices['Desktop Chrome'], baseURL: PREVIEW },
+      testMatch: /perf\.spec/,
+      dependencies: OTHER_PROJECTS,
     },
   ],
 });
