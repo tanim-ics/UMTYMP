@@ -4,7 +4,23 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 23 (offline). Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 24 (performance and nginx). Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05.
+
+**Handoff (after Task 23):** `vite-plugin-pwa` 2.0.0 (in the ADR 0001 stack; dev dependency, ships only the
+generated service worker and `workbox-window`) makes production builds installable and offline: manifest, icons in
+`public/icons/` (rendered from Hoot, logged in ASSETS), Workbox precache of `js, css, html, svg, png, woff2`,
+`clientsClaim` so the first visit already counts, `registerType: 'prompt'` with no prompt so an update never reloads a
+mock. `index.html` adds `theme-color` and `apple-touch-icon`. `tests/e2e/offline.spec.ts` runs on the production build:
+`playwright.config.ts` now starts a second server (`npm run build && vite preview` on 4173) and has projects
+`offline-chromium`/`offline-webkit`; the dev projects ignore that spec. Tests: manifest and icons; offline after the first
+visit (sign-up, a full mock, review, Spellbook, pictures and fonts all load); a mock makes 0 network requests. All 6
+failed before the PWA existed. Mutation: caching only `js, css, html` → the mock fetched Hoot and two KaTeX fonts, red.
+**Flake fixed:** under the extra load, `screens.spec.ts` sometimes checked pictures before they finished loading; it now
+waits for `complete` before asserting they rendered (same assertion). Full suite 114 passed 5 runs in a row. Audits:
+shipped 0; dev 10 moderate (cap 11; lowering it is the owner's call) plus 2 low. **Not tested:** installing on a real
+iPad (needs https or localhost; over the home-network IP it won't install). New CONSTRAINTS row: Offline. **nginx:** `docker/nginx.conf` now serves `/manifest.webmanifest` as
+`application/manifest+json` (it went out as octet-stream); checked with curl on the `web` image, together with `sw.js`
+(`no-cache`, JavaScript). The offline spec runs on `vite preview`, not nginx.
 
 **Handoff (Checkpoint E prep, 2026-11-05):** opening the app from another device at a plain-IP address
 (`http://10.10.3.36:5173`) is not a secure context, so `crypto.randomUUID` is missing and **Start my adventure did
@@ -417,7 +433,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 ## Phase 5 — Offline and ship
 
 ### Task 23: Offline (PWA)
-- [ ] Installable; works with the network off after first load; no requests during a mock
+- [x] Installable; works with the network off after first load; no requests during a mock
 - **Verify:** E2E with network blocked; network log check
 - **Depends on:** E · **Files:** `vite.config.ts`, `src/main.tsx`, `tests/e2e/offline.spec.ts` · **Size:** S
 

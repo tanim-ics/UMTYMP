@@ -9,6 +9,7 @@ open-licence fonts only (`CLAUDE.md` §7). Add a row when an asset is added.
 | Nunito (latin subset, weights 400 and 700, woff2/woff), via `@fontsource/nunito` 5.3.0 | Body text | [Nunito](https://github.com/googlefonts/nunito), © 2014 The Nunito Project Authors | SIL OFL 1.1 (`node_modules/@fontsource/nunito/LICENSE`) | 2026-11-05 |
 | Grenze (latin subset, weight 600, woff2/woff), via `@fontsource/grenze` 5.3.0 | Headings, timer, answer letters | [Grenze](https://github.com/Omnibus-Type/Grenze), © 2019 The Grenze Project Authors | SIL OFL 1.1 (`node_modules/@fontsource/grenze/LICENSE`) | 2026-11-05 |
 | `public/art/hoot.svg` | Professor Hoot, the coach | Original SVG drawn for this app (Task 20) | Project's own | 2026-11-05 |
+| `public/icons/icon-192.png`, `icon-512.png`, `maskable-512.png`, `apple-touch-icon.png` | App icons (install, home screen) | Rendered from `public/art/hoot.svg` on `#fffaf0` (Task 23); the maskable one keeps Hoot in the middle 60% | Project's own | 2026-11-05 |
 | `public/art/crest-owlcrest.svg` | Owlcrest house crest (owl, teal) | Original SVG drawn for this app (Task 20) | Project's own | 2026-11-05 |
 | `public/art/crest-emberwing.svg` | Emberwing house crest (dragon, orange) | Original SVG drawn for this app (Task 20) | Project's own | 2026-11-05 |
 | `public/art/crest-foxglen.svg` | Foxglen house crest (fox, moss green) | Original SVG drawn for this app (Task 20) | Project's own | 2026-11-05 |

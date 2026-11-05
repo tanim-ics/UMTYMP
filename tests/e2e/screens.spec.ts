@@ -17,10 +17,11 @@ const motionOnPage = (page: Page) =>
     return { running, moving };
   });
 
-const imagesLoaded = (page: Page) =>
-  page.evaluate(() =>
-    [...document.querySelectorAll('img')].every((img) => img.complete && img.naturalWidth > 0),
-  );
+/** Waits until every picture has finished loading (visible isn't loaded), then says whether all of them rendered. */
+async function imagesLoaded(page: Page) {
+  await page.waitForFunction(() => [...document.images].every((img) => img.complete));
+  return page.evaluate(() => [...document.images].every((img) => img.naturalWidth > 0));
+}
 
 test('a timed Grand Trial has nothing that moves, while answering, flagging and moving on', async ({
   page,

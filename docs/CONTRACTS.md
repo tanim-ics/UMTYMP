@@ -416,3 +416,15 @@ readers. `tests/e2e/a11y.spec.ts` checks every screen (both themes, Chromium and
 `<screen>.<control>` test id and a 48 px target on every control (a radio's label is its target), Tab reaching
 every control (once per radio group) and a solid ring of at least 2 px on each.
 
+
+## Offline and install (`vite.config.ts`, Task 23)
+
+`vite-plugin-pwa` (ADR 0001) adds a web manifest (name "Comparia Academy", short name "Comparia", `start_url` `/`,
+standalone, icons 192, 512 and a maskable 512) and a Workbox service worker in **production builds only**; dev has
+none. On the first visit it precaches every `js, css, html, svg, png, woff2` file in the build: the code, the question
+bank (bundled in the JS), the art, the app fonts and KaTeX's woff2 fonts. `clientsClaim` makes the first page
+controlled at once, so the app works offline from then on. `registerType: 'prompt'` with no prompt shown: a new
+version waits until every tab of the app is closed, so an update never reloads a page during a mock. Unknown paths
+fall back to `index.html`. Service workers need a secure context (https or localhost): from an iPad at a plain-IP
+address the app runs but doesn't install or cache. `index.html` adds `theme-color` and `apple-touch-icon` (iPad
+Safari's home-screen icon).

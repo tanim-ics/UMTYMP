@@ -32,7 +32,10 @@ Linux). Node runs inside the containers, so you don't need it on your machine.
    docker compose down
    ```
 
-The production build runs on http://localhost:8080: `docker compose up --build web`.
+The production build runs on http://localhost:8080: `docker compose up --build web`. It installs as an app
+(Chrome: the install icon in the address bar; iPad Safari: Share → Add to Home Screen) and works offline after the
+first visit. Installing and offline need `https` or `localhost`: opened from another device at a plain-IP address
+(`http://192.168.…`), the app runs but won't install or work offline.
 
 Tests: `docker compose run --rm check npm run check:task` (unit tests and checks) and `docker compose run --rm e2e`
 (browser tests).
