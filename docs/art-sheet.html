@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Art sheet</title>
+    <!-- For the owner's review (Task 20): open this file in a browser. Not shipped (docs/ is outside the build). -->
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        color: #2b2238;
+        background: #fffaf0;
+      }
+      h1 {
+        margin: 16px;
+      }
+      section {
+        padding: 16px;
+      }
+      .parchment {
+        background: #f4ead5;
+      }
+      .night {
+        background: #141233;
+        color: #f3eefc;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 16px;
+      }
+      figure {
+        margin: 0;
+        text-align: center;
+      }
+      figure img {
+        width: 100%;
+        max-width: 160px;
+      }
+      .wide img {
+        max-width: 480px;
+      }
+      .wide {
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Comparia Academy art sheet</h1>
+    <section class="parchment">
+      <h2>On parchment (light)</h2>
+      <div class="grid" data-sheet></div>
+    </section>
+    <section class="night">
+      <h2>On night sky (dark)</h2>
+      <div class="grid" data-sheet></div>
+    </section>
+    <script>
+      const art = [
+        ['hoot.svg', 'Professor Hoot'],
+        ['crest-owlcrest.svg', 'Owlcrest'],
+        ['crest-emberwing.svg', 'Emberwing'],
+        ['crest-foxglen.svg', 'Foxglen'],
+        ['crest-starhorn.svg', 'Starhorn'],
+        ['potion.svg', 'Potion'],
+        ['spellbook.svg', 'Spellbook'],
+        ['castle-map.svg', 'Castle map'],
+      ];
+      for (const grid of document.querySelectorAll('[data-sheet]')) {
+        for (const [file, name] of art) {
+          const fig = document.createElement('figure');
+          if (file === 'castle-map.svg') fig.className = 'wide';
+          const img = document.createElement('img');
+          img.src = `../public/art/${file}`;
+          img.alt = '';
+          const cap = document.createElement('figcaption');
+          cap.textContent = name;
+          fig.append(img, cap);
+          grid.append(fig);
+        }
+      }
+    </script>
+  </body>
+</html>
