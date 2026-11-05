@@ -4,7 +4,24 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 21 (themed screens). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 22 (accessibility pass). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05.
+
+**Handoff (after Task 21):** the Task 20 art is on the screens through `src/ui/components/Art.tsx` (decorative,
+`alt=""`, fixed sizes): castle banner and the student's crest on home, a crest per house on Welcome, a still Hoot on
+the Grand Trial, the potion on a drill, the book on the Spellbook, the castle on the map, Hoot on the coach card.
+Pictures sit on a light disc (`--color-art-bg`) so their dark outlines read on the night sky. Controls now use the
+3 : 1 `--color-ink` outline (closes the Task 19 gap); `.primary` fills the main action (Start Grand Trial, Start my
+adventure, the castle's Start). Towers: open ones solid and accent-edged, locked ones dashed (the words say it too).
+The shared CSS has no transitions; the one animation is two stars popping once beside the mascot on results, and
+the reduced-motion rule cuts it to nothing. Small JSX changes were needed for the pictures (the task said "style
+files only"). Tests: `tests/unit/themedScreens.test.tsx` (every name has a file, decorative, each screen's picture,
+celebration on results only), a contrast case for the art backdrop, `tests/e2e/screens.spec.ts` (a timed mock has no
+running animation and no element with an animation or transition, through answering, flagging, hovering, moving
+on and the clock ticking; results celebrate, reduced motion stills it; screenshot baselines of Welcome, home and the
+empty castle map in light and dark, Chromium and WebKit, in `tests/e2e/screens.spec.ts-snapshots/`). Mutation checks
+2/2 red (a button transition; a dark art backdrop). Seen live: home, trial and results in dark. **For the owner
+(Checkpoint E):** the look on a laptop and an iPad. After a deliberate look change, refresh the baselines with
+`docker compose run --rm e2e npx playwright test screens --update-snapshots`.
 
 **Handoff (setup fix, 2026-11-05, outside the task list):** on a Linux clone, `docker compose up` failed twice
 because of Docker Desktop leftovers on the host: a dead `~/.docker/cli-plugins/docker-buildx` link and
@@ -355,7 +372,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 19 · **Files:** `public/art/*.svg`, `docs/ASSETS.md` · **Size:** M
 
 ### Task 21: Themed screens
-- [ ] Theme applied to every screen; Grand Trial stays still (only the timer changes); celebration only on results
+- [x] Theme applied to every screen; Grand Trial stays still (only the timer changes); celebration only on results
 - **Verify:** E2E asserts no running animations during a timed mock; screenshots of static screens
 - **Depends on:** 20 · **Files:** `src/ui/components/*`, `src/ui/screens/*` (style files only) · **Size:** M
 

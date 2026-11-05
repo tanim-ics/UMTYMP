@@ -7,6 +7,7 @@ import type { ProfileHistory } from '../../data/attempts.ts';
 import type { SessionStoreApi } from '../../store/session.ts';
 import { drillLabel } from '../labels.ts';
 import styles from '../screens/GrandTrial.module.css';
+import { Art } from './Art.tsx';
 
 function recordOf(trial: TrialState): SessionRecord {
   return {
@@ -52,7 +53,10 @@ export function CoachCard(props: {
   if (feedback.kind === 'not_enough_data') {
     return (
       <section className={styles.quantity} aria-label="Professor Hoot" data-testid="coach.card">
-        <h2>Professor Hoot</h2>
+        <h2 className={styles.titled}>
+          <Art name="hoot" testId="coach.art" />
+          Professor Hoot
+        </h2>
         <p data-testid="coach.not-enough">
           Professor Hoot needs at least {feedback.neededPerTopic} answers in one topic to coach you.
           A full Grand Trial gives plenty.
@@ -64,7 +68,10 @@ export function CoachCard(props: {
   const canBrew = buildDrill(bank, { seed: 0, focus: feedback.drill }).items.length > 0;
   return (
     <section className={styles.quantity} aria-label="Professor Hoot" data-testid="coach.card">
-      <h2>Professor Hoot</h2>
+      <h2 className={styles.titled}>
+        <Art name="hoot" testId="coach.art" />
+        Professor Hoot
+      </h2>
       <p data-testid="coach.strength">{feedback.strengthText}</p>
       <p data-testid="coach.bottleneck">{feedback.bottleneckText}</p>
       <p>

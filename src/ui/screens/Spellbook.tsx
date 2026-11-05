@@ -12,6 +12,7 @@ import {
 } from '../../core/questions/vocabulary.ts';
 import type { SessionStoreApi } from '../../store/session.ts';
 import { levelLabel, tagLabel, trapLabel } from '../labels.ts';
+import { Art } from '../components/Art.tsx';
 import styles from './GrandTrial.module.css';
 
 const DEFAULT_LENGTH = '10';
@@ -53,7 +54,10 @@ export function Spellbook(props: {
 
   return (
     <main className={styles.screen} aria-label="Spellbook">
-      <h1>Spellbook practice</h1>
+      <h1 className={styles.titled}>
+        <Art name="spellbook" size="medium" testId="spellbook.art" />
+        Spellbook practice
+      </h1>
       <p>Pick what to practise. Leave a group empty to include all of it.</p>
 
       <fieldset>

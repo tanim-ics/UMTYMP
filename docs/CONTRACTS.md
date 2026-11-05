@@ -388,6 +388,7 @@ towers(history) → { id, name, unlocked, evidence, howTo }[]                   
 | `--color-on-accent` | Text on an accent fill | ≥ 4.5 : 1 on `--color-accent` |
 | `--color-accent`, `--color-ink` | Focus rings, chosen borders, control outlines | ≥ 3 : 1 on either background |
 | `--color-border` | Decorative card edges only (low contrast on purpose) | — |
+| `--color-art-bg` | The light disc behind every picture | art outline `#2b2238` ≥ 3 : 1 on it |
 | `--font-display` (Grenze), `--font-body` (Nunito) | Headings, timer, letters / everything else | — |
 | `--motion-fast` 150 ms, `--motion-base` 250 ms | CSS animation lengths; 0 ms under reduced motion | — |
 
@@ -395,4 +396,13 @@ Dark mode (`prefers-color-scheme: dark`) redefines every colour token. Reduced m
 stops all CSS animations and transitions. `motionMs(speed)` returns `MOTION_MS[speed]`, or 0 when
 `prefersReducedMotion()` is true; that function also returns true when the browser has no `matchMedia`. Use
 `motionMs` for script-driven motion, and never on a timed test screen.
+
+**Screens (Task 21).** All screens share `src/ui/screens/GrandTrial.module.css`. Controls (`.button`, inputs) have a
+`--color-ink` outline; `.primary` is the one filled main action per screen. The file has no transitions at all, so
+nothing on a timed test can move; its only animation is the results celebration (`.star`, 380 ms, once).
+`<Art name size testId>` (`src/ui/components/Art.tsx`) shows a picture from `public/art/`: `name` is one of `ART`
+(a missing file is a type error and a unit-test failure), `size` is `icon` 48 px, `medium` 96 px or `banner`
+480 × 300 (scales down), and the picture is always decorative (`alt=""`), so the words beside it must say the same.
+Where: home (castle banner, the student's crest), Welcome (a crest per house), Grand Trial (a still Hoot), potion
+drill (potion), Spellbook (book), castle map (banner), results (celebration), coach card (Hoot).
 

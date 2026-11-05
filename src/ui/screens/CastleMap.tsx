@@ -8,6 +8,7 @@ import {
 } from '../../core/analytics/progress.ts';
 import type { ProfileHistory } from '../../data/attempts.ts';
 import { levelLabel, tagLabel } from '../labels.ts';
+import { Art } from '../components/Art.tsx';
 import styles from './GrandTrial.module.css';
 
 const NO_CLAIM = '—';
@@ -42,6 +43,7 @@ export function CastleMap(props: {
     return (
       <main className={styles.screen} aria-label="Castle map">
         <h1>Castle map</h1>
+        <Art name="castle-map" size="banner" testId="castle.art" />
         <p role="status">Opening the castle map…</p>
       </main>
     );
@@ -54,6 +56,7 @@ export function CastleMap(props: {
   return (
     <main className={styles.screen} aria-label="Castle map">
       <h1>Castle map</h1>
+      <Art name="castle-map" size="banner" testId="castle.art" />
       {empty && (
         <section className={styles.card} data-testid="castle.empty">
           <h2>Your castle is waiting</h2>
@@ -63,7 +66,7 @@ export function CastleMap(props: {
           </p>
           <button
             type="button"
-            className={styles.button}
+            className={styles.primary}
             onClick={onStart}
             data-testid="castle.start"
           >
@@ -77,7 +80,12 @@ export function CastleMap(props: {
         <p>Towers open from good habits and from getting better. A break never closes one.</p>
         <ul className={styles.reviewList}>
           {castle.map((t) => (
-            <li key={t.id} data-testid="castle.tower" data-unlocked={t.unlocked}>
+            <li
+              key={t.id}
+              className={t.unlocked ? styles.towerOpen : styles.tower}
+              data-testid="castle.tower"
+              data-unlocked={t.unlocked}
+            >
               <strong>
                 {t.name}: {t.unlocked ? 'open' : 'locked'}
               </strong>

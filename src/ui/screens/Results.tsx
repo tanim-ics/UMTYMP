@@ -5,6 +5,7 @@ import type { QuestionItem } from '../../core/questions/schema.ts';
 import type { TrialState } from '../../core/session/trial.ts';
 import type { ProfileHistory } from '../../data/attempts.ts';
 import type { SessionStoreApi } from '../../store/session.ts';
+import { Art } from '../components/Art.tsx';
 import { CoachCard } from '../components/CoachCard.tsx';
 import styles from './GrandTrial.module.css';
 import { Review } from './Review.tsx';
@@ -29,6 +30,12 @@ export function Results(props: {
   const s = resultSummary(trial.events);
   return (
     <main className={`${styles.screen} ${styles.result}`} aria-label="Results">
+      {/* The only celebration in the app: results come after the clock has stopped (docs/SPEC.md, calm tests). */}
+      <div className={styles.celebrate} aria-hidden="true" data-testid="result.celebrate">
+        <span className={styles.star} />
+        <Art name={trial.mode === 'drill' ? 'potion' : 'hoot'} size="medium" testId="result.art" />
+        <span className={styles.star} />
+      </div>
       <h1>{heading(trial)}</h1>
       <p data-testid="result.score">
         {s.correct} of {s.total} correct

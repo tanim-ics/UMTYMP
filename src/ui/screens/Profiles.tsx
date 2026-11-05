@@ -8,6 +8,7 @@ import {
   validateProfile,
   type ProfileRepo,
 } from '../../data/profiles.ts';
+import { Art } from '../components/Art.tsx';
 import styles from './GrandTrial.module.css';
 
 const houseName = (id: string | null) => HOUSES.find((h) => h.id === id)?.name ?? 'No house';
@@ -242,6 +243,7 @@ function ProfileForm(props: {
                 onChange={() => setHouse(h.id)}
                 data-testid={`profiles.house-${h.id}`}
               />
+              <Art name={`crest-${h.id}`} testId={`profiles.crest-${h.id}`} />
               {h.name} ({h.mascot})
             </label>
           ))}
@@ -280,7 +282,7 @@ function ProfileForm(props: {
               Cancel
             </button>
           )}
-          <button type="submit" className={styles.button} data-testid="profiles.save">
+          <button type="submit" className={styles.primary} data-testid="profiles.save">
             {first ? 'Start my adventure' : 'Add student'}
           </button>
         </div>

@@ -20,6 +20,8 @@
   --color-border: #d9c9a8;
   /* Outlines of controls and the cartoon "thick line"; 3 : 1 against both backgrounds. */
   --color-ink: #7a6548;
+  /* A light disc behind the pictures, so their dark outlines read on both palettes (Task 21). */
+  --color-art-bg: #fffaf0;
   --color-right: #1d6b3a;
   --color-wrong: #a3262d;
 
@@ -44,6 +46,7 @@
     --color-on-accent: #1a1440;
     --color-border: #3b3470;
     --color-ink: #8f84c2;
+    --color-art-bg: #e9dfc8;
     --color-right: #86e0a3;
     --color-wrong: #ffa3aa;
   }

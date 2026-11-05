@@ -5,6 +5,7 @@ import type { TrialState } from '../../core/session/trial.ts';
 import { elapsedMs, remainingMs } from '../../core/timer/session.ts';
 import type { ProfileHistory } from '../../data/attempts.ts';
 import type { SessionStoreApi } from '../../store/session.ts';
+import { Art } from '../components/Art.tsx';
 import { AnswerButtons, NavButtons, QuestionView } from '../components/Question.tsx';
 import { formatTime, useTrialControls } from '../components/useTrialControls.ts';
 import styles from './GrandTrial.module.css';
@@ -49,7 +50,8 @@ function MockScreen({ trial, store }: { trial: TrialState; store: SessionStoreAp
       aria-label={trial.mode === 'mock' ? 'Grand Trial' : 'Spellbook practice'}
     >
       <div className={styles.bar}>
-        <span data-testid="trial.position">
+        <span data-testid="trial.position" className={styles.player}>
+          <Art name="hoot" testId="trial.mascot" />
           Question {trial.index + 1} of {trial.items.length}
         </span>
         <span

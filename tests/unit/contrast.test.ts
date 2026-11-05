@@ -52,6 +52,9 @@ const UI_PAIRS: readonly [string, string][] = [
   ['color-ink', 'color-surface'],
 ];
 
+/** Every SVG in public/art/ is outlined in this colour (docs/ASSETS.md). */
+const ART_OUTLINE = '#2b2238';
+
 describe('theme contrast', () => {
   it('reads both palettes from tokens.css', () => {
     expect(Object.keys(light).length).toBeGreaterThanOrEqual(10);
@@ -71,6 +74,12 @@ describe('theme contrast', () => {
 
     it.each(UI_PAIRS)(`${name}: %s against %s is at least 3 : 1`, (fg, bg) => {
       expect(ratio(palette[fg] as string, palette[bg] as string)).toBeGreaterThanOrEqual(3);
+    });
+
+    // Task 21: pictures sit on a light disc in both palettes, because their dark outlines vanish on the night sky.
+    it(`${name}: the art's outline (${ART_OUTLINE}) on color-art-bg is at least 3 : 1`, () => {
+      expect(palette['color-art-bg'], 'color-art-bg').toBeDefined();
+      expect(ratio(ART_OUTLINE, palette['color-art-bg'] as string)).toBeGreaterThanOrEqual(3);
     });
   }
 

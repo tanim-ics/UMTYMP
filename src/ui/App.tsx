@@ -14,6 +14,7 @@ import { CastleMap } from './screens/CastleMap.tsx';
 import { Profiles } from './screens/Profiles.tsx';
 import { Settings } from './screens/Settings.tsx';
 import { Spellbook } from './screens/Spellbook.tsx';
+import { Art } from './components/Art.tsx';
 
 interface AppProps {
   bank: readonly QuestionItem[];
@@ -208,8 +209,10 @@ function Home({
   return (
     <main className={styles.screen} aria-label="Home">
       <h1>Comparia Academy</h1>
+      <Art name="castle-map" size="banner" testId="home.art" />
       {player !== undefined && (
-        <p data-testid="home.player">
+        <p data-testid="home.player" className={styles.player}>
+          {player.house !== null && <Art name={`crest-${player.house}`} testId="home.crest" />}
           Playing as {player.displayName} · {HOUSES.find((h) => h.id === player.house)?.name}{' '}
           <button
             type="button"
@@ -235,7 +238,7 @@ function Home({
       )}
       <button
         type="button"
-        className={styles.button}
+        className={styles.primary}
         onClick={start}
         disabled={bank.length === 0}
         data-testid="home.start"

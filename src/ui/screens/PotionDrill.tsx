@@ -4,6 +4,7 @@ import type { TrialState } from '../../core/session/trial.ts';
 import { elapsedMs } from '../../core/timer/session.ts';
 import type { SessionStoreApi } from '../../store/session.ts';
 import { ANSWER_WORDS } from '../answers.ts';
+import { Art } from '../components/Art.tsx';
 import { AnswerButtons, NavButtons, QuestionView } from '../components/Question.tsx';
 import { formatTime, useTrialControls } from '../components/useTrialControls.ts';
 import styles from './GrandTrial.module.css';
@@ -27,7 +28,8 @@ export function PotionDrill({ trial, store }: { trial: TrialState; store: Sessio
   return (
     <main className={styles.screen} aria-label="Potion practice">
       <div className={styles.bar}>
-        <span data-testid="drill.position">
+        <span data-testid="drill.position" className={styles.player}>
+          <Art name="potion" testId="drill.art" />
           Potion question {trial.index + 1} of {trial.items.length}
         </span>
         <span

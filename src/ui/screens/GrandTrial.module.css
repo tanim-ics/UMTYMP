@@ -1,4 +1,5 @@
-/* Plain version (task 9): calm and still. Only the timer text changes while a trial runs; no animation. */
+/* Calm and still: no transitions anywhere, so nothing on a timed test can move (CLAUDE.md, calm test screen).
+   The one animation in the app is the results celebration at the bottom of this file. */
 .screen {
   max-width: 880px;
   margin: 0 auto;
@@ -34,8 +35,9 @@
 
 .quantity {
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  border: 3px solid var(--color-border);
   border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--color-border);
   padding: calc(var(--space) * 1.5);
   text-align: center;
   font-size: 1.5rem;
@@ -57,12 +59,29 @@
   min-height: var(--tap-target);
   min-width: var(--tap-target);
   padding: 0 var(--space);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-ink);
   border-radius: var(--radius);
   background: var(--color-surface);
   color: var(--color-text);
   font: inherit;
   cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+/* The main action on a screen: filled, so it is the first thing a student sees. */
+.primary {
+  composes: button;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 700;
+}
+
+.primary:hover:not(:disabled) {
+  border-color: var(--color-text);
 }
 
 .button:disabled {
@@ -168,7 +187,7 @@ legend {
   min-height: var(--tap-target);
   font: inherit;
   padding: 0 8px;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-ink);
   border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text);
@@ -178,7 +197,7 @@ legend {
   min-height: var(--tap-target);
   font: inherit;
   padding: 0 12px;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-ink);
   border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text);
@@ -245,4 +264,90 @@ legend {
 .table td {
   padding: 0.4rem 0.75rem;
   border-bottom: 1px solid currentcolor;
+}
+
+/* Pictures (Task 20 art) sit on a light disc so their dark outlines read on the night sky too. */
+.art {
+  flex-shrink: 0;
+  vertical-align: middle;
+  box-sizing: border-box;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--color-art-bg);
+}
+
+/* The castle carries its own parchment frame; it scales down on a phone. */
+.artBanner {
+  padding: 0;
+  background: none;
+  border-radius: var(--radius);
+  justify-self: center;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+}
+
+/* A picture beside a line of text: home's player line, the trial's position, a titled heading. */
+.player,
+.titled {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.titled {
+  justify-content: center;
+}
+
+.tower,
+.towerOpen {
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 12px var(--space);
+}
+
+/* An open tower is solid and accent-edged; "open" / "locked" in the text says it too. */
+.towerOpen {
+  border: 3px solid var(--color-accent);
+}
+
+/* The celebration: two stars pop once beside the mascot. Results only, after the clock has stopped; the
+   reduced-motion rule in tokens.css cuts it to nothing. */
+.celebrate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space);
+}
+
+.star {
+  width: 28px;
+  height: 28px;
+  background: #f2c14e;
+  clip-path: polygon(
+    50% 0,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  animation: pop 380ms ease-out both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.4) rotate(-20deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
 }
