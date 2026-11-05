@@ -4,7 +4,25 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 20 (original art). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 21 (themed screens). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05.
+
+**Handoff (setup fix, 2026-11-05, outside the task list):** on a Linux clone, `docker compose up` failed twice
+because of Docker Desktop leftovers on the host: a dead `~/.docker/cli-plugins/docker-buildx` link and
+`"credsStore": "desktop"` with no `docker-credential-desktop`. Neither can be fixed from inside the repo, so
+`tools/doctor.sh` (POSIX sh, runs on macOS, Linux, WSL and Git Bash) checks docker, the daemon, Compose v2, buildx and
+the credential helper, prints the fix for each OS, and with `--fix` removes the dead link and the dead `credsStore`
+(keeps `config.json.bak`). Tests `tests/unit/doctor.test.ts` (11, a fake docker and a throwaway HOME; 9 failed before
+the script existed). The JSON repair was also checked by hand with macOS's BSD `sed`. New `README.md` covers running with Docker
+and these errors. Not tested on a real Linux host: the owner's machine is the live check.
+
+**Handoff (after Task 20):** eight original SVGs in `public/art/` (served at `/art/…`): `hoot.svg`, four
+`crest-*.svg`, `castle-map.svg`, `potion.svg`, `spellbook.svg`. Cartoon style: thick #2b2238 outlines, rounded
+shapes, theme colours. Crests are round medallions (not shields); house colours avoid the franchise pairs. Each logged
+in `docs/ASSETS.md`. Test `tests/unit/art.test.ts` (every planned file present, a title, no script, links, embedded
+images or lettering, under 12 KB, a row in ASSETS). Review sheet `docs/art-sheet.html` (not shipped). Seen live: the
+first dragon read as a cow, so it was redrawn with fins, swept horns and a fang. **Owner to review:** the art sheet.
+**Known look:** on the night-sky background the dark outlines blend in; the shapes still read. Task 21 can sit art on a
+surface card in dark mode if that's wanted. Not used by any screen yet (Task 21).
 
 **Handoff (after Task 19):** theme tokens in `src/ui/theme/tokens.css`: parchment (light) and night sky (dark),
 following the device (owner choice: no manual pick for now). New colour tokens `--color-on-accent`, `--color-ink`
@@ -332,7 +350,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** D · **Files:** `src/ui/theme/tokens.css`, `src/ui/theme/motion.ts`, `tests/unit/contrast.test.ts`, `docs/ASSETS.md` · **Size:** M
 
 ### Task 20: Original art
-- [ ] SVGs: Professor Hoot, 4 house crests, castle map with towers, potion bottle, spellbook; all original, logged in `docs/ASSETS.md`
+- [x] SVGs: Professor Hoot, 4 house crests, castle map with towers, potion bottle, spellbook; all original, logged in `docs/ASSETS.md`
 - **Verify:** owner reviews the art sheet; no franchise look-alikes
 - **Depends on:** 19 · **Files:** `public/art/*.svg`, `docs/ASSETS.md` · **Size:** M
 
