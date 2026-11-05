@@ -4,7 +4,19 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 25 (CI and franchise-name check), then the question bank C1–C8. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** the question bank C1–C8 by difficulty level (owner's plan), then Checkpoint F. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (after Task 25):** `tools/check-names.ts` (`npm run names`, in `check:fast`) scans `src`, `content`,
+`public`, `index.html` and `vite.config.ts` for the names in `tools/franchise-names.txt` (houses, places,
+characters, spells, things, the look-alike font), as whole words through camelCase, kebab-case, snake_case,
+apostrophes and plurals; ordinary words our theme uses (potter, potion, owl, hat, castle) aren't listed. Docs aren't
+scanned (they name the franchise to forbid it). A planted `'Gryffindor'` in `src/` failed it with file and line.
+`tools/image-size.sh` (host, POSIX sh; asks Compose for the image name, which follows the folder name): the image is
+23.7 MB of 50. Owner chose CI = GitHub Actions (ADR 0002): `.github/workflows/ci.yml` runs `check:full`, the browser
+suite, Lighthouse on the nginx image and the image size on every push and pull request to `main`; it marks `/app` as
+a safe git folder inside the container (Linux runners) and fetches full history for the floor guard. Tests:
+`checkNames.test.ts` (19), `imageSize.test.ts` (4). **Not yet seen:** a real CI run (it starts with the push). Risk:
+the timing budget on shared runner CPUs.
 
 **Handoff (after Task 24):** budgets from `docs/CONSTRAINTS.md` (Lighthouse performance ≥ 95: the task line said 90, the
 owner raised it). **Before → after:** Lighthouse (mobile, slow 4G, 4× CPU, on the nginx image) performance 69 → 98–99,
@@ -462,7 +474,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 23 · **Files:** `docker/nginx.conf`, `tests/e2e/perf.spec.ts` · **Size:** S
 
 ### Task 25: CI and franchise-name check
-- [ ] Word-list check fails on Harry Potter names in code, content and art; CI runs the full check (if approved)
+- [x] Word-list check fails on Harry Potter names in code, content and art; CI runs the full check (if approved)
 - **Verify:** check fails on a planted word; CI run green
 - **Depends on:** 2 · **Files:** `tools/check-names.ts`, `.github/workflows/ci.yml` · **Size:** S
 

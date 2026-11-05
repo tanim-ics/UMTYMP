@@ -1,0 +1,53 @@
+# Runs the same Docker checks as on a laptop (CLAUDE.md §6) on every push and pull request to main (Task 25,
+# owner's choice 2026-11-05). Node never runs on the runner itself, only in the compose services.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The floor guard compares a pull request with main, so it needs the history.
+          fetch-depth: 0
+
+      - name: Build the images
+        run: docker compose build check e2e web
+
+      # The checkout belongs to the runner's user and the containers run as root, so git inside them would refuse
+      # the folder ("dubious ownership") and the floor guard couldn't diff.
+      - name: Full check (types, lint, format, floor, names, secrets, unit tests, verifier, audits)
+        run: docker compose run --rm check sh -c 'git config --global --add safe.directory /app && npm run check:full'
+
+      - name: Browser tests (Chromium and WebKit, axe, offline, headers, timing)
+        run: docker compose run --rm e2e
+
+      - name: Lighthouse on the production image
+        run: |
+          docker compose up -d web
+          docker compose run --rm e2e npm run check:lighthouse
+
+      - name: Production image size
+        run: sh tools/image-size.sh
+
+      - name: Keep the Playwright traces of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7

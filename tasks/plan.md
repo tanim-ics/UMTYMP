@@ -62,6 +62,6 @@ offline and performance. Writing questions runs alongside as its own track.
 1. **Git:** may I run `git init` in this folder at task 1? (Needed for checkpoint commits.)
 2. **`zod`** for validating questions and imports — OK to add? (Task 4.)
 3. **Quality bar:** run `/constraints` at task 3 with a short interview, or accept the spec's numbers as the bar?
-4. **CI:** GitHub Actions running the compose checks, or no CI for now? (Task 25.)
+4. **CI:** GitHub Actions running the compose checks, or no CI for now? (Task 25.) **Answered 2026-11-05: GitHub Actions (ADR 0002).**
 5. Spec open questions 1–6 still use their defaults (name *Comparia Academy*, houses, 400 items, text-only first,
    no sound, local hosting). Say if any changes.

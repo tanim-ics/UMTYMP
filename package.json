@@ -17,11 +17,12 @@
     "check:a11y": "playwright test --grep @a11y",
     "check:lighthouse": "node tools/lighthouse.mjs",
     "floor": "node tools/floor-guard.mjs",
+    "names": "node --experimental-strip-types --no-warnings tools/check-names.ts",
     "secrets": "gitleaks dir . --redact --no-banner --config .gitleaks.toml",
     "audit:shipped": "npm audit --omit=dev --audit-level=moderate",
     "audit:dev": "npm audit --audit-level=high && node tools/audit-ratchet.mjs 11",
     "audit": "npm run audit:shipped && npm run audit:dev",
-    "check:fast": "npm run typecheck && npm run lint && npm run format:check && npm run floor && npm run secrets",
+    "check:fast": "npm run typecheck && npm run lint && npm run format:check && npm run floor && npm run names && npm run secrets",
     "check:task": "npm run check:fast && npm run test && npm run verify",
     "check:full": "npm run check:task && npm run audit"
   },

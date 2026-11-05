@@ -37,6 +37,8 @@ The production build runs on http://localhost:8080: `docker compose up --build w
 first visit. Installing and offline need `https` or `localhost`: opened from another device at a plain-IP address
 (`http://192.168.…`), the app runs but won't install or work offline.
 
+Every push and pull request to `main` runs all of these on GitHub Actions (`.github/workflows/ci.yml`).
+
 Tests: `docker compose run --rm check npm run check:task` (unit tests and checks) and `docker compose run --rm e2e`
 (browser tests). Lighthouse on the production image: `docker compose up -d --build web`, then
 `docker compose run --rm e2e npm run check:lighthouse`.

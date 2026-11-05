@@ -1,0 +1,83 @@
+# Names from the Harry Potter books and films that must never appear in what ships (CLAUDE.md §7, docs/SPEC.md).
+# tools/check-names.ts reads this file and never scans it. One name per line, lowercase; a multi-word name matches with
+# spaces, hyphens or underscores between the words. A trailing "s" (plural) also matches.
+# Only distinctive names are listed: ordinary words that happen to appear in the books (potter, potion, owl, hat,
+# wand, castle) are not, because our own theme uses them.
+
+# Franchise and places
+harry potter
+hogwarts
+hogsmeade
+diagon alley
+knockturn alley
+gringotts
+azkaban
+privet drive
+durmstrang
+beauxbatons
+ministry of magic
+platform nine and three quarters
+
+# Houses
+gryffindor
+slytherin
+hufflepuff
+ravenclaw
+sorting hat
+
+# Characters
+dumbledore
+voldemort
+hagrid
+hermione
+weasley
+snape
+malfoy
+mcgonagall
+sirius black
+bellatrix
+grindelwald
+pettigrew
+ollivander
+hedwig
+dobby
+fawkes
+crookshanks
+he who must not be named
+
+# Things and creatures
+muggle
+mudblood
+quidditch
+quaffle
+bludger
+golden snitch
+horcrux
+dementor
+patronus
+butterbeer
+pensieve
+polyjuice
+deathly hallows
+death eater
+marauders map
+floo powder
+triwizard
+wizengamot
+elder wand
+invisibility cloak
+
+# Spells
+expelliarmus
+wingardium leviosa
+alohomora
+avada kedavra
+expecto patronum
+obliviate
+crucio
+imperio
+accio
+lumos
+
+# Look-alike fonts
+harryp
