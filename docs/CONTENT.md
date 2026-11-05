@@ -10,7 +10,7 @@ decision: propose it to the owner, then add it here and in `vocabulary.ts` toget
 2. **Reasoning, not computing.** A strong grade 5–7 student finds the answer in their head in seconds. If the only
    route is arithmetic, rewrite it.
 3. **A shortcut** in `shortcut_explanation`: at most 3 sentences, the fast route a student can use next time.
-4. **A proof** in `full_explanation`: why the key is right for *every* allowed value, not just the ones tried.
+4. **A proof** in `full_explanation`: why the answer is right for *every* allowed value, not just the ones tried.
 5. **A machine check.** `expr_a`/`expr_b` in `mathjs` syntax and a `domain` that says exactly what `condition` says
    (`x \neq 0` ↔ `"real, x != 0"`). Items the verifier can't evaluate (figures) need `reviewed_by`.
 6. **`D` items** have two `witnesses` with different relations, chosen to show the student the two cases.
@@ -20,6 +20,24 @@ decision: propose it to the owner, then add it here and in `vocabulary.ts` toget
    `condition` use only: numbers, single letters, `+ - = < > : ,`, `( )`, `| |`, `^`, `{ }`, `\frac`, `\sqrt`,
    `\times`, `\cdot`, `\div`, `\neq`, `\le(q)`, `\ge(q)`, `\%` and `\text{…}`. A unit test fails on anything else;
    add it to the reader first.
+
+## Writing for a student (owner, 2026-11-05)
+
+Shortcuts and explanations are read by a 10–13-year-old, often right after a wrong answer. Write like the best
+teacher they have ever had: kind, plain and concrete.
+
+- **Short sentences, everyday words.** At most 25 words a sentence. Say "two whole numbers next to each other", not
+  "consecutive integers"; "you can't tell", not "the relation depends on x".
+- **Real numbers first.** Show a quick example (`Try x = 2 …`) before the general reason.
+- **Say why, not just what.** Every step names the reason in a few words ("because 5 × 5 = 25").
+- **The shortcut** is the move to make next time, in at most 3 sentences: "Try ½", "Do the power before the minus".
+- **The explanation** walks through it step by step and **ends with the answer in the app's words**:
+  "So the answer is B: Quantity B is greater." (`ANSWER_WORDS` in `src/ui/answers.ts`). Students see "answer",
+  never "key".
+- **Never blame.** Name the habit ("Watch out: …"), never the student's mistake.
+
+`tests/unit/explanations.test.ts` checks the sentence length, a list of grown-up words and the closing sentence. A
+machine can't judge clarity, so after each batch every shortcut and explanation is also re-read word by word.
 
 **Bank balance.** Across a batch, keep each answer near 25% so guessing one letter never pays. Every tag and trap
 should appear at ≥ 3 levels (`docs/SPEC.md`).

@@ -11,8 +11,8 @@
     "trap": null,
     "difficulty": 1,
     "target_seconds": 8,
-    "shortcut_explanation": "5/8 is 0.625, a little more than 0.6.",
-    "full_explanation": "5 ÷ 8 = 0.625 and 0.625 > 0.600, so Quantity A is greater."
+    "shortcut_explanation": "Turn 5/8 into a decimal: 5 ÷ 8 = 0.625. That is a little more than 0.6.",
+    "full_explanation": "5/8 means 5 ÷ 8, which is 0.625. Write 0.6 as 0.600 and compare: 625 thousandths is more than 600 thousandths. So the answer is A: Quantity A is greater."
   },
   {
     "id": "pct-0001",
@@ -26,8 +26,8 @@
     "trap": null,
     "difficulty": 1,
     "target_seconds": 10,
-    "shortcut_explanation": "a% of b always equals b% of a. Both are 20 × 45 ÷ 100.",
-    "full_explanation": "20% of 45 = 20 × 45 / 100 and 45% of 20 = 45 × 20 / 100. Multiplication does not care about order, so both equal 9."
+    "shortcut_explanation": "You can swap the numbers in “percent of”. 20% of 45 is the same as 45% of 20.",
+    "full_explanation": "20% of 45 is a fifth of 45, which is 9. 45% of 20 is 0.45 × 20, which is also 9. Both are 9. So the answer is C: the two quantities are equal."
   },
   {
     "id": "exp-0003",
@@ -41,8 +41,8 @@
     "trap": null,
     "difficulty": 1,
     "target_seconds": 8,
-    "shortcut_explanation": "2³ = 8 and 3² = 9, so B wins by one.",
-    "full_explanation": "2³ = 2 × 2 × 2 = 8 and 3² = 3 × 3 = 9. Since 8 < 9, Quantity B is greater."
+    "shortcut_explanation": "2³ is 2 × 2 × 2 = 8. 3² is 3 × 3 = 9.",
+    "full_explanation": "2³ means three 2s multiplied together: 8. 3² means two 3s multiplied together: 9. 9 is more than 8. So the answer is B: Quantity B is greater."
   },
   {
     "id": "avg-0001",
@@ -56,8 +56,8 @@
     "trap": null,
     "difficulty": 1,
     "target_seconds": 10,
-    "shortcut_explanation": "The 10 is far above 5 and the 3 is only a little below, so the average is pulled above 5.",
-    "full_explanation": "The sum is 18 and 18 ÷ 3 = 6. Since 6 > 5, Quantity A is greater."
+    "shortcut_explanation": "The 10 is far above 5, and the 3 is only a little below it. So the average gets pulled above 5.",
+    "full_explanation": "Add the numbers: 3 + 5 + 10 = 18. Share 18 equally between 3 numbers: 18 ÷ 3 = 6. 6 is more than 5. So the answer is A: Quantity A is greater."
   },
   {
     "id": "exp-0001",
@@ -71,8 +71,8 @@
     "trap": "order_of_operations",
     "difficulty": 2,
     "target_seconds": 10,
-    "shortcut_explanation": "Exponents before the minus sign. A is +16 and B is −16.",
-    "full_explanation": "In (−2)⁴ the brackets make −2 the base, and an even power of a negative is positive: 16. In −2⁴ the exponent is done first, 2⁴ = 16, and then the minus sign makes it −16. 16 > −16."
+    "shortcut_explanation": "Do the power before the minus sign. −2⁴ means −(2⁴) = −16, but (−2)⁴ = 16.",
+    "full_explanation": "In (−2)⁴ the brackets say: multiply −2 by itself 4 times, which gives 16. In −2⁴ there are no brackets, so you work out 2⁴ = 16 first. Then the minus sign goes in front: −16. 16 is more than −16. So the answer is A: Quantity A is greater."
   },
   {
     "id": "root-0001",
@@ -86,8 +86,8 @@
     "trap": "principal_root",
     "difficulty": 2,
     "target_seconds": 8,
-    "shortcut_explanation": "The √ sign means the non-negative root, so √25 is exactly 5, not ±5.",
-    "full_explanation": "Both 5 and −5 square to 25, but the symbol √25 names only the non-negative one, 5. So the quantities are equal."
+    "shortcut_explanation": "The √ sign always means the positive root. √25 is 5, not −5.",
+    "full_explanation": "5 × 5 = 25, and (−5) × (−5) = 25 too. But the √ sign always picks the positive one, so √25 = 5. So the answer is C: the two quantities are equal."
   },
   {
     "id": "arith-0001",
@@ -101,8 +101,8 @@
     "trap": null,
     "difficulty": 2,
     "target_seconds": 15,
-    "shortcut_explanation": "49 × 51 is (50 − 1)(50 + 1), which is 50 × 50 minus 1.",
-    "full_explanation": "(50 − 1)(50 + 1) = 50² − 1² = 2500 − 1 = 2499, and 2499 < 2500. Two numbers with the same sum have the largest product when they are equal."
+    "shortcut_explanation": "Move one number down by 1 and the other up by 1, and the answer gets a little smaller. 49 × 51 is 1 less than 50 × 50.",
+    "full_explanation": "49 × 51 is 49 × 50 plus one more 49: 2450 + 49 = 2499. 50 × 50 = 2500. 2499 is 1 less than 2500. So the answer is B: Quantity B is greater."
   },
   {
     "id": "ineq-0001",
@@ -111,18 +111,26 @@
     "condition": null,
     "expr_a": "x",
     "expr_b": "2x",
-    "domain": { "x": "real" },
+    "domain": {
+      "x": "real"
+    },
     "correct_answer": "D",
     "tags": ["inequalities", "expressions"],
     "trap": "negative_numbers",
     "difficulty": 2,
     "target_seconds": 12,
     "witnesses": [
-      { "x": 1, "relation": "B" },
-      { "x": -1, "relation": "A" }
+      {
+        "x": 1,
+        "relation": "B"
+      },
+      {
+        "x": -1,
+        "relation": "A"
+      }
     ],
-    "shortcut_explanation": "Test a positive and a negative. x = 1 makes B bigger, x = −1 makes A bigger.",
-    "full_explanation": "2x − x = x. When x > 0, 2x is greater; when x < 0, x is greater; when x = 0 they are equal. The relation depends on x."
+    "shortcut_explanation": "Try a positive number and a negative one. x = 1 makes 2x bigger, but x = −1 makes x bigger.",
+    "full_explanation": "If x = 1, then 2x = 2, so B is bigger. If x = −1, then 2x = −2, so A is bigger. Different numbers give different winners. So the answer is D: not enough information."
   },
   {
     "id": "exp-0002",
@@ -131,18 +139,26 @@
     "condition": "x > 0",
     "expr_a": "x^3",
     "expr_b": "x^2",
-    "domain": { "x": "real, x > 0" },
+    "domain": {
+      "x": "real, x > 0"
+    },
     "correct_answer": "D",
     "tags": ["exponents", "inequalities"],
     "trap": "fraction_0_1",
     "difficulty": 3,
     "target_seconds": 15,
     "witnesses": [
-      { "x": 2, "relation": "A" },
-      { "x": 0.5, "relation": "B" }
+      {
+        "x": 2,
+        "relation": "A"
+      },
+      {
+        "x": 0.5,
+        "relation": "B"
+      }
     ],
-    "shortcut_explanation": "Try x = 2: 8 beats 4. Try x = ½: ⅛ loses to ¼. Two different results, so D.",
-    "full_explanation": "x³ − x² = x²(x − 1). With x > 0, x² is positive, so the sign depends on x − 1: A is greater when x > 1, B when 0 < x < 1, and they are equal at x = 1."
+    "shortcut_explanation": "Try 2, then try ½. With 2, x³ wins (8 against 4). With ½, x² wins (¼ against ⅛).",
+    "full_explanation": "If x = 2: x³ = 8 and x² = 4, so A is bigger. If x = ½: x³ = ⅛ and x² = ¼, so B is bigger. Multiplying by a number below 1 makes things smaller. So the answer is D: not enough information."
   },
   {
     "id": "ratio-0001",
@@ -151,14 +167,16 @@
     "condition": "x : y = 2 : 3 \\text{ and } x > 0",
     "expr_a": "x",
     "expr_b": "3 * x / 2",
-    "domain": { "x": "real, x > 0" },
+    "domain": {
+      "x": "real, x > 0"
+    },
     "correct_answer": "B",
     "tags": ["ratios", "inequalities"],
     "trap": null,
     "difficulty": 3,
     "target_seconds": 12,
-    "shortcut_explanation": "y has 3 parts and x has 2 parts of the same positive size, so y is bigger.",
-    "full_explanation": "x : y = 2 : 3 means y = 3x/2. Since x > 0, 3x/2 − x = x/2 > 0, so y > x."
+    "shortcut_explanation": "x is 2 equal parts and y is 3 equal parts. The parts are positive, so 3 parts are more than 2.",
+    "full_explanation": "If each part is 1, then x = 2 and y = 3. If each part is 10, then x = 20 and y = 30. Whatever the positive part is, y has one part more. So the answer is B: Quantity B is greater."
   },
   {
     "id": "abs-0001",
@@ -167,14 +185,16 @@
     "condition": "x < 0",
     "expr_a": "abs(x)",
     "expr_b": "x",
-    "domain": { "x": "real, x < 0" },
+    "domain": {
+      "x": "real, x < 0"
+    },
     "correct_answer": "A",
     "tags": ["absolute_value", "inequalities"],
     "trap": "absolute_value",
     "difficulty": 3,
     "target_seconds": 10,
-    "shortcut_explanation": "|x| is a distance, so it is never negative. Here x is negative, so |x| wins.",
-    "full_explanation": "For x < 0, |x| = −x, which is positive, while x itself is negative. Every positive number is greater than every negative number."
+    "shortcut_explanation": "|x| is a distance from 0, so it is never negative. Here x itself is negative.",
+    "full_explanation": "Try x = −4: |−4| = 4, and 4 is more than −4. For any negative x, |x| is positive and x is negative. So the answer is A: Quantity A is greater."
   },
   {
     "id": "expr-0001",
@@ -183,14 +203,16 @@
     "condition": null,
     "expr_a": "x * (x + 2)",
     "expr_b": "(x + 1)^2 - 1",
-    "domain": { "x": "real" },
+    "domain": {
+      "x": "real"
+    },
     "correct_answer": "C",
     "tags": ["expressions"],
     "trap": null,
     "difficulty": 3,
     "target_seconds": 18,
-    "shortcut_explanation": "(x + 1)² is x² + 2x + 1, so subtracting 1 leaves x² + 2x. That is exactly x(x + 2).",
-    "full_explanation": "x(x + 2) = x² + 2x and (x + 1)² − 1 = x² + 2x + 1 − 1 = x² + 2x. The two expressions are the same for every x."
+    "shortcut_explanation": "Open the brackets on both sides. Each one becomes x² + 2x.",
+    "full_explanation": "x(x + 2) means x × x plus x × 2, which is x² + 2x. (x + 1)² means (x + 1) × (x + 1) = x² + 2x + 1. Take away 1 and you get x² + 2x. The two sides match for every x. So the answer is C: the two quantities are equal."
   },
   {
     "id": "root-0002",
@@ -199,14 +221,16 @@
     "condition": null,
     "expr_a": "sqrt(x^2)",
     "expr_b": "abs(x)",
-    "domain": { "x": "real" },
+    "domain": {
+      "x": "real"
+    },
     "correct_answer": "C",
     "tags": ["roots", "absolute_value"],
     "trap": "principal_root",
     "difficulty": 4,
     "target_seconds": 15,
-    "shortcut_explanation": "√ gives the non-negative root, so √(x²) undoes the sign as well as the square. That is exactly what |x| does.",
-    "full_explanation": "x² is the same for x and −x, and √ returns the non-negative number with that square. That number is |x|, so √(x²) = |x| for every real x. Test x = −3: √9 = 3 = |−3|."
+    "shortcut_explanation": "Squaring removes the minus sign, and √ gives the positive root. That is exactly what |x| does.",
+    "full_explanation": "Try x = −3: √((−3)²) = √9 = 3, and |−3| = 3. Try x = 3: both sides are 3 again. For any x, √(x²) is the size of x without its sign, which is |x|. So the answer is C: the two quantities are equal."
   },
   {
     "id": "ineq-0002",
@@ -215,18 +239,26 @@
     "condition": "3 < x < 5",
     "expr_a": "x",
     "expr_b": "4",
-    "domain": { "x": "real, 3 < x < 5" },
+    "domain": {
+      "x": "real, 3 < x < 5"
+    },
     "correct_answer": "D",
     "tags": ["inequalities"],
     "trap": "integer_assumption",
     "difficulty": 4,
     "target_seconds": 12,
     "witnesses": [
-      { "x": 4.5, "relation": "A" },
-      { "x": 3.5, "relation": "B" }
+      {
+        "x": 4.5,
+        "relation": "A"
+      },
+      {
+        "x": 3.5,
+        "relation": "B"
+      }
     ],
-    "shortcut_explanation": "Nothing says x is a whole number. x = 4.5 and x = 3.5 both fit, so D.",
-    "full_explanation": "If x had to be an integer it would be 4 and the answer would be C. But x can be any number between 3 and 5: 4.5 > 4 and 3.5 < 4."
+    "shortcut_explanation": "x doesn't have to be a whole number. Try 4.5 and 3.5.",
+    "full_explanation": "If x = 4.5, then x is more than 4. If x = 3.5, then x is less than 4. x could even be exactly 4. So the answer is D: not enough information."
   },
   {
     "id": "ineq-0003",
@@ -235,14 +267,17 @@
     "condition": "a > b",
     "expr_a": "-a",
     "expr_b": "-b",
-    "domain": { "a": "real", "b": "real, b < a" },
+    "domain": {
+      "a": "real",
+      "b": "real, b < a"
+    },
     "correct_answer": "B",
     "tags": ["inequalities"],
     "trap": "negative_numbers",
     "difficulty": 4,
     "target_seconds": 15,
-    "shortcut_explanation": "Multiplying both sides by −1 flips an inequality. a > b becomes −a < −b.",
-    "full_explanation": "From a > b, subtract a + b from both sides: −b > −a. This holds whatever the signs of a and b, so −b is always greater."
+    "shortcut_explanation": "A minus sign in front flips the order. If a is bigger, then −a is smaller.",
+    "full_explanation": "Try a = 5 and b = 2: −a = −5 and −b = −2, and −2 is bigger. On the number line, the minus sign mirrors numbers across 0, so the order flips. So the answer is B: Quantity B is greater."
   },
   {
     "id": "tri-0001",
@@ -251,14 +286,16 @@
     "condition": "\\text{a triangle has sides } 3, 7 \\text{ and } x",
     "expr_a": "x",
     "expr_b": "4",
-    "domain": { "x": "real, 4 < x < 10" },
+    "domain": {
+      "x": "real, 4 < x < 10"
+    },
     "correct_answer": "A",
     "tags": ["geometry", "triangle_inequality"],
     "trap": null,
     "difficulty": 4,
     "target_seconds": 20,
-    "shortcut_explanation": "The two short sides must add up to more than the long side. So 3 + x > 7, which means x > 4.",
-    "full_explanation": "In any triangle each side is less than the sum of the other two. 7 < 3 + x gives x > 4, and x < 3 + 7 gives x < 10. Every possible x is greater than 4."
+    "shortcut_explanation": "The two shorter sides must add up to more than the longest side. So 3 + x is more than 7, which means x is more than 4.",
+    "full_explanation": "Picture sticks of 3 and x trying to meet across a stick of 7. If 3 + x were 7 or less, their ends could not meet. So 3 + x is more than 7, and x is more than 4. So the answer is A: Quantity A is greater."
   },
   {
     "id": "frac-0002",
@@ -267,14 +304,17 @@
     "condition": "x > y > 0",
     "expr_a": "(x + 1) / (y + 1)",
     "expr_b": "x / y",
-    "domain": { "x": "real", "y": "real, 0 < y < x" },
+    "domain": {
+      "x": "real",
+      "y": "real, 0 < y < x"
+    },
     "correct_answer": "B",
     "tags": ["fractions", "inequalities"],
     "trap": null,
     "difficulty": 5,
     "target_seconds": 25,
-    "shortcut_explanation": "x/y is bigger than 1. Adding the same amount to top and bottom pulls a fraction toward 1, so it shrinks. Check x = 2, y = 1: 3/2 is less than 2.",
-    "full_explanation": "Both denominators are positive, so compare by cross-multiplying: (x + 1)y versus x(y + 1), that is xy + y versus xy + x. Since y < x, the left side is smaller, so (x + 1)/(y + 1) < x/y."
+    "shortcut_explanation": "x/y is more than 1. Adding 1 to the top and the bottom pulls a fraction closer to 1.",
+    "full_explanation": "Try x = 4 and y = 2: x/y = 2, and (x + 1)/(y + 1) = 5/3, which is less than 2. Adding the same amount to the top and bottom moves a fraction towards 1. x/y starts above 1, so it comes down. So the answer is B: Quantity B is greater."
   },
   {
     "id": "exp-0004",
@@ -283,18 +323,26 @@
     "condition": "x^2 = 9",
     "expr_a": "x",
     "expr_b": "3",
-    "domain": { "x": "real, x^2 == 9" },
+    "domain": {
+      "x": "real, x^2 == 9"
+    },
     "correct_answer": "D",
     "tags": ["exponents", "roots"],
     "trap": "even_power",
     "difficulty": 5,
     "target_seconds": 15,
     "witnesses": [
-      { "x": 3, "relation": "C" },
-      { "x": -3, "relation": "B" }
+      {
+        "x": 3,
+        "relation": "C"
+      },
+      {
+        "x": -3,
+        "relation": "B"
+      }
     ],
-    "shortcut_explanation": "An even power hides the sign: x could be 3 or −3. One gives equal, the other makes B bigger, so D.",
-    "full_explanation": "x² = 9 has two solutions, x = 3 and x = −3. At x = 3 the quantities are equal; at x = −3, Quantity B is greater. The relation is not fixed."
+    "shortcut_explanation": "Two numbers square to 9: 3 and −3. One makes the quantities equal, the other makes 3 bigger.",
+    "full_explanation": "3 × 3 = 9 and (−3) × (−3) = 9. If x = 3, the two quantities are equal. If x = −3, Quantity B is bigger. Different numbers give different results. So the answer is D: not enough information."
   },
   {
     "id": "num-0001",
@@ -303,14 +351,16 @@
     "condition": "n \\text{ is an odd integer}",
     "expr_a": "(-1)^n",
     "expr_b": "-1",
-    "domain": { "n": "integer, mod(n, 2) == 1" },
+    "domain": {
+      "n": "integer, mod(n, 2) == 1"
+    },
     "correct_answer": "C",
     "tags": ["exponents", "number_theory"],
     "trap": "negative_numbers",
     "difficulty": 5,
     "target_seconds": 15,
-    "shortcut_explanation": "Each pair of −1s multiplies to +1, and an odd count leaves one −1 over. So (−1)ⁿ is −1 every time.",
-    "full_explanation": "Write n = 2k + 1. Then (−1)ⁿ = ((−1)²)ᵏ × (−1) = 1ᵏ × (−1) = −1. This holds for negative odd n too, since (−1)⁻¹ = −1. The quantities are always equal."
+    "shortcut_explanation": "Pair up the −1s: each pair makes +1. With an odd number of them, one −1 is left over.",
+    "full_explanation": "(−1)¹ = −1. (−1)³ = (−1) × (−1) × (−1) = 1 × (−1) = −1. Every pair of −1s makes 1, and the one left over turns it into −1. This works for every odd n. So the answer is C: the two quantities are equal."
   },
   {
     "id": "exp-0005",
@@ -319,13 +369,16 @@
     "condition": "x < y < 0",
     "expr_a": "x^2",
     "expr_b": "y^2",
-    "domain": { "y": "real, y < 0", "x": "real, x < y" },
+    "domain": {
+      "y": "real, y < 0",
+      "x": "real, x < y"
+    },
     "correct_answer": "A",
     "tags": ["exponents", "inequalities"],
     "trap": "even_power",
     "difficulty": 5,
     "target_seconds": 20,
-    "shortcut_explanation": "Both are negative and x is further from 0. Squaring turns distance from 0 into size, so x² wins. Check x = −3, y = −2: 9 beats 4.",
-    "full_explanation": "x < y < 0 means |x| > |y| > 0. Squares of non-negative numbers keep their order, so x² = |x|² > |y|² = y²."
+    "shortcut_explanation": "Both numbers are negative, and x is further from 0. The further from 0, the bigger the square.",
+    "full_explanation": "Try x = −5 and y = −2: x² = 25 and y² = 4. x is further below 0 than y, so its square is bigger. This works for any such pair. So the answer is A: Quantity A is greater."
   }
 ]
