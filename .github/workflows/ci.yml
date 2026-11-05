@@ -20,10 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The floor guard compares a pull request with main, so it needs the history.
           fetch-depth: 0
+          # Nothing here pushes, so the token isn't kept in the checkout.
+          persist-credentials: false
 
       - name: Build the images
         run: docker compose build check e2e web
@@ -46,7 +48,7 @@ jobs:
 
       - name: Keep the Playwright traces of a failed run
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-results
           path: test-results/
