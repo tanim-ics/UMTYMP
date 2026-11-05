@@ -184,7 +184,8 @@ Answer buttons are named by their visible text ("A Quantity A is greater"); `ari
 endReason, answers[{ itemId, status, choice, correct }], hiddenCount }` · `seed(n)` starts a mock with seed `n` ·
 `answer(letter)` · `flush()` resolves once every change so far is saved · `clock.advance(ms)` only with
 `?clock=fake` (the fake clock replaces the real one and the hook
-ticks the store). `loadFixture('all-right' | 'all-wrong' | 'not-enough-data')` shows the results of a
+ticks the store). `coachTexts()` → Hoot's strength and leak sentences for the current student from storage.
+`loadFixture('all-right' | 'all-wrong' | 'not-enough-data')` shows the results of a
 finished sample mock built from the bank (`src/dev/fixtures.ts`); it is saved like a real mock. `?bank=repeat` pads the seed bank 4× under ids like `copy-a-frac-0001`
 (`src/dev/devBank.ts`) so a full 50-item mock runs before the real bank is big enough. 
 
@@ -229,7 +230,7 @@ are always given.
 
 | # | Function | Definition |
 |---|---|---|
-| 1 | `timeMs(e)`, `slowEvents(events)`, `medianTimeBy(events, 'tag' \| 'level')` | `answeredAt − shownAt` for **answered** items only (skips are near-instant and would skew medians); slow = more than 35 s; median per tag/level, null below 5 |
+| 1 | `timeMs(e)`, `slowEvents(events)`, `medianTime(events)`, `medianTimeBy(events, 'tag' \| 'level')` | `answeredAt − shownAt` for **answered** items only (skips are near-instant and would skew medians); slow = more than 35 s; median per tag/level, null below 5 |
 | 2 | `paceMarks(events, { startedAt, endedAt })` | At each 5-min mark up to `endedAt`: answered so far (by `answeredAt`, inclusive) vs `floor(mark / 30 s)`; `behind` when fewer |
 | 3 | `accuracy(events)`, `accuracyBy(events, 'tag' \| 'level')` | correct ÷ **answered**; skipped and unanswered are not attempts. `{ attempted, correct, accuracy }` per group |
 | 4 | `trapSusceptibility(events)`, `trapSusceptibilityByTrap(events)` | Share of D-key items answered A/B/C (the `CLAUDE.md` pattern); per trap: wrong ÷ answered among items carrying it |
@@ -331,3 +332,49 @@ createProfileRepo(db) → { list(), create(input), rename(id, name), remove(id) 
   **Manage students (for parents)**: rename, and delete behind an `alertdialog` that names what is lost.
 - No active-profile memory between visits (no new storage): each visit starts at "Who's playing?", which suits a
   shared family device.
+
+## Export, import and reset (`src/data/transfer.ts`, `src/ui/screens/Settings.tsx`)
+
+File format 1 (JSON, `comparia-<nickname>-<date>.json`):
+
+```ts
+{ app: 'comparia-academy', format: 1, exportedAt: string,
+  profile: { displayName, house, mascotColor },     // the three profile fields, nothing else
+  sessions: SessionRow-without-profileId[],          // an allowlist of fields, so new columns can't leak
+  attempts: AttemptEvent[] }
+exportProfile(db, profileId) · serializeExport(file) · parseExport(text) → { ok, value } | { ok: false, error }
+importProfile(db, file) → ProfileRow · resetAll(db) · createTransfer(db) → { exportText, importText, resetAll }
+```
+
+- **parseExport** refuses: more than 10 MB; not JSON or another app ("not a Comparia Academy file"); a newer format
+  ("update the app"); any unknown field anywhere (zod strict); an invalid profile; a session whose `index`, `flags`
+  or `lastShownAt` doesn't fit its questions; an answer that belongs to no session or to the wrong question. Errors
+  are written for a parent and never echo the file.
+- **importProfile** always adds a **new** student with new profile and session ids, in one transaction, so importing
+  twice or onto a device with data never overwrites or merges anyone's progress.
+- **resetAll** clears profiles, sessions and answers; the app returns to Welcome.
+- Settings & data (for parents) is reached from "Who's playing?" and from the Welcome form (a new device can import
+  before any student exists). Reset sits behind an `alertdialog` ("Export first if you want to keep anything").
+- History reads wait for pending saves (`data.whenSaved`), so a mock finished a moment ago is always listed.
+
+## Castle map (`src/core/analytics/progress.ts`, `src/ui/screens/CastleMap.tsx`)
+
+```ts
+mockTrend(history) → { sessionId, startedAt, endReason, correct, total,
+                       medianMs, trapRate, falseDRate, staminaDropPoints }[]   // finished mocks, oldest first
+progressTable(history) → { tags: ProgressRow<Tag>[], levels: ProgressRow<Level>[] }
+  // ProgressRow = { key, attempted, correct, accuracy, medianMs }, every finished session (mock, drill, practice),
+  // vocabulary order, only keys with answers
+towers(history) → { id, name, unlocked, evidence, howTo }[]                    // fixed order, always all six
+```
+
+- **Trap rate** (per mock): wrong ÷ answered among items with a `trap` or a D key. Every rate and median is `null`
+  below 5 answers (shown as "—", explained under the tables).
+- **Towers:** Gate (`first_trial`), Clock (`finished_in_time`), Hourglass (`steady_pace`), Shadow
+  (`negative_tester`), Mist (`d_detector`) open from the habit badges; **Rising** opens when a later mock has a
+  higher share right than the first (compared as whole numbers; evidence "From 40% to 70% right since your first
+  Grand Trial"). Nothing reads dates, so a break never locks a tower (tested).
+- Home → **Castle map** (`home.castle`). Empty state (`castle.empty`) when there is no finished session: says to
+  start with a Grand Trial and offers `castle.start`; its results lead home. Test ids: `castle.tower`
+  (`data-unlocked`), `castle.trend`, `castle.topics`, `castle.levels`, `castle.back`. Tables scroll sideways on a
+  phone instead of widening the page.

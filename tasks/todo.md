@@ -4,7 +4,25 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 17 (export, import, reset). Tasks 13–16 and Checkpoint C committed and pushed.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Checkpoint D (every Release 1 story without the theme; E2E green; commit). Tasks 17 and 18 committed.
+
+**Handoff (after Task 18):** castle map: `src/core/analytics/progress.ts` (`mockTrend`, `progressTable`, `towers`;
+`medianTime` added to metrics) and `CastleMap.tsx`, opened from Home. Six towers: five from the habit badges plus
+Rising (a later mock beats the first); none reads dates. Tests: 413 unit/component + 68 E2E (new
+`tests/e2e/castle.spec.ts`: empty state → Start; after a mock one trend row, tables, Gate and Clock open; axe
+light/dark, Chromium + WebKit). Mutation checks 6/6 red. Seen live: a blank screen while history waited for the save
+→ heading plus "Opening the castle map…" (failing test first); no sideways page scroll at phone width. Dev-only: the
+fake clock dates sessions 1/1/1970. **Owner may want to read:** tower names and their "To open" sentences.
+
+**Handoff (after Task 17):** `src/data/transfer.ts` (versioned export, zod-strict import with consistency checks,
+new ids on import, reset) and `Settings.tsx` (export per student, import from file, reset with confirmation),
+reachable from Who's playing? and Welcome. Dev hook `coachTexts()`. Tests: 387 unit/component + 60 E2E (new
+`tests/e2e/transfer.spec.ts`: export → reset → import gives identical history and coach numbers with a real
+download; damaged file refused; axe light/dark); full suite 120/120 over two repeats. Mutation checks 5/5 red.
+Found: right after a mock, home sometimes listed no past trials (the save hadn't landed) → history reads now wait for
+pending saves; failing test first. A transfer-test flake was my test reading the list before it loaded (fixed in the
+test). Seen live: settings panels reused the centred quantity style → plain `.card`; file input and reset button
+sized. "Dashboard numbers" compared via history + coach until the castle map (Task 18) exists.
 
 **Handoff (after Task 16):** student profiles: `src/data/profiles.ts` (houses, named colours, validation, repo with
 adopt-on-first and cascade delete), `Profiles.tsx` (Welcome, Who's playing?, manage/rename/delete with confirm),
@@ -266,13 +284,13 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 10 · **Files:** `src/ui/screens/Profiles.tsx`, `src/data/profiles.ts`, `tests/e2e/profiles.spec.ts` · **Size:** M
 
 ### Task 17: Export, import, reset
-- [ ] Export a profile to JSON; import validates with `zod` and rejects bad files; reset all with confirmation
+- [x] Export a profile to JSON; import validates with `zod` and rejects bad files; reset all with confirmation
 - **Verify:** E2E: export → reset → import gives identical history and dashboard numbers
 - **Depends on:** 16 · **Files:** `src/data/transfer.ts`, `src/ui/screens/Settings.tsx`, `tests/e2e/transfer.spec.ts` · **Size:** M
 
 ### Task 18: Castle map progress (plain)
-- [ ] Per-mock trend (score, median time, trap rate, false-D, stamina); per topic and level table; empty state
-- [ ] Towers unlock from habits and progress, never from daily streaks
+- [x] Per-mock trend (score, median time, trap rate, false-D, stamina); per topic and level table; empty state
+- [x] Towers unlock from habits and progress, never from daily streaks
 - **Verify:** component tests with fixtures; E2E empty and filled states
 - **Depends on:** 11, 16 · **Files:** `src/ui/screens/CastleMap.tsx`, `src/core/analytics/progress.ts`, `tests/unit/progress.test.ts` · **Size:** M
 

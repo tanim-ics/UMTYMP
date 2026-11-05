@@ -1,5 +1,6 @@
 // Dev-build-only hooks for Playwright and manual checks (CLAUDE.md §8). main.tsx loads this file only when
 // import.meta.env.DEV is true, so it never reaches the production bundle.
+import { coach, type SessionRecord } from '../core/analytics/coach.ts';
 import type { QuestionItem } from '../core/questions/schema.ts';
 import type { Answer } from '../core/questions/vocabulary.ts';
 import type { FakeClock } from '../core/timer/clock.ts';
@@ -13,6 +14,8 @@ export interface TestHooks {
   answer(letter: Answer): void;
   /** Resolves when every change so far is saved (tests reload only after this). */
   flush(): Promise<void>;
+  /** Hoot's sentences for the current student from saved history (null fields when there isn't enough data). */
+  coachTexts(): Promise<{ strength: string | null; bottleneck: string | null }>;
   /** Shows the results of a finished sample mock: `all-right`, `all-wrong` or `not-enough-data`. */
   loadFixture(name: FixtureName): void;
   clock?: { advance(ms: number): void };
@@ -29,8 +32,10 @@ export function installTestHooks(options: {
   bank: readonly QuestionItem[];
   fakeClock: FakeClock | null;
   flush: () => Promise<void>;
+  /** Saved history by profile; absent when storage is unavailable. */
+  listHistory?: (profileId: string) => Promise<SessionRecord[]>;
 }): void {
-  const { store, bank, fakeClock, flush } = options;
+  const { store, bank, fakeClock, flush, listHistory } = options;
   window.__umtymp = {
     state() {
       const { trial, now } = store.getState();
@@ -56,6 +61,15 @@ export function installTestHooks(options: {
     seed: (n) => store.getState().startMock(bank, n),
     answer: (letter) => store.getState().answer(letter),
     flush,
+    async coachTexts() {
+      const { profileId } = store.getState();
+      const history =
+        profileId === null || listHistory === undefined ? [] : await listHistory(profileId);
+      const feedback = coach(history);
+      return feedback.kind === 'feedback'
+        ? { strength: feedback.strengthText, bottleneck: feedback.bottleneckText }
+        : { strength: null, bottleneck: null };
+    },
     loadFixture(name) {
       if (!FIXTURES.includes(name))
         throw new Error(`unknown fixture "${name}"; use ${FIXTURES.join(', ')}`);

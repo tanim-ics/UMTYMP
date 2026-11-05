@@ -61,6 +61,15 @@ export function slowEvents(
   return events.filter((e) => (timeMs(e) ?? 0) > slowSeconds * 1000);
 }
 
+/** Median time of the answered items; null below `minAttempts` timed answers. */
+export function medianTime(
+  events: readonly AttemptEvent[],
+  minAttempts: number = METRICS.minAttempts,
+): number | null {
+  const times = events.map(timeMs).filter((t): t is number => t !== null);
+  return times.length < minAttempts ? null : median(times);
+}
+
 export function medianTimeBy(
   events: readonly AttemptEvent[],
   by: GroupBy,
@@ -68,8 +77,7 @@ export function medianTimeBy(
 ): Record<string, number | null> {
   const result: Record<string, number | null> = {};
   for (const [key, group] of groupBy(answered(events), by)) {
-    const times = group.map(timeMs).filter((t): t is number => t !== null);
-    result[key] = times.length < minAttempts ? null : median(times);
+    result[key] = medianTime(group, minAttempts);
   }
   return result;
 }

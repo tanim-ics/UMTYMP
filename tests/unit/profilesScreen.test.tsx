@@ -197,3 +197,31 @@ describe('managing students', () => {
     expect(await screen.findByRole('heading', { name: "Who's playing?" })).toBeTruthy();
   });
 });
+
+describe('history right after a mock', () => {
+  it('home lists the mock just finished even when saving is slow', async () => {
+    const db = openDb('test', { indexedDB: new IDBFactory(), IDBKeyRange });
+    opened.push(db);
+    await createProfileRepo(db).create({
+      displayName: 'Mo',
+      house: 'owlcrest',
+      mascotColor: 'gold',
+    });
+    const store = createSessionStore(createFakeClock());
+    const attempts = createAttemptRepo(db);
+    // Every write takes 50 ms, like a busy disk.
+    const slow = {
+      saveTrial: (...args: Parameters<typeof attempts.saveTrial>) =>
+        new Promise<void>((resolve) => setTimeout(resolve, 50)).then(() =>
+          attempts.saveTrial(...args),
+        ),
+    };
+    const persistence = connectPersistence(store, slow, () => {});
+    const data = { profiles: createProfileRepo(db), attempts, whenSaved: persistence.flush };
+    render(<App bank={bank} store={store} seed={1} data={data} />);
+    fireEvent.click(await screen.findByTestId('home.start'));
+    fireEvent.click(screen.getByTestId('trial.finish'));
+    fireEvent.click(screen.getByTestId('result.home'));
+    expect(await screen.findAllByTestId('home.history-item')).toHaveLength(1);
+  });
+});

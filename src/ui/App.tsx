@@ -5,10 +5,14 @@ import type { QuestionItem } from '../core/questions/schema.ts';
 import type { AttemptRepo, FinishedSession, ProfileHistory } from '../data/attempts.ts';
 import type { ProfileRow } from '../data/db.ts';
 import { HOUSES, type ProfileRepo } from '../data/profiles.ts';
+import type { Transfer } from '../data/transfer.ts';
+import { downloadText } from './download.ts';
 import type { SessionStoreApi } from '../store/session.ts';
 import { GrandTrial } from './screens/GrandTrial.tsx';
 import styles from './screens/GrandTrial.module.css';
+import { CastleMap } from './screens/CastleMap.tsx';
 import { Profiles } from './screens/Profiles.tsx';
+import { Settings } from './screens/Settings.tsx';
 import { Spellbook } from './screens/Spellbook.tsx';
 
 interface AppProps {
@@ -24,7 +28,13 @@ interface AppProps {
   data?: {
     profiles: ProfileRepo;
     attempts: Pick<AttemptRepo, 'listFinished' | 'listHistory' | 'loadActive'>;
+    /** Export, import and reset (Settings & data). */
+    transfer?: Transfer;
+    /** Resolves when every change so far is saved; history waits for it, so a just-finished mock is listed. */
+    whenSaved?: () => Promise<void>;
   };
+  /** Saves an exported file; tests pass a fake. */
+  download?: (fileName: string, text: string) => void;
 }
 
 export function App(props: AppProps) {
@@ -40,6 +50,7 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
   const { store, bank, data } = props;
   const profileId = useStore(store, (s) => s.profileId);
   const [profiles, setProfiles] = useState<ProfileRow[] | null>(null);
+  const [settings, setSettings] = useState(false);
   // A single profile is picked automatically on the first load only, so "Switch student" still shows the list.
   const firstLoad = useRef(true);
 
@@ -72,13 +83,35 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
       profileId === null
         ? undefined
         : {
-            listFinished: () => data.attempts.listFinished(profileId),
-            listHistory: () => data.attempts.listHistory(profileId),
+            // Saving runs in the background; read only after it lands, or the mock just finished is missing.
+            listFinished: async () => {
+              await data.whenSaved?.();
+              return data.attempts.listFinished(profileId);
+            },
+            listHistory: async () => {
+              await data.whenSaved?.();
+              return data.attempts.listHistory(profileId);
+            },
           },
     [data, profileId],
   );
 
   if (profiles === null) return null;
+  if (settings && data.transfer !== undefined) {
+    return (
+      <Settings
+        profiles={profiles}
+        transfer={data.transfer}
+        download={props.download ?? downloadText}
+        onChanged={reload}
+        onReset={() => {
+          store.getState().setProfile(null);
+          setSettings(false);
+        }}
+        onBack={() => setSettings(false)}
+      />
+    );
+  }
   const player = profiles.find((p) => p.id === profileId);
   if (profileId === null || player === undefined) {
     return (
@@ -87,6 +120,7 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
         repo={data.profiles}
         onChoose={(id) => void choose(id)}
         onChanged={reload}
+        onSettings={data.transfer === undefined ? undefined : () => setSettings(true)}
       />
     );
   }
@@ -103,7 +137,23 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
 function Main(props: AppProps & { player?: ProfileRow; onSwitch?: () => void }) {
   const hasTrial = useStore(props.store, (s) => s.trial !== null);
   const [spellbook, setSpellbook] = useState(false);
+  const [castle, setCastle] = useState(false);
   if (hasTrial) return <GrandTrial store={props.store} bank={props.bank} history={props.history} />;
+  if (castle) {
+    return (
+      <CastleMap
+        history={props.history}
+        onStart={() => {
+          // The map offers Start only before any finished mock, so there are no recent items to avoid.
+          setCastle(false);
+          props.store
+            .getState()
+            .startMock(props.bank, props.seed ?? Math.floor(Math.random() * 2 ** 31), []);
+        }}
+        onBack={() => setCastle(false)}
+      />
+    );
+  }
   if (spellbook) {
     return (
       <Spellbook
@@ -114,7 +164,9 @@ function Main(props: AppProps & { player?: ProfileRow; onSwitch?: () => void }) 
       />
     );
   }
-  return <Home {...props} onSpellbook={() => setSpellbook(true)} />;
+  return (
+    <Home {...props} onSpellbook={() => setSpellbook(true)} onCastle={() => setCastle(true)} />
+  );
 }
 
 function Home({
@@ -124,9 +176,15 @@ function Home({
   history,
   storageAvailable = true,
   onSpellbook,
+  onCastle,
   player,
   onSwitch,
-}: AppProps & { onSpellbook: () => void; player?: ProfileRow; onSwitch?: () => void }) {
+}: AppProps & {
+  onSpellbook: () => void;
+  onCastle: () => void;
+  player?: ProfileRow;
+  onSwitch?: () => void;
+}) {
   const saveFailed = useStore(store, (s) => s.saveFailed);
   const [past, setPast] = useState<FinishedSession[]>([]);
 
@@ -192,6 +250,9 @@ function Home({
         data-testid="home.spellbook"
       >
         Open the Spellbook
+      </button>
+      <button type="button" className={styles.button} onClick={onCastle} data-testid="home.castle">
+        Castle map
       </button>
       {past.length > 0 && (
         <section aria-labelledby="history-heading" data-testid="home.history">

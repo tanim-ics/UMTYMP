@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { ProfileRow } from '../../data/db.ts';
 import {
   HOUSES,
@@ -31,8 +31,20 @@ export function Profiles(props: {
   onChoose: (id: string) => void;
   /** Called after a change, so the list is read again. */
   onChanged: () => Promise<void>;
+  /** Opens Settings & data (export, import, reset); absent when that isn't available. */
+  onSettings?: () => void;
 }) {
-  const { profiles, repo, onChoose, onChanged } = props;
+  const { profiles, repo, onChoose, onChanged, onSettings } = props;
+  const settingsButton = onSettings !== undefined && (
+    <button
+      type="button"
+      className={styles.button}
+      onClick={onSettings}
+      data-testid="profiles.settings"
+    >
+      Settings &amp; data (for parents)
+    </button>
+  );
   const [adding, setAdding] = useState(false);
   const [managing, setManaging] = useState(false);
 
@@ -40,6 +52,7 @@ export function Profiles(props: {
     return (
       <ProfileForm
         first={profiles.length === 0}
+        extra={profiles.length === 0 ? settingsButton : null}
         onCancel={profiles.length === 0 ? undefined : () => setAdding(false)}
         onSave={async (input) => {
           const created = await repo.create(input);
@@ -90,6 +103,7 @@ export function Profiles(props: {
         >
           {managing ? 'Done managing' : 'Manage students (for parents)'}
         </button>
+        {settingsButton}
       </div>
     </main>
   );
@@ -177,10 +191,12 @@ function ManageRow(props: {
 
 function ProfileForm(props: {
   first: boolean;
+  /** Shown under the form; the first-run form offers importing a saved student here. */
+  extra?: ReactNode;
   onCancel?: () => void;
   onSave: (input: { displayName: string; house: string; mascotColor: string }) => Promise<void>;
 }) {
-  const { first, onCancel, onSave } = props;
+  const { first, onCancel, onSave, extra } = props;
   const [displayName, setDisplayName] = useState('');
   const [house, setHouse] = useState('');
   const [mascotColor, setMascotColor] = useState('');
@@ -269,6 +285,7 @@ function ProfileForm(props: {
           </button>
         </div>
       </form>
+      {extra}
     </main>
   );
 }

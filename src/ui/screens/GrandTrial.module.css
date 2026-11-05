@@ -204,3 +204,45 @@ legend {
   outline-offset: 2px;
   border-radius: 8px;
 }
+
+/* A plain panel for forms and settings: left-aligned, body-size text (unlike the centred quantity cards). */
+.card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  display: grid;
+  gap: 12px;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+/* Buttons keep their own width, so "Reset all data…" isn't the biggest thing on the screen. */
+.card > button {
+  justify-self: start;
+}
+
+.card input[type='file'] {
+  min-height: var(--tap-target);
+  font: inherit;
+}
+
+/* Progress tables scroll sideways on a phone instead of widening the page. */
+.tableWrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.table {
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid currentcolor;
+}
