@@ -4,7 +4,21 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 19 (theme system). Checkpoint D passed and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 20 (original art). Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05.
+
+**Handoff (after Task 19):** theme tokens in `src/ui/theme/tokens.css`: parchment (light) and night sky (dark),
+following the device (owner choice: no manual pick for now). New colour tokens `--color-on-accent`, `--color-ink`
+(control outlines, 3 : 1), `--color-right`, `--color-wrong`; Task 21 puts them to use. Fonts (owner choice): Grenze for
+headings, Nunito for text, self-hosted through the new dependencies `@fontsource/grenze` and `@fontsource/nunito`
+(OFL, CSS and font files only), logged in `docs/ASSETS.md`. Motion: `--motion-fast` 150 ms and `--motion-base` 250 ms,
+the same as `src/ui/theme/motion.ts` (`MOTION_MS`, `motionMs`, `prefersReducedMotion`, which counts "can't tell" as
+reduced). Under reduced motion every token is 0 and a global rule stops CSS animations and transitions. Tests:
+`tests/unit/contrast.test.ts` (every text pair ≥ 4.5 : 1 and outline pair ≥ 3 : 1 in both palettes, read from the CSS
+file), `tests/unit/motion.test.ts`, `tests/e2e/theme.spec.ts` (fonts load from our own host only; both palettes;
+reduced motion stops a probe animation and transition). Mutation checks 4/4 red. Seen live: home and trial in light
+and dark. **Not done here:** input borders still use the low-contrast `--color-border`; switching them to
+`--color-ink` is styling work for Task 21. After pulling, rebuild the images (`docker compose build`) and recreate dev
+with `docker compose up -d --force-recreate -V dev`, so the containers get the new packages.
 
 **Handoff (Checkpoint D):** every Release 1 story mapped to a browser test, Chromium + WebKit:
 S1 `trial`, `checkpoint`, `reload`, `release1` · S2 `review` · S3 `drill` (coach, fixtures incl. not enough data) ·
@@ -312,8 +326,8 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 ## Phase 4 — Magic world
 
 ### Task 19: Theme system
-- [ ] Parchment (light) and night-sky (dark) tokens, open-licence fonts, motion settings that switch off for reduced motion
-- [ ] `docs/ASSETS.md` started; WCAG AA contrast for every text/background pair
+- [x] Parchment (light) and night-sky (dark) tokens, open-licence fonts, motion settings that switch off for reduced motion
+- [x] `docs/ASSETS.md` started; WCAG AA contrast for every text/background pair
 - **Verify:** contrast unit test over token pairs; E2E reduced-motion check
 - **Depends on:** D · **Files:** `src/ui/theme/tokens.css`, `src/ui/theme/motion.ts`, `tests/unit/contrast.test.ts`, `docs/ASSETS.md` · **Size:** M
 

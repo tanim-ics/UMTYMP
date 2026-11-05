@@ -1,29 +1,68 @@
-/* Design tokens. Screens use only these variables so the magic-school theme (task 19) can
-   replace the values without touching components. */
+/* Design tokens for the Comparia Academy theme: parchment (light) and night sky (dark), following the device.
+   Screens use only these variables. tests/unit/contrast.test.ts checks every text/background pair below against
+   WCAG AA, and tests/unit/motion.test.ts keeps the durations in step with src/ui/theme/motion.ts. */
+
+/* Self-hosted open-licence fonts (docs/ASSETS.md): no request to a font service, so it also works offline.
+   Latin subset only; other scripts fall back to the system font. */
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/grenze/latin-600.css';
+
 :root {
-  --color-bg: #f6efdf;
+  color-scheme: light dark;
+
+  --color-bg: #f4ead5;
   --color-surface: #fffaf0;
   --color-text: #2b2238;
-  --color-muted: #6b5f75;
+  --color-muted: #5e5168;
   --color-accent: #5b3fa8;
-  --color-border: #d9cdb4;
+  --color-on-accent: #ffffff;
+  --color-border: #d9c9a8;
+  /* Outlines of controls and the cartoon "thick line"; 3 : 1 against both backgrounds. */
+  --color-ink: #7a6548;
+  --color-right: #1d6b3a;
+  --color-wrong: #a3262d;
 
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Grenze', Georgia, 'Times New Roman', serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --radius: 16px;
   --space: 16px;
   --tap-target: 48px;
+
+  --motion-fast: 150ms;
+  --motion-base: 250ms;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #151230;
-    --color-surface: #221d45;
+    --color-bg: #141233;
+    --color-surface: #221d4a;
     --color-text: #f3eefc;
-    --color-muted: #b7aecb;
+    --color-muted: #bdb4d4;
     --color-accent: #c6b3ff;
-    --color-border: #3b3466;
+    --color-on-accent: #1a1440;
+    --color-border: #3b3470;
+    --color-ink: #8f84c2;
+    --color-right: #86e0a3;
+    --color-wrong: #ffa3aa;
+  }
+}
+
+/* The device asked for less motion: every token goes to 0 and no CSS animation or transition runs. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -32,4 +71,13 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
 }

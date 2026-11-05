@@ -378,3 +378,21 @@ towers(history) → { id, name, unlocked, evidence, howTo }[]                   
   start with a Grand Trial and offers `castle.start`; its results lead home. Test ids: `castle.tower`
   (`data-unlocked`), `castle.trend`, `castle.topics`, `castle.levels`, `castle.back`. Tables scroll sideways on a
   phone instead of widening the page.
+
+## Theme (`src/ui/theme/tokens.css`, `src/ui/theme/motion.ts`)
+
+| Token | Use | Checked |
+|---|---|---|
+| `--color-bg`, `--color-surface` | Page and card backgrounds | — |
+| `--color-text`, `--color-muted`, `--color-accent`, `--color-right`, `--color-wrong` | Text on either background | ≥ 4.5 : 1 |
+| `--color-on-accent` | Text on an accent fill | ≥ 4.5 : 1 on `--color-accent` |
+| `--color-accent`, `--color-ink` | Focus rings, chosen borders, control outlines | ≥ 3 : 1 on either background |
+| `--color-border` | Decorative card edges only (low contrast on purpose) | — |
+| `--font-display` (Grenze), `--font-body` (Nunito) | Headings, timer, letters / everything else | — |
+| `--motion-fast` 150 ms, `--motion-base` 250 ms | CSS animation lengths; 0 ms under reduced motion | — |
+
+Dark mode (`prefers-color-scheme: dark`) redefines every colour token. Reduced motion sets every `--motion-*` to 0 and
+stops all CSS animations and transitions. `motionMs(speed)` returns `MOTION_MS[speed]`, or 0 when
+`prefersReducedMotion()` is true; that function also returns true when the browser has no `matchMedia`. Use
+`motionMs` for script-driven motion, and never on a timed test screen.
+
