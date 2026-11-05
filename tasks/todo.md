@@ -4,7 +4,23 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** the question bank C1–C8 by difficulty level (owner's plan), then Checkpoint F. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batch C1, then C2. C1 written, verified and committed 2026-11-05; owner review of wording still open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (batch C1, 2026-11-05):** `content/questions/c1.json`, 50 original items, all passing `npm run verify`
+(bank now 70 items, 15,842 value checks). Levels 7 / 11 / 13 / 11 / 8 (the 60/90/100/90/60 target scaled to 50);
+answers A 13 · B 14 · C 12 · D 11; all 14 tags; traps on 20 items (negative_numbers 6, even_power 4, fraction_0_1 3,
+absolute_value 3, one each of order_of_operations, integer_assumption, principal_root, zero); level 1 has no traps;
+every target within its level limit. Mutation check: three wrong keys/witnesses each failed with a counter-example.
+Fixed while writing: a prime-count item whose expressions were just `4` vs `4` (replaced by a remainder item the
+verifier really checks); `\%` inside `\text{}` (screen readers would say "backslash"); `frac-0006` rewritten
+(x/(x+1) vs 2x/(2x+1)) because its first form differed by 10⁻¹² at x = 10⁶, inside the verifier's tolerance.
+**Still on fewer than 3 levels across the bank** (for later batches): `arithmetic` (1, 2), traps `order_of_operations`
+(2), `fraction_0_1` (2, 3), `integer_assumption` (3, 4), `principal_root` (2, 4), `zero` (4); `not_to_scale` has no
+items (the bank is text-only). **Side effects of a full 50-item mock:** home no longer shows the "20 questions so far"
+note, so the four home screenshot baselines were refreshed (checked by eye: only the note is gone);
+`spellbook.spec.ts` now counts level-3 items from the bank instead of a hard-coded 16 (owner chose this 2026-11-05;
+the floor guard flags the changed line until it is pushed). Full suite 119 passed; timing p95 19 ms over 147
+samples. **For the owner:** read the review sheet (wording, level, shortcuts) before C1 is ticked.
 
 **Handoff (after Task 25):** `tools/check-names.ts` (`npm run names`, in `check:fast`) scans `src`, `content`,
 `public`, `index.html` and `vite.config.ts` for the names in `tools/franchise-names.txt` (houses, places,

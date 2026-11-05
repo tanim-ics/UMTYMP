@@ -1,6 +1,19 @@
 import AxeBuilder from '@axe-core/playwright';
+import { readdirSync, readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 import { openApp } from './helpers.ts';
+
+/** `?bank=repeat` shows each bank question this many times (src/main.tsx). */
+const REPEATS = 4;
+
+/** How many level-3 questions the dev bank has, counted from the question files, so a new batch needs no edit. */
+function level3InDevBank(): number {
+  const dir = 'content/questions';
+  const items = readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .flatMap((f) => JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')) as { difficulty: number }[]);
+  return items.filter((i) => i.difficulty === 3).length * REPEATS;
+}
 
 interface Snapshot {
   total: number;
@@ -19,7 +32,9 @@ test('an untimed level-3 set of 5 runs and ends on its results', async ({ page }
   await open(page);
   await page.getByTestId('spellbook.level-3').check();
   await page.getByTestId('spellbook.length').fill('5');
-  await expect(page.getByTestId('spellbook.matching')).toHaveText('16 questions match.');
+  await expect(page.getByTestId('spellbook.matching')).toHaveText(
+    `${level3InDevBank()} questions match.`,
+  );
   await page.getByTestId('spellbook.start').click();
 
   await expect(page.getByTestId('trial.position')).toHaveText('Question 1 of 5');
