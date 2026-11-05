@@ -4,7 +4,33 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batch C1, then C2. C1 written, verified and committed 2026-11-05; owner review of wording still open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C3, then C4. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; owner review of C1–C3 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (duplicate check, 2026-11-05):** the owner asked that the bank have no duplicates. Machine check across all
+170: no exact, swapped (A↔B), renamed (x↔y) or same-machine-check pairs. Same-shape groups (numbers → N, letters →
+v) were then read by hand; 8 items repeated a lesson already in the bank and were replaced with new ones (ids
+kept, all in C2/C3, committed 2026-11-05): `dec-0007` (0.2 × 5 vs 0.5), `num-0011` (biggest number dividing 12 and
+18, vs 4; mathjs `gcd`), `tri-0006` (perimeter vs 18, an upper limit), `pct-0011` (what percent of 20 is 5),
+`exp-0017` (4³ vs 8²), `dec-0005` (0.9 + 0.09 vs 1), `abs-0007` (|x| vs |−x|), `arith-0007` (9 × 111 vs 1000). Kept
+on purpose: different methods that look alike (3/4 vs 4/5, 2/3 vs 3/5, 5/6 vs 5/7) and condition variants of one
+pair (|x| vs x with x < 0, with no condition). New `tests/unit/duplicates.test.ts` (5; planted copies caught) and the
+rule in `docs/CONTENT.md`; this answers the open "verifier duplicate-content rule" question with a test rather
+than a verifier change. Bank answers now A 45 · B 44 · C 44 · D 37: later batches should lean D. Task check 571
+passed; full suite 119 passed.
+
+**Handoff (batches C2 and C3, 2026-11-05):** `content/questions/c2.json` and `c3.json`, 50 items each, both 7 / 11 /
+13 / 11 / 8 by level; answers C2 A 12 · B 13 · C 13 · D 12, C3 A 13 · B 11 · C 14 · D 12. Bank now 170 items (levels
+25 / 37 / 43 / 37 / 28, answers A 44 · B 43 · C 44 · D 39), all passing `npm run verify` (35,970 value checks). Written
+to "Writing for a student" from the start, then re-read word by word: eight texts changed in that pass (double "So",
+"x stretched further from 0", "Double a positive number is bigger", "3 becomes 5", the a² − b² trick without an
+example, two others). Ids are numbered by the generator after the highest existing id, so none can repeat; no two
+items show the same question. **Coverage:** every tag and every trap except `not_to_scale` (text-only bank) is now on
+at least 3 levels; C2/C3 filled arithmetic 3–5, zero 2–5, order_of_operations 3–4, principal_root 3–5,
+integer_assumption 2 and 5, fraction_0_1 3 and 5. Fixed while writing: four C3 items had lost their condition
+(caught in code review before the first run); `pct-0010` (x% rise then fall) now has 10 ≤ x ≤ 50, because for tiny x
+the drop fell inside the verifier's 10⁻⁹ tolerance; `num-0014` (n³ − n) is limited to 0 < n < 1000 so n³ stays exact;
+"sum of 1 to 20" uses mathjs `sum(1:20)`, an independent check. Mutation: four wrong answers or examples in C2/C3 each
+failed with a counter-example. Full suite 119 passed; timing p95 33 ms. **For the owner:** the review sheet.
 
 **Handoff (kid-friendly texts, 2026-11-05):** the owner found the C1 shortcuts and explanations too grown-up and asked
 for "answer", not "key". All 70 items (seed + C1) were rewritten: short sentences, everyday words, a real-number try

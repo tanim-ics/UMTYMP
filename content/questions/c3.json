@@ -1,0 +1,962 @@
+[
+  {
+    "id": "arith-0007",
+    "quantity_a": "9 \\times 111",
+    "quantity_b": "1000",
+    "condition": null,
+    "expr_a": "9 * 111",
+    "expr_b": "1000",
+    "correct_answer": "B",
+    "tags": ["arithmetic"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "9 × 111 is 999, because 9 × 1, 9 × 10 and 9 × 100 make 9 + 90 + 900. That is 1 short of 1000.",
+    "full_explanation": "Split 111 into 100 + 10 + 1. Then 9 × 111 = 900 + 90 + 9 = 999, which is 1 less than 1000. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "dec-0007",
+    "quantity_a": "0.2 \\times 5",
+    "quantity_b": "0.5",
+    "condition": null,
+    "expr_a": "0.2 * 5",
+    "expr_b": "0.5",
+    "correct_answer": "A",
+    "tags": ["decimals"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "0.2 is 2 tenths. Five lots of 2 tenths make 10 tenths, which is 1.",
+    "full_explanation": "0.2 × 5 means 2 tenths, five times: 10 tenths. 10 tenths is 1 whole, and 1 is more than 0.5. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "frac-0012",
+    "quantity_a": "\\frac{5}{6}",
+    "quantity_b": "\\frac{5}{7}",
+    "condition": null,
+    "expr_a": "5/6",
+    "expr_b": "5/7",
+    "correct_answer": "A",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "Both have 5 pieces. Sixths are bigger pieces than sevenths.",
+    "full_explanation": "Cut a cake into 6 slices and another into 7: each slice of the first is bigger. 5 big slices beat 5 small ones. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0011",
+    "quantity_a": "\\text{the percent of } 20 \\text{ that is } 5",
+    "quantity_b": "25",
+    "condition": null,
+    "expr_a": "5 / 20 * 100",
+    "expr_b": "25",
+    "correct_answer": "C",
+    "tags": ["percents", "fractions"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "Four 5s make 20, so 5 is a quarter of 20. A quarter is 25%.",
+    "full_explanation": "5 ÷ 20 = 1/4, so 5 is one quarter of 20. One quarter of 100% is 25%. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "exp-0017",
+    "quantity_a": "4^3",
+    "quantity_b": "8^2",
+    "condition": null,
+    "expr_a": "4^3",
+    "expr_b": "8^2",
+    "correct_answer": "C",
+    "tags": ["exponents"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "4³ is 4 × 4 × 4 = 64. 8² is 8 × 8 = 64.",
+    "full_explanation": "4 × 4 = 16, and 16 × 4 = 64. 8 × 8 = 64. Both are 64. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "geom-0007",
+    "quantity_a": "\\text{the perimeter of a triangle with sides } 4, 5 \\text{ and } 6",
+    "quantity_b": "14",
+    "condition": null,
+    "expr_a": "4 + 5 + 6",
+    "expr_b": "14",
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "Perimeter means adding all the sides. 4 + 5 + 6 = 15.",
+    "full_explanation": "Walk all the way round the triangle: 4 + 5 + 6 = 15. 15 is more than 14. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "num-0011",
+    "quantity_a": "\\text{the biggest number that divides both } 12 \\text{ and } 18",
+    "quantity_b": "4",
+    "condition": null,
+    "expr_a": "gcd(12, 18)",
+    "expr_b": "4",
+    "correct_answer": "A",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "List what divides 12: 1, 2, 3, 4, 6 and 12. The biggest of those that also divides 18 is 6.",
+    "full_explanation": "6 goes into 12 twice and into 18 three times. The only bigger number that divides 12 is 12 itself, and 12 does not go into 18. So the biggest is 6, and 6 is more than 4. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ineq-0010",
+    "quantity_a": "2x",
+    "quantity_b": "x + 1",
+    "condition": "x > 0",
+    "expr_a": "2 * x",
+    "expr_b": "x + 1",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "D",
+    "tags": ["inequalities", "expressions"],
+    "trap": "integer_assumption",
+    "difficulty": 2,
+    "target_seconds": 15,
+    "witnesses": [
+      {
+        "x": 2,
+        "relation": "A"
+      },
+      {
+        "x": 0.5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Positive doesn't mean whole. x = 2 makes A bigger, but x = ½ makes B bigger.",
+    "full_explanation": "If x = 2: 2x = 4 and x + 1 = 3, so A wins. If x = ½: 2x = 1 and x + 1 = 1½, so B wins. So the answer is D: not enough information."
+  },
+  {
+    "id": "arith-0008",
+    "quantity_a": "6 + 6 \\div 2",
+    "quantity_b": "(6 + 6) \\div 2",
+    "condition": null,
+    "expr_a": "6 + 6 / 2",
+    "expr_b": "(6 + 6) / 2",
+    "correct_answer": "A",
+    "tags": ["arithmetic"],
+    "trap": "order_of_operations",
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "Divide before you add, unless brackets say otherwise. A is 6 + 3 = 9, and B is 12 ÷ 2 = 6.",
+    "full_explanation": "In A there are no brackets, so do 6 ÷ 2 = 3 first, then 6 + 3 = 9. In B the brackets go first: 6 + 6 = 12, then 12 ÷ 2 = 6. 9 is more than 6. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "root-0011",
+    "quantity_a": "\\sqrt{50}",
+    "quantity_b": "7",
+    "condition": null,
+    "expr_a": "sqrt(50)",
+    "expr_b": "7",
+    "correct_answer": "A",
+    "tags": ["roots"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "7 × 7 = 49, which is just under 50. So √50 is a little more than 7.",
+    "full_explanation": "√50 is the number that times itself makes 50. 7 × 7 = 49 is too small, so √50 must be a bit more than 7. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "frac-0013",
+    "quantity_a": "\\text{the fraction } \\frac{3}{4} \\text{ of } 20",
+    "quantity_b": "\\text{the fraction } \\frac{2}{3} \\text{ of } 24",
+    "condition": null,
+    "expr_a": "3/4 * 20",
+    "expr_b": "2/3 * 24",
+    "correct_answer": "B",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Divide, then multiply. A quarter of 20 is 5, so A is 15. A third of 24 is 8, so B is 16.",
+    "full_explanation": "3/4 of 20: 20 ÷ 4 = 5, and 3 × 5 = 15. 2/3 of 24: 24 ÷ 3 = 8, and 2 × 8 = 16. 16 is more than 15. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "dec-0008",
+    "quantity_a": "3.14",
+    "quantity_b": "\\frac{22}{7}",
+    "condition": null,
+    "expr_a": "3.14",
+    "expr_b": "22/7",
+    "correct_answer": "B",
+    "tags": ["decimals", "fractions"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 15,
+    "shortcut_explanation": "22/7 is 3 and 1/7. 1/7 is about 0.143, which is more than 0.14.",
+    "full_explanation": "22 ÷ 7 = 3 with 1 left over, so 22/7 = 3 + 1/7. 1/7 = 0.142…, a little more than 0.14. That makes 22/7 a little more than 3.14. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "pct-0012",
+    "quantity_a": "\\text{40 after a } 50\\% \\text{ rise}",
+    "quantity_b": "\\text{50 after a } 40\\% \\text{ rise}",
+    "condition": null,
+    "expr_a": "40 * 1.5",
+    "expr_b": "50 * 1.4",
+    "correct_answer": "B",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 15,
+    "shortcut_explanation": "Both rises add the same amount: 50% of 40 and 40% of 50 are both 20. But B starts higher.",
+    "full_explanation": "50% of 40 is 20, so A is 40 + 20 = 60. 40% of 50 is also 20, so B is 50 + 20 = 70. 70 is more than 60. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "exp-0018",
+    "quantity_a": "2^3 \\times 2^2",
+    "quantity_b": "2^6",
+    "condition": null,
+    "expr_a": "2^3 * 2^2",
+    "expr_b": "2^6",
+    "correct_answer": "B",
+    "tags": ["exponents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Multiplying powers of 2 adds the powers. 2³ × 2² is 2⁵, not 2⁶.",
+    "full_explanation": "2³ × 2² = (2 × 2 × 2) × (2 × 2), which is five 2s: 2⁵ = 32. 2⁶ = 64, which is twice as much. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "abs-0010",
+    "quantity_a": "|x|",
+    "quantity_b": "x",
+    "condition": null,
+    "expr_a": "abs(x)",
+    "expr_b": "x",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["absolute_value"],
+    "trap": "absolute_value",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "witnesses": [
+      {
+        "x": -1,
+        "relation": "A"
+      },
+      {
+        "x": 1,
+        "relation": "C"
+      }
+    ],
+    "shortcut_explanation": "|x| only changes negative numbers. Try x = −1, then x = 1.",
+    "full_explanation": "If x = −1, then |x| = 1, which is more than −1. If x = 1, then |x| = 1, so they are equal. So the answer is D: not enough information."
+  },
+  {
+    "id": "avg-0010",
+    "quantity_a": "\\text{the average of } 5 \\text{ numbers that add up to } 40",
+    "quantity_b": "8",
+    "condition": null,
+    "expr_a": "40 / 5",
+    "expr_b": "8",
+    "correct_answer": "C",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "The average is the total shared out equally. 40 shared between 5 is 8.",
+    "full_explanation": "Average = total ÷ how many numbers. 40 ÷ 5 = 8. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "num-0012",
+    "quantity_a": "\\text{the remainder when } 2 + 4 + 6 + 8 \\text{ is divided by } 2",
+    "quantity_b": "0",
+    "condition": null,
+    "expr_a": "mod(2 + 4 + 6 + 8, 2)",
+    "expr_b": "0",
+    "correct_answer": "C",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Even plus even is always even. An even number leaves 0 when divided by 2.",
+    "full_explanation": "Each number is even, and adding even numbers keeps the total even: it is 20. An even number divided by 2 leaves nothing over. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0007",
+    "quantity_a": "\\text{the ratio } 6 : 9 \\text{ as a fraction}",
+    "quantity_b": "\\frac{2}{3}",
+    "condition": null,
+    "expr_a": "6 / 9",
+    "expr_b": "2 / 3",
+    "correct_answer": "C",
+    "tags": ["ratios", "fractions"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Divide both numbers of the ratio by 3. 6 : 9 becomes 2 : 3.",
+    "full_explanation": "The ratio 6 : 9 as a fraction is 6/9. Dividing the top and bottom by 3 gives 2/3. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "exp-0019",
+    "quantity_a": "-x^2",
+    "quantity_b": "(-x)^2",
+    "condition": "x \\neq 0",
+    "expr_a": "-x^2",
+    "expr_b": "(-x)^2",
+    "domain": {
+      "x": "real, x != 0"
+    },
+    "correct_answer": "B",
+    "tags": ["exponents"],
+    "trap": "order_of_operations",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Do the power before the minus sign. −x² is always negative here, but (−x)² is always positive.",
+    "full_explanation": "−x² means −(x²): square first, then make it negative. (−x)² means square −x, which gives a positive number. Try x = 3: −9 and 9. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "root-0012",
+    "quantity_a": "\\sqrt{x^2}",
+    "quantity_b": "x",
+    "condition": "x > 0",
+    "expr_a": "sqrt(x^2)",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "C",
+    "tags": ["roots", "absolute_value"],
+    "trap": "principal_root",
+    "difficulty": 3,
+    "target_seconds": 12,
+    "shortcut_explanation": "√ always gives the positive answer, and x is already positive here. So nothing changes.",
+    "full_explanation": "√(x²) is the size of x without its sign. If x is positive, that is just x. Try x = 7: √49 = 7. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0014",
+    "quantity_a": "\\frac{x}{5}",
+    "quantity_b": "\\frac{x}{4}",
+    "condition": "x > 0",
+    "expr_a": "x / 5",
+    "expr_b": "x / 4",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "B",
+    "tags": ["fractions", "inequalities"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 12,
+    "shortcut_explanation": "Sharing a positive amount between more people gives each a smaller share. Fifths are smaller than quarters.",
+    "full_explanation": "x/5 is a fifth of x and x/4 is a quarter of x. For positive x, a quarter is the bigger share. Try x = 20: 4 and 5. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "dec-0009",
+    "quantity_a": "x^2",
+    "quantity_b": "x",
+    "condition": "0.5 < x < 2",
+    "expr_a": "x^2",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, 0.5 < x < 2"
+    },
+    "correct_answer": "D",
+    "tags": ["decimals", "exponents"],
+    "trap": "fraction_0_1",
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "x": 0.6,
+        "relation": "B"
+      },
+      {
+        "x": 1.5,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "x can be a little below 1 or a little above it. Try 0.6, then 1.5.",
+    "full_explanation": "If x = 0.6, then x² = 0.36, which is less. If x = 1.5, then x² = 2.25, which is more. Squaring shrinks numbers below 1 and grows numbers above 1. So the answer is D: not enough information."
+  },
+  {
+    "id": "pct-0013",
+    "quantity_a": "x\\% \\text{ of } x",
+    "quantity_b": "x",
+    "condition": "x > 100",
+    "expr_a": "x / 100 * x",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x > 100"
+    },
+    "correct_answer": "A",
+    "tags": ["percents", "inequalities"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "x% of x is x times x/100. If x is more than 100, then x/100 is more than 1.",
+    "full_explanation": "Try x = 200: 200% of 200 is 400, which is more than 200. When x is above 100, taking x% means taking more than all of it. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ineq-0011",
+    "quantity_a": "2 + x",
+    "quantity_b": "2 - x",
+    "condition": "x < 0",
+    "expr_a": "2 + x",
+    "expr_b": "2 - x",
+    "domain": {
+      "x": "real, x < 0"
+    },
+    "correct_answer": "B",
+    "tags": ["inequalities"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 12,
+    "shortcut_explanation": "Adding a negative number makes things smaller, and taking it away makes things bigger. Try x = −1: 1 and 3.",
+    "full_explanation": "If x is negative, 2 + x is less than 2 and 2 − x is more than 2. With x = −1: 2 + (−1) = 1 and 2 − (−1) = 3. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "abs-0011",
+    "quantity_a": "|x - 4|",
+    "quantity_b": "4 - x",
+    "condition": "x < 4",
+    "expr_a": "abs(x - 4)",
+    "expr_b": "4 - x",
+    "domain": {
+      "x": "real, x < 4"
+    },
+    "correct_answer": "C",
+    "tags": ["absolute_value"],
+    "trap": "absolute_value",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "|x − 4| is how far x is from 4. Since x is below 4, that distance is 4 − x.",
+    "full_explanation": "Try x = 1: |1 − 4| = |−3| = 3, and 4 − 1 = 3. For any x below 4, x − 4 is negative, and the bars just remove the minus sign. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "num-0013",
+    "quantity_a": "n^2",
+    "quantity_b": "2n",
+    "condition": "n \\text{ is a positive integer}",
+    "expr_a": "n^2",
+    "expr_b": "2 * n",
+    "domain": {
+      "n": "integer, n > 0"
+    },
+    "correct_answer": "D",
+    "tags": ["number_theory", "exponents"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "n": 1,
+        "relation": "B"
+      },
+      {
+        "n": 3,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "Try small whole numbers in order: 1, 2, 3. The winner changes.",
+    "full_explanation": "If n = 1: 1 and 2, so B wins. If n = 2: 4 and 4, equal. If n = 3: 9 and 6, so A wins. So the answer is D: not enough information."
+  },
+  {
+    "id": "avg-0011",
+    "quantity_a": "\\text{the average of } a, a + 2 \\text{ and } a + 4",
+    "quantity_b": "a + 2",
+    "condition": null,
+    "expr_a": "(a + (a + 2) + (a + 4)) / 3",
+    "expr_b": "a + 2",
+    "domain": {
+      "a": "real"
+    },
+    "correct_answer": "C",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Three evenly spaced numbers have the middle one as their average.",
+    "full_explanation": "a and a + 4 balance each other around a + 2. Adding them up gives 3a + 6, and 3a + 6 divided by 3 is a + 2. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0008",
+    "quantity_a": "\\frac{x}{y}",
+    "quantity_b": "1",
+    "condition": "x : y = 7 : 5",
+    "expr_a": "x / (5 * x / 7)",
+    "expr_b": "1",
+    "domain": {
+      "x": "real, x != 0"
+    },
+    "correct_answer": "A",
+    "tags": ["ratios", "fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "A ratio of 7 : 5 means x/y is 7/5, whatever the numbers are. 7/5 is more than 1.",
+    "full_explanation": "x : y = 7 : 5 means x/y = 7/5, even if both numbers are negative. 7/5 = 1.4, which is more than 1. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "expr-0009",
+    "quantity_a": "x^2 - 4",
+    "quantity_b": "(x - 2)^2",
+    "condition": "x > 2",
+    "expr_a": "x^2 - 4",
+    "expr_b": "(x - 2)^2",
+    "domain": {
+      "x": "real, x > 2"
+    },
+    "correct_answer": "A",
+    "tags": ["expressions", "exponents"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "x² − 4 is (x − 2)(x + 2). Compare it with (x − 2)(x − 2): x + 2 is bigger than x − 2.",
+    "full_explanation": "x² − 4 = (x − 2) × (x + 2) and (x − 2)² = (x − 2) × (x − 2). Both start with the positive x − 2, and x + 2 is bigger than x − 2. Try x = 3: 5 and 1. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "geom-0008",
+    "quantity_a": "\\text{the third angle of the triangle}",
+    "quantity_b": "60",
+    "condition": "\\text{two angles of a triangle add up to } 120 \\text{ degrees}",
+    "expr_a": "180 - 120",
+    "expr_b": "60",
+    "correct_answer": "C",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 12,
+    "shortcut_explanation": "The three angles of a triangle add up to 180 degrees. 180 − 120 = 60.",
+    "full_explanation": "Two of the angles use up 120 of the 180 degrees. That leaves 180 − 120 = 60 for the third angle. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "tri-0006",
+    "quantity_a": "\\text{the perimeter of the triangle}",
+    "quantity_b": "18",
+    "condition": "\\text{a triangle has sides } 4, 5 \\text{ and } x",
+    "expr_a": "4 + 5 + x",
+    "expr_b": "18",
+    "domain": {
+      "x": "real, 1 < x < 9"
+    },
+    "correct_answer": "B",
+    "tags": ["triangle_inequality", "geometry"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "The third side must be shorter than 4 + 5 = 9. So the perimeter is less than 9 + 9 = 18.",
+    "full_explanation": "Sides of 4 and 5 can only reach 9 if they lie flat in a straight line, and then there is no triangle. So x is less than 9. The perimeter is 4 + 5 + x, which is less than 9 + 9 = 18. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "exp-0020",
+    "quantity_a": "-x^2",
+    "quantity_b": "x^2",
+    "condition": null,
+    "expr_a": "-x^2",
+    "expr_b": "x^2",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["exponents"],
+    "trap": "order_of_operations",
+    "difficulty": 4,
+    "target_seconds": 20,
+    "witnesses": [
+      {
+        "x": 0,
+        "relation": "C"
+      },
+      {
+        "x": 2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "−x² means −(x²): square first, then put the minus in front. So −x² is never positive. Test 0, then test 2.",
+    "full_explanation": "If x = 0, both are 0, so they are equal. If x = 2, then −x² = −4 and x² = 4, so B is bigger. So the answer is D: not enough information."
+  },
+  {
+    "id": "arith-0009",
+    "quantity_a": "101^2 - 99^2",
+    "quantity_b": "401",
+    "condition": null,
+    "expr_a": "101^2 - 99^2",
+    "expr_b": "401",
+    "correct_answer": "B",
+    "tags": ["arithmetic", "expressions"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Use the trick a² − b² = (a − b) × (a + b). Check it: 5² − 3² = 16 = 2 × 8. So 101² − 99² = 2 × 200 = 400.",
+    "full_explanation": "101² − 99² = (101 − 99) × (101 + 99) = 2 × 200 = 400. 400 is 1 less than 401. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "avg-0012",
+    "quantity_a": "\\text{the average of } x \\text{ and } y",
+    "quantity_b": "\\text{the average of } x, y \\text{ and } 0",
+    "condition": "x + y > 0",
+    "expr_a": "(x + y) / 2",
+    "expr_b": "(x + y) / 3",
+    "domain": {
+      "x": "real",
+      "y": "real, x + y > 0"
+    },
+    "correct_answer": "A",
+    "tags": ["averages"],
+    "trap": "zero",
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "Adding a 0 keeps the total the same but shares it between more numbers. A positive total shared by more is smaller.",
+    "full_explanation": "Both averages use the same total, x + y, which is positive. A divides it by 2 and B divides it by 3. A positive number divided by 2 is more than divided by 3. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "dec-0010",
+    "quantity_a": "1.5x",
+    "quantity_b": "x + 1.5",
+    "condition": "x > 3",
+    "expr_a": "1.5 * x",
+    "expr_b": "x + 1.5",
+    "domain": {
+      "x": "real, x > 3"
+    },
+    "correct_answer": "A",
+    "tags": ["decimals", "inequalities"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "1.5x is x plus half of x. Half of x is more than 1.5 when x is more than 3.",
+    "full_explanation": "1.5x = x + 0.5x. Since x is more than 3, 0.5x is more than 1.5. So 1.5x beats x + 1.5. Try x = 4: 6 and 5.5. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0014",
+    "quantity_a": "x \\text{ increased by } 50\\%",
+    "quantity_b": "x",
+    "condition": "x \\neq 0",
+    "expr_a": "1.5 * x",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x != 0"
+    },
+    "correct_answer": "D",
+    "tags": ["percents"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "x": 2,
+        "relation": "A"
+      },
+      {
+        "x": -2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Increasing a negative number by 50% makes it more negative. Try x = 2, then x = −2.",
+    "full_explanation": "If x = 2, a 50% increase gives 3, which is more. If x = −2, a 50% increase gives −3, which is less than −2. So the answer is D: not enough information."
+  },
+  {
+    "id": "root-0013",
+    "quantity_a": "\\sqrt{x} + \\sqrt{x}",
+    "quantity_b": "\\sqrt{4x}",
+    "condition": "x > 0",
+    "expr_a": "sqrt(x) + sqrt(x)",
+    "expr_b": "sqrt(4 * x)",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "C",
+    "tags": ["roots"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "√(4x) is √4 × √x, which is 2√x. And √x + √x is also 2√x.",
+    "full_explanation": "√x + √x is two lots of √x. √(4x) = √4 × √x = 2√x too. Try x = 9: 3 + 3 = 6 and √36 = 6. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "abs-0012",
+    "quantity_a": "|x| + |y|",
+    "quantity_b": "|x - y|",
+    "condition": null,
+    "expr_a": "abs(x) + abs(y)",
+    "expr_b": "abs(x - y)",
+    "domain": {
+      "x": "real",
+      "y": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["absolute_value"],
+    "trap": "absolute_value",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "x": 1,
+        "y": -1,
+        "relation": "C"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "Try numbers with opposite signs, then numbers with the same sign.",
+    "full_explanation": "If x = 1 and y = −1: 1 + 1 = 2 and |1 − (−1)| = 2, so they are equal. If x = 1 and y = 1: 1 + 1 = 2 but |0| = 0, so A is bigger. So the answer is D: not enough information."
+  },
+  {
+    "id": "frac-0015",
+    "quantity_a": "\\frac{1}{x} + \\frac{1}{x}",
+    "quantity_b": "\\frac{1}{x}",
+    "condition": "x \\neq 0",
+    "expr_a": "1 / x + 1 / x",
+    "expr_b": "1 / x",
+    "domain": {
+      "x": "real, x != 0"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 20,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -1,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "A is twice 1/x. Doubling makes a positive number bigger but a negative number smaller.",
+    "full_explanation": "If x = 1: A is 2 and B is 1, so A wins. If x = −1: A is −2 and B is −1, so B wins. So the answer is D: not enough information."
+  },
+  {
+    "id": "num-0014",
+    "quantity_a": "\\text{the remainder when } n^3 - n \\text{ is divided by } 6",
+    "quantity_b": "0",
+    "condition": "n \\text{ is a whole number and } 0 < n < 1000",
+    "expr_a": "mod(n^3 - n, 6)",
+    "expr_b": "0",
+    "domain": {
+      "n": "integer, 0 < n < 1000"
+    },
+    "correct_answer": "C",
+    "tags": ["number_theory", "expressions"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 25,
+    "shortcut_explanation": "n³ − n is (n − 1) × n × (n + 1): three whole numbers in a row. One is a multiple of 3, and at least one is even.",
+    "full_explanation": "n³ − n = n(n² − 1) = (n − 1)n(n + 1). In any three whole numbers in a row, one is a multiple of 3 and one is even. So the product is a multiple of 2 × 3 = 6. Try n = 4: 3 × 4 × 5 = 60. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "geom-0009",
+    "quantity_a": "\\text{the area of a triangle with base } b \\text{ and height } h",
+    "quantity_b": "\\text{the area of a rectangle } b \\text{ by } \\frac{h}{2}",
+    "condition": "b > 0, h > 0",
+    "expr_a": "b * h / 2",
+    "expr_b": "b * (h / 2)",
+    "domain": {
+      "b": "real, b > 0",
+      "h": "real, h > 0"
+    },
+    "correct_answer": "C",
+    "tags": ["geometry", "fractions"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "A triangle is half of the rectangle around it. Half of b × h is the same as b × half of h.",
+    "full_explanation": "The triangle's area is half of b × h. The rectangle's area is b × (h ÷ 2), which is also half of b × h. Try b = 6, h = 4: both are 12. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0009",
+    "quantity_a": "a",
+    "quantity_b": "c",
+    "condition": "a : b = 2 : 3, b : c = 3 : 4 \\text{ and } a > 0",
+    "expr_a": "a",
+    "expr_b": "2 * a",
+    "domain": {
+      "a": "real, a > 0"
+    },
+    "correct_answer": "B",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Both ratios share b = 3 parts. So a : b : c = 2 : 3 : 4, and c is twice a.",
+    "full_explanation": "a is 2 parts and b is 3 parts. b is also 3 parts compared with c's 4, so the parts are the same size. With positive parts, c's 4 parts beat a's 2 parts. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "root-0014",
+    "quantity_a": "\\sqrt{x^2}",
+    "quantity_b": "x",
+    "condition": "x^3 < x",
+    "expr_a": "sqrt(x^2)",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x^3 < x"
+    },
+    "correct_answer": "D",
+    "tags": ["roots", "absolute_value"],
+    "trap": "principal_root",
+    "difficulty": 5,
+    "target_seconds": 28,
+    "witnesses": [
+      {
+        "x": 0.5,
+        "relation": "C"
+      },
+      {
+        "x": -2,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "x³ < x is true for some positive x and some negative x. Try ½, then −2.",
+    "full_explanation": "If x = ½: x³ = ⅛ is less than ½, and √(x²) = ½, so they are equal. If x = −2: x³ = −8 is less than −2, and √(x²) = 2, which is more than −2. So the answer is D: not enough information."
+  },
+  {
+    "id": "ratio-0010",
+    "quantity_a": "\\frac{a}{b}",
+    "quantity_b": "\\frac{a + 1}{b + 1}",
+    "condition": "a : b = 1 : 1, a \\neq 0, a \\neq -1",
+    "expr_a": "a / a",
+    "expr_b": "(a + 1) / (a + 1)",
+    "domain": {
+      "a": "real, a != 0, a != -1"
+    },
+    "correct_answer": "C",
+    "tags": ["ratios", "fractions"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 22,
+    "shortcut_explanation": "A ratio of 1 : 1 means a and b are the same number. Then both fractions are 1.",
+    "full_explanation": "a : b = 1 : 1 means a = b. So a/b = 1, and (a + 1)/(b + 1) is a number divided by itself, which is also 1. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "dec-0011",
+    "quantity_a": "\\frac{1}{x}",
+    "quantity_b": "x",
+    "condition": "x^2 = 0.25",
+    "expr_a": "1 / x",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x^2 == 0.25"
+    },
+    "correct_answer": "D",
+    "tags": ["decimals", "fractions"],
+    "trap": "even_power",
+    "difficulty": 5,
+    "target_seconds": 25,
+    "witnesses": [
+      {
+        "x": 0.5,
+        "relation": "A"
+      },
+      {
+        "x": -0.5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Two numbers square to 0.25: 0.5 and −0.5. Try both.",
+    "full_explanation": "If x = 0.5: 1/x = 2, which is more than 0.5. If x = −0.5: 1/x = −2, which is less than −0.5. So the answer is D: not enough information."
+  },
+  {
+    "id": "arith-0010",
+    "quantity_a": "\\text{the sum of the whole numbers from } 1 \\text{ to } 20",
+    "quantity_b": "200",
+    "condition": null,
+    "expr_a": "sum(1:20)",
+    "expr_b": "200",
+    "correct_answer": "A",
+    "tags": ["arithmetic"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "Pair 1 with 20, 2 with 19, and so on. Ten pairs of 21 make 210.",
+    "full_explanation": "1 + 20 = 21, 2 + 19 = 21, and so on up to 10 + 11 = 21. That is 10 pairs, each 21, so the total is 210. 210 is more than 200. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "num-0015",
+    "quantity_a": "n",
+    "quantity_b": "2",
+    "condition": "n \\text{ is a positive integer and } 1 < n^2 < 9",
+    "expr_a": "n",
+    "expr_b": "2",
+    "domain": {
+      "n": "integer, n > 0, 1 < n^2 < 9"
+    },
+    "correct_answer": "C",
+    "tags": ["number_theory", "exponents"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "n² must be between 1 and 9, so n is between 1 and 3. The only whole number there is 2.",
+    "full_explanation": "1² = 1 is too small and 3² = 9 is too big. 2² = 4 fits. n is positive, so it can't be −2. That leaves only n = 2. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ineq-0012",
+    "quantity_a": "x + y",
+    "quantity_b": "x - y",
+    "condition": "xy > 0, x > 0",
+    "expr_a": "x + y",
+    "expr_b": "x - y",
+    "domain": {
+      "x": "real, x > 0",
+      "y": "real, x * y > 0"
+    },
+    "correct_answer": "A",
+    "tags": ["inequalities"],
+    "trap": "negative_numbers",
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "xy > 0 means x and y have the same sign. x is positive, so y is positive too.",
+    "full_explanation": "If xy is positive and x is positive, then y must be positive. Adding a positive y gives more than taking it away. Try x = 3, y = 2: 5 and 1. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "exp-0021",
+    "quantity_a": "2^x",
+    "quantity_b": "x^2",
+    "condition": "x \\text{ is an integer and } 2 \\le x \\le 4",
+    "expr_a": "2^x",
+    "expr_b": "x^2",
+    "domain": {
+      "x": "integer, 2 <= x <= 4"
+    },
+    "correct_answer": "D",
+    "tags": ["exponents", "number_theory"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "witnesses": [
+      {
+        "x": 2,
+        "relation": "C"
+      },
+      {
+        "x": 3,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Try every value: x = 2, 3 and 4. They are not all the same.",
+    "full_explanation": "If x = 2: 4 and 4, equal. If x = 3: 8 and 9, so B wins. If x = 4: 16 and 16, equal again. So the answer is D: not enough information."
+  },
+  {
+    "id": "avg-0013",
+    "quantity_a": "\\text{the average of } a \\text{ and } b",
+    "quantity_b": "\\sqrt{ab}",
+    "condition": "a > 0, b > 0, a \\neq b",
+    "expr_a": "(a + b) / 2",
+    "expr_b": "sqrt(a * b)",
+    "domain": {
+      "a": "real, a > 0",
+      "b": "real, b > 0, b != a"
+    },
+    "correct_answer": "A",
+    "tags": ["averages", "roots"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 28,
+    "shortcut_explanation": "Try a = 1, b = 4: the average is 2.5, but √4 = 2. The average wins every time a and b are different.",
+    "full_explanation": "A square can't be negative, and (√a − √b)² isn't 0 because a and b are different. Multiplying it out gives a + b − 2√(ab), so a + b is more than 2√(ab). Halve both sides: the average beats √(ab). So the answer is A: Quantity A is greater."
+  }
+]

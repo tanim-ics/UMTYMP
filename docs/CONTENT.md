@@ -39,6 +39,13 @@ teacher they have ever had: kind, plain and concrete.
 `tests/unit/explanations.test.ts` checks the sentence length, a list of grown-up words and the closing sentence. A
 machine can't judge clarity, so after each batch every shortcut and explanation is also re-read word by word.
 
+**No duplicates (owner, 2026-11-05).** Every question teaches something the bank doesn't already have.
+`tests/unit/duplicates.test.ts` fails on the same question, the same question with A and B swapped, the same
+question with other letters, and two items with identical machine checks. Before a batch is done, also group the
+bank by shape (numbers → N, letters → v) and read every group: the same idea with new numbers counts as a duplicate
+and is replaced. Variants on purpose are fine when the condition changes the lesson (`|x|` vs `x` with `x < 0` is
+not the same question as with no condition).
+
 **Bank balance.** Across a batch, keep each answer near 25% so guessing one letter never pays. Every tag and trap
 should appear at ≥ 3 levels (`docs/SPEC.md`).
 
