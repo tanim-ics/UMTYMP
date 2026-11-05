@@ -4,7 +4,21 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C3, then C4. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; owner review of C1–C3 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C4, then C5. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; owner review of C1–C4 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (batch C4, 2026-11-05):** `content/questions/c4.json`, 50 original items, levels 7 / 11 / 13 / 11 / 8,
+answers A 12 · B 10 · C 12 · D 16 (leaning D as planned). Bank now 220 items: levels 32 / 48 / 56 / 48 / 36, answers
+A 57 · B 54 · C 56 · D 53; all pass `npm run verify` (46,606 value checks). Fills gaps: geometry at level 2, ratios at
+level 1, triangle_inequality at level 4; traps on 14 items, and `integer_assumption`, `even_power`, `fraction_0_1`,
+`absolute_value`, `principal_root` and `negative_numbers` are now on levels 2–5. Written to "Writing for a student",
+then re-read word by word: 18 texts changed (double "So", "3 lots of x + 2" without brackets, "which side of 10 x is",
+"product", three D explanations that never said why you can't tell). **Duplicates:** `duplicates.test.ts` passes; the
+shape groups were read by hand and two items that repeated a lesson were replaced before the first commit
+(x + 0.5 vs 0.5x, like `ineq-0010`/`dec-0010`; the square's area vs perimeter, like `geom-0005`). Kept on purpose:
+`avg-0016` (average vs middle of a < b < c, D) beside `avg-0008` (C when a + c = 2b), and `abs-0014` (|x| vs x when
+x³ > x²) beside the other |x| vs x conditions. New mathjs functions used: `lcm`, `isPrime` (D witnesses only).
+Mutation: six planted wrong answers or examples each failed. Task check 571 passed; full suite 119 passed.
+**For the owner:** the C4 review sheet.
 
 **Handoff (duplicate check, 2026-11-05):** the owner asked that the bank have no duplicates. Machine check across all
 170: no exact, swapped (A↔B), renamed (x↔y) or same-machine-check pairs. Same-shape groups (numbers → N, letters →
