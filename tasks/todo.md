@@ -4,7 +4,15 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Checkpoint E (owner reviews the look on a laptop and an iPad), then Task 23. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05.
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** Task 23 (offline). Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05.
+
+**Handoff (Checkpoint E prep, 2026-11-05):** opening the app from another device at a plain-IP address
+(`http://10.10.3.36:5173`) is not a secure context, so `crypto.randomUUID` is missing and **Start my adventure did
+nothing, with no error shown**. Every test ran on localhost, so none caught it. Fixed: `newId()` (`src/data/ids.ts`,
+`getRandomValues`, RFC 9562 v4) for profile, import and session ids. `tests/unit/ids.test.ts` (4; the profile case
+failed before the fix). Seen working over the IP in WebKit. Still open: a failed save shows no message to the student.
+Screens for the owner's review were taken at laptop (1280×800, Chromium) and iPad (810×1080, WebKit) sizes, light and
+dark. Committed with the Checkpoint E approval.
 
 **Handoff (after Task 22):** `tests/e2e/a11y.spec.ts` walks every screen (Welcome, home, who's playing, manage,
 delete confirmation, Settings, reset confirmation, castle map empty and after a mock, Grand Trial with and without a
@@ -402,7 +410,7 @@ Scaffold a Vite + React + TypeScript app that runs only through Docker, with des
 - **Depends on:** 21 · **Files:** `tests/e2e/a11y.spec.ts`, fixes in touched components · **Size:** M
 
 ### Checkpoint E — after tasks 19–22
-- [ ] Owner reviews the look on a laptop and an iPad; commit
+- [x] Owner reviews the look on a laptop and an iPad; commit (approved by owner 2026-11-05)
 
 ---
 

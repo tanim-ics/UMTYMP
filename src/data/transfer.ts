@@ -5,6 +5,7 @@
 import { z } from 'zod';
 import { ANSWERS, LEVELS, TAGS, TRAPS } from '../core/questions/vocabulary.ts';
 import type { AttemptRow, ProfileRow, SessionRow, UmtympDb } from './db.ts';
+import { newId } from './ids.ts';
 import { HOUSES, MASCOT_COLORS, validateName } from './profiles.ts';
 
 export const EXPORT_APP = 'comparia-academy';
@@ -188,20 +189,20 @@ export function parseExport(
 /** Adds the file's student as a new profile, with new session ids, in one transaction. */
 export async function importProfile(db: UmtympDb, file: ExportFile): Promise<ProfileRow> {
   const profile: ProfileRow = {
-    id: crypto.randomUUID(),
+    id: newId(),
     displayName: file.profile.displayName,
     house: file.profile.house as ProfileRow['house'],
     mascotColor: file.profile.mascotColor,
   };
-  const newId = new Map(file.sessions.map((s) => [s.id, crypto.randomUUID()]));
+  const sessionIds = new Map(file.sessions.map((s) => [s.id, newId()]));
   const sessions: SessionRow[] = file.sessions.map((s) => ({
     ...s,
-    id: newId.get(s.id) as string,
+    id: sessionIds.get(s.id) as string,
     profileId: profile.id,
   }));
   const attempts: AttemptRow[] = file.attempts.map((a) => ({
     ...a,
-    sessionId: newId.get(a.sessionId) as string,
+    sessionId: sessionIds.get(a.sessionId) as string,
   }));
   await db.transaction('rw', db.profiles, db.sessions, db.attempts, async () => {
     await db.profiles.add(profile);

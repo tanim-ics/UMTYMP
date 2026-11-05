@@ -1,6 +1,7 @@
 // Student profiles. Privacy (CLAUDE.md §1, docs/SPEC.md S7): a display name, a house and a mascot colour, nothing
 // else. No passwords in Release 1: a parent manages profiles on the device.
 import type { House, ProfileRow, UmtympDb } from './db.ts';
+import { newId } from './ids.ts';
 
 export const HOUSES: readonly { id: House; name: string; mascot: string }[] = [
   { id: 'owlcrest', name: 'Owlcrest', mascot: 'owl' },
@@ -73,7 +74,7 @@ export function createProfileRepo(db: UmtympDb) {
     }): Promise<ProfileRow> {
       const checked = validateProfile(input);
       if (!checked.ok) throw new Error(checked.error);
-      const row: ProfileRow = { id: crypto.randomUUID(), ...checked.value };
+      const row: ProfileRow = { id: newId(), ...checked.value };
       await db.transaction('rw', db.profiles, db.sessions, async () => {
         const first = (await db.profiles.count()) === 0;
         await db.profiles.add(row);
