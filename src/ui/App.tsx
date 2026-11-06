@@ -17,7 +17,8 @@ import { Spellbook } from './screens/Spellbook.tsx';
 import { Art } from './components/Art.tsx';
 
 interface AppProps {
-  bank: readonly QuestionItem[];
+  /** Null while the bank is still loading: it arrives after the first screen (src/ui/bank.ts). */
+  bank: readonly QuestionItem[] | null;
   store: SessionStoreApi;
   /** Fixed in tests and the dev hooks; otherwise each trial gets a fresh random seed. */
   seed?: number;
@@ -38,11 +39,22 @@ interface AppProps {
   download?: (fileName: string, text: string) => void;
 }
 
+/** Everything past "Who's playing?" needs the questions. */
+type MainProps = Omit<AppProps, 'bank'> & { bank: readonly QuestionItem[] };
+
 export function App(props: AppProps) {
-  return props.data === undefined ? (
-    <Main {...props} />
-  ) : (
-    <ProfileGate {...props} data={props.data} />
+  if (props.data !== undefined) return <ProfileGate {...props} data={props.data} />;
+  return props.bank === null ? <Loading /> : <Main {...props} bank={props.bank} />;
+}
+
+/** The short wait between picking a student and the questions arriving; usually too quick to read. */
+function Loading() {
+  return (
+    <main className={styles.screen} aria-label="Loading">
+      <p role="status" data-testid="app.loading">
+        Getting the questions ready…
+      </p>
+    </main>
   );
 }
 
@@ -52,6 +64,8 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
   const profileId = useStore(store, (s) => s.profileId);
   const [profiles, setProfiles] = useState<ProfileRow[] | null>(null);
   const [settings, setSettings] = useState(false);
+  // A student picked before the bank arrived; chosen for real once it does, so their unfinished mock resumes.
+  const [waiting, setWaiting] = useState<string | null>(null);
   // A single profile is picked automatically on the first load only, so "Switch student" still shows the list.
   const firstLoad = useRef(true);
 
@@ -62,6 +76,10 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
 
   const choose = useCallback(
     async (id: string) => {
+      if (bank === null) {
+        setWaiting(id);
+        return;
+      }
       store.getState().setProfile(id);
       const saved = await data.attempts.loadActive(bank, id).catch(() => null);
       if (saved === null) return;
@@ -71,6 +89,12 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
     },
     [store, data, bank],
   );
+
+  useEffect(() => {
+    if (bank === null || waiting === null) return;
+    setWaiting(null);
+    void choose(waiting);
+  }, [bank, waiting, choose]);
 
   useEffect(() => {
     if (profiles === null || !firstLoad.current) return;
@@ -113,6 +137,7 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
       />
     );
   }
+  if (waiting !== null) return <Loading />;
   const player = profiles.find((p) => p.id === profileId);
   if (profileId === null || player === undefined) {
     return (
@@ -125,9 +150,11 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
       />
     );
   }
+  if (bank === null) return <Loading />;
   return (
     <Main
       {...props}
+      bank={bank}
       history={history}
       player={player}
       onSwitch={() => store.getState().setProfile(null)}
@@ -135,7 +162,7 @@ function ProfileGate(props: AppProps & { data: NonNullable<AppProps['data']> }) 
   );
 }
 
-function Main(props: AppProps & { player?: ProfileRow; onSwitch?: () => void }) {
+function Main(props: MainProps & { player?: ProfileRow; onSwitch?: () => void }) {
   const hasTrial = useStore(props.store, (s) => s.trial !== null);
   const [spellbook, setSpellbook] = useState(false);
   const [castle, setCastle] = useState(false);
@@ -180,7 +207,7 @@ function Home({
   onCastle,
   player,
   onSwitch,
-}: AppProps & {
+}: MainProps & {
   onSpellbook: () => void;
   onCastle: () => void;
   player?: ProfileRow;

@@ -422,7 +422,7 @@ every control (once per radio group) and a solid ring of at least 2 px on each.
 `vite-plugin-pwa` (ADR 0001) adds a web manifest (name "Comparia Academy", short name "Comparia", `start_url` `/`,
 standalone, icons 192, 512 and a maskable 512) and a Workbox service worker in **production builds only**; dev has
 none. On the first visit it precaches every `js, css, html, svg, png, woff2` file in the build: the code, the question
-bank (bundled in the JS), the art, the app fonts and KaTeX's woff2 fonts. `clientsClaim` makes the first page
+bank (one JS chunk per bank file), the art, the app fonts and KaTeX's woff2 fonts. `clientsClaim` makes the first page
 controlled at once, so the app works offline from then on. `registerType: 'prompt'` with no prompt shown: a new
 version waits until every tab of the app is closed, so an update never reloads a page during a mock. Unknown paths
 fall back to `index.html`. Service workers need a secure context (https or localhost): from an iPad at a plain-IP
@@ -430,6 +430,14 @@ address the app runs but doesn't install or cache. `index.html` adds `theme-colo
 Safari's home-screen icon).
 
 ## Performance and security headers (`docker/`, `vite.config.ts`, Task 24)
+
+**Question bank loading (`src/ui/bank.ts`, `src/main.tsx`, after C6).** Each `content/questions/*.json` file is its
+own chunk, not part of the entry chunk, and `fetchBank()` loads them 300 ms after the first screen mounts, so the
+bank never shares the slow connection with the first paint. `App` takes `bank: QuestionItem[] | null`; null means
+still loading. "Who's playing?", Welcome and Settings never wait for it. A student picked before it arrives (by tap or
+automatically) sees `app.loading` ("Getting the questions ready…") and is chosen for real once it does, so an
+unfinished mock still resumes. Without storage, home waits on the same note. Dev test hooks install once the bank
+has loaded.
 
 **Headers.** `docker/security-headers.conf` is the one list: CSP `default-src 'self'; script-src 'self';
 style-src 'self' 'unsafe-inline'` (KaTeX positions glyphs with style attributes) `; img-src 'self'; font-src 'self';

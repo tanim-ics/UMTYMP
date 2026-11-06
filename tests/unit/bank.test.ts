@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { loadBank } from '../../src/ui/bank.ts';
+import { fetchBank, loadBank } from '../../src/ui/bank.ts';
 
 describe('loadBank', () => {
-  it('loads every item of the real bank files', () => {
-    const bank = loadBank();
+  it('fetches every item of the real bank files', async () => {
+    const bank = await fetchBank();
     expect(bank.length).toBeGreaterThanOrEqual(20);
     expect(bank.map((i) => i.id)).toContain('frac-0001');
   });

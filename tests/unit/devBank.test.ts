@@ -3,11 +3,12 @@ import { EXAM } from '../../src/core/config/exam.ts';
 import { buildMock } from '../../src/core/questions/build.ts';
 import { questionItemSchema } from '../../src/core/questions/schema.ts';
 import { repeatBank } from '../../src/dev/devBank.ts';
-import { loadBank } from '../../src/ui/bank.ts';
+import { fetchBank } from '../../src/ui/bank.ts';
+
+// Top-level await: vitest runs test files as ES modules.
+const seed = await fetchBank();
 
 describe('repeatBank (dev only)', () => {
-  const seed = loadBank();
-
   it('makes the given number of copies with unique, schema-valid ids', () => {
     const padded = repeatBank(seed, 4);
     expect(padded).toHaveLength(seed.length * 4);
