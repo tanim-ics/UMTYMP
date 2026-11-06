@@ -134,6 +134,16 @@ describe('castle map: filled', () => {
     fireEvent.click(await screen.findByTestId('castle.back'));
     expect(onBack).toHaveBeenCalledOnce();
   });
+
+  it('Back is also above the heading, so a long map needs no scrolling to leave', async () => {
+    const { onBack } = renderMap([first]);
+    const top = await screen.findByTestId('castle.back-top');
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(top.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(top.textContent).toBe(screen.getByTestId('castle.back').textContent);
+    fireEvent.click(top);
+    expect(onBack).toHaveBeenCalledOnce();
+  });
 });
 
 describe('castle map from home', () => {

@@ -6,6 +6,14 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
 `github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C6, then C7. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; C5 written, verified and committed 2026-11-06; C6 written, verified and committed 2026-11-06; owner review of C1–C6 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
 
+**Handoff (Back at top and bottom, 2026-11-06):** Owner asked for Back buttons at both the top and the bottom.
+Added a top copy above the heading on Settings, Castle map, Spellbook, Review answers and Results (`*.back-top`,
+`result.home-top` / `result.back-top`; style `.topBack` in `GrandTrial.module.css`); the bottom buttons are unchanged.
+The trial's previous-question Back is untouched. 6 new unit tests (failed before the change). Task check 582 tests
+green, coverage 98.96 / 95.96; E2E 119 passed after updating the 4 `castle-empty` screenshots (only change: the new
+top button). Docs: `docs/CONTRACTS.md` "Back buttons at the top and the bottom". Committed 2026-11-06. `question-pdfs/`
+(review PDFs of all batches) is untracked on purpose.
+
 **Handoff (bank loading fix, 2026-11-06):** CI failed on C6 (`dbec4bd`): Lighthouse LCP 2551 ms over the 2500 ms
 budget. Cause: every bank file sat in the entry chunk (169 kB gzip, +7 kB per batch; LCP 2101 → 2251 → 2551 ms over
 the batches). Fix: one chunk per bank file, fetched 300 ms after the first screen mounts (`src/ui/bank.ts`

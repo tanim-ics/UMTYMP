@@ -376,7 +376,7 @@ towers(history) → { id, name, unlocked, evidence, howTo }[]                   
   Grand Trial"). Nothing reads dates, so a break never locks a tower (tested).
 - Home → **Castle map** (`home.castle`). Empty state (`castle.empty`) when there is no finished session: says to
   start with a Grand Trial and offers `castle.start`; its results lead home. Test ids: `castle.tower`
-  (`data-unlocked`), `castle.trend`, `castle.topics`, `castle.levels`, `castle.back`. Tables scroll sideways on a
+  (`data-unlocked`), `castle.trend`, `castle.topics`, `castle.levels`, `castle.back` (and `castle.back-top`, see below). Tables scroll sideways on a
   phone instead of widening the page.
 
 ## Theme (`src/ui/theme/tokens.css`, `src/ui/theme/motion.ts`)
@@ -416,6 +416,14 @@ readers. `tests/e2e/a11y.spec.ts` checks every screen (both themes, Chromium and
 `<screen>.<control>` test id and a 48 px target on every control (a radio's label is its target), Tab reaching
 every control (once per radio group) and a solid ring of at least 2 px on each.
 
+
+## Back buttons at the top and the bottom (owner request, 2026-11-06)
+
+Every screen you leave with a Back button has it twice: above the heading and at the end, so a long screen can be
+left without scrolling. The bottom one keeps its old test id; the top one adds `-top`: `settings.back-top`,
+`castle.back-top`, `spellbook.back-top`, `review.back-top`, and on Results `result.home-top` or `result.back-top`
+(after a drill started from a mock). The top copy uses `.topBack` (left-aligned, not full width). The trial's own
+"← Back" (previous question) is not a leave-screen button and stays where it is.
 
 ## Offline and install (`vite.config.ts`, Task 23)
 

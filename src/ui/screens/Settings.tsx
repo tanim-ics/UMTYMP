@@ -40,6 +40,14 @@ export function Settings(props: {
 
   return (
     <main className={styles.screen} aria-label="Settings and data">
+      <button
+        type="button"
+        className={styles.topBack}
+        onClick={onBack}
+        data-testid="settings.back-top"
+      >
+        ← Back
+      </button>
       <h1>Settings &amp; data</h1>
       <p>Everything stays in this browser. Use a file to move a student to another device.</p>
 

@@ -37,6 +37,14 @@ export function Review({ trial, onBack }: { trial: TrialState; onBack: () => voi
 
   return (
     <main className={styles.screen} aria-label="Review answers">
+      <button
+        type="button"
+        className={styles.topBack}
+        onClick={onBack}
+        data-testid="review.back-top"
+      >
+        ← Back to results
+      </button>
       <h1>Review answers</h1>
       <div className={styles.nav} role="group" aria-label="Show">
         {REVIEW_FILTERS.map((f) => (

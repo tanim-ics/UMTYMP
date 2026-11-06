@@ -82,6 +82,16 @@ describe('results screen', () => {
     fireEvent.click(screen.getByTestId('result.home'));
     expect(store.getState().trial).toBeNull();
   });
+
+  it('Back to start is also at the top, above the heading', () => {
+    const store = finishedTrial();
+    const top = screen.getByTestId('result.home-top');
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(top.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(top.textContent).toBe('Back to start');
+    fireEvent.click(top);
+    expect(store.getState().trial).toBeNull();
+  });
 });
 
 describe('review screen', () => {
@@ -169,6 +179,15 @@ describe('review screen', () => {
   it('Back to results leaves the review', () => {
     openReview();
     fireEvent.click(screen.getByTestId('review.back'));
+    expect(screen.getByTestId('result.score')).toBeTruthy();
+  });
+
+  it('Back to results is also at the top, above the heading', () => {
+    openReview();
+    const top = screen.getByTestId('review.back-top');
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(top.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    fireEvent.click(top);
     expect(screen.getByTestId('result.score')).toBeTruthy();
   });
 });

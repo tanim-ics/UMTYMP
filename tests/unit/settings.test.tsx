@@ -154,4 +154,14 @@ describe('settings: reset all', () => {
     fireEvent.click(screen.getByTestId('settings.back'));
     expect(await screen.findByRole('heading', { name: "Who's playing?" })).toBeTruthy();
   });
+
+  it('Back at the top, above the heading, also returns to the student list', async () => {
+    await setup();
+    await openSettings();
+    const top = screen.getByTestId('settings.back-top');
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(top.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    fireEvent.click(top);
+    expect(await screen.findByRole('heading', { name: "Who's playing?" })).toBeTruthy();
+  });
 });

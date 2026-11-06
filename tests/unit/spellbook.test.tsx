@@ -88,6 +88,16 @@ describe('Spellbook: choosing a set', () => {
     expect(screen.getByTestId('home.start')).toBeTruthy();
     expect(store.getState().trial).toBeNull();
   });
+
+  it('Back at the top, above the heading, also returns home', () => {
+    const { store } = openSpellbook();
+    const top = screen.getByTestId('spellbook.back-top');
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(top.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    fireEvent.click(top);
+    expect(screen.getByTestId('home.start')).toBeTruthy();
+    expect(store.getState().trial).toBeNull();
+  });
 });
 
 describe('Spellbook: running the set', () => {

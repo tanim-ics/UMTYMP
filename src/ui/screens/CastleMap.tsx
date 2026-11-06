@@ -55,6 +55,14 @@ export function CastleMap(props: {
 
   return (
     <main className={styles.screen} aria-label="Castle map">
+      <button
+        type="button"
+        className={styles.topBack}
+        onClick={onBack}
+        data-testid="castle.back-top"
+      >
+        ← Back
+      </button>
       <h1>Castle map</h1>
       <Art name="castle-map" size="banner" testId="castle.art" />
       {empty && (

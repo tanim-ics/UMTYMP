@@ -137,6 +137,12 @@ textarea:focus-visible {
   text-align: center;
 }
 
+/* The copy of a screen's Back button above its heading, so a long screen can be left without scrolling down. */
+.topBack {
+  composes: button;
+  justify-self: start;
+}
+
 .reviewList {
   list-style: none;
   margin: 0;

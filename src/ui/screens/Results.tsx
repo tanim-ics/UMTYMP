@@ -30,6 +30,25 @@ export function Results(props: {
   const s = resultSummary(trial.events);
   return (
     <main className={`${styles.screen} ${styles.result}`} aria-label="Results">
+      {hasMockToReturnTo ? (
+        <button
+          type="button"
+          className={styles.topBack}
+          onClick={store.getState().backToResults}
+          data-testid="result.back-top"
+        >
+          Back to trial results
+        </button>
+      ) : (
+        <button
+          type="button"
+          className={styles.topBack}
+          onClick={store.getState().reset}
+          data-testid="result.home-top"
+        >
+          Back to start
+        </button>
+      )}
       {/* The only celebration in the app: results come after the clock has stopped (docs/SPEC.md, calm tests). */}
       <div className={styles.celebrate} aria-hidden="true" data-testid="result.celebrate">
         <span className={styles.star} />

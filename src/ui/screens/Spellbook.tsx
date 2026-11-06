@@ -54,6 +54,14 @@ export function Spellbook(props: {
 
   return (
     <main className={styles.screen} aria-label="Spellbook">
+      <button
+        type="button"
+        className={styles.topBack}
+        onClick={onClose}
+        data-testid="spellbook.back-top"
+      >
+        ← Back
+      </button>
       <h1 className={styles.titled}>
         <Art name="spellbook" size="medium" testId="spellbook.art" />
         Spellbook practice

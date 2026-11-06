@@ -193,6 +193,18 @@ describe('potion drill', () => {
     await waitFor(() => expect(screen.getByTestId('coach.strength')).toBeTruthy());
   });
 
+  it('Back to trial results is also at the top of the drill result', async () => {
+    const { s } = await startDrill();
+    for (let i = 0; i < 6; i++) {
+      key('2');
+      key('Enter');
+    }
+    fireEvent.click(screen.getByTestId('trial.finish'));
+    expect(screen.queryByTestId('result.home-top')).toBeNull();
+    fireEvent.click(screen.getByTestId('result.back-top'));
+    expect(s().trial?.mode).toBe('mock');
+  });
+
   it('a drill result has no coach card of its own', async () => {
     await startDrill();
     fireEvent.click(screen.getByTestId('trial.finish'));
