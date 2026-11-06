@@ -1,0 +1,971 @@
+[
+  {
+    "id": "ratio-0019",
+    "quantity_a": "\\text{the number of red beads}",
+    "quantity_b": "6",
+    "condition": "\\text{a string of } 20 \\text{ beads has } 1 \\text{ red bead for every } 3 \\text{ blue beads}",
+    "expr_a": "20 / (1 + 3)",
+    "expr_b": "6",
+    "correct_answer": "B",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "1 red and 3 blue make a group of 4 beads. 20 beads make 5 groups, so there are 5 red beads.",
+    "full_explanation": "Each group of 4 beads has 1 red bead and 3 blue beads. 20 ÷ 4 = 5 groups, so there are 5 red beads. Watch out: a group is 4 beads, not 3. 5 is less than 6. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "avg-0018",
+    "quantity_a": "\\text{the average of } 1 \\text{ and } 99",
+    "quantity_b": "\\text{the average of } 40 \\text{ and } 60",
+    "condition": null,
+    "expr_a": "(1 + 99) / 2",
+    "expr_b": "(40 + 60) / 2",
+    "correct_answer": "C",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "The average of two numbers is halfway between them. Both pairs add up to 100, so both averages are 50.",
+    "full_explanation": "To average two numbers, add them and split the total in half. 1 + 99 = 100 and 40 + 60 = 100. Half of 100 is 50 both times. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "geom-0018",
+    "quantity_a": "\\text{the sum of the angles of a rectangle}",
+    "quantity_b": "\\text{the sum of the angles of a triangle}",
+    "condition": null,
+    "expr_a": "4 * 90",
+    "expr_b": "180",
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "A rectangle has 4 right angles: 4 × 90 = 360. A triangle's angles always add up to 180.",
+    "full_explanation": "Every corner of a rectangle is a right angle of 90 degrees, and there are 4 corners. 4 × 90 = 360 degrees. The three angles of any triangle add up to 180 degrees. 360 is more than 180. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "arith-0019",
+    "quantity_a": "50 \\times 18",
+    "quantity_b": "100 \\times 9",
+    "condition": null,
+    "expr_a": "50 * 18",
+    "expr_b": "100 * 9",
+    "correct_answer": "C",
+    "tags": ["arithmetic"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "Double 50 and halve 18. 50 × 18 becomes 100 × 9, and the result stays the same.",
+    "full_explanation": "Doubling one number and halving the other keeps the result the same. 50 × 2 = 100 and 18 ÷ 2 = 9. Both sides are 900. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "dec-0020",
+    "quantity_a": "1.5 + 1.5 + 1.5",
+    "quantity_b": "4",
+    "condition": null,
+    "expr_a": "1.5 + 1.5 + 1.5",
+    "expr_b": "4",
+    "correct_answer": "A",
+    "tags": ["decimals"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "Two 1.5s make 3. One more 1.5 makes 4.5.",
+    "full_explanation": "Add the whole parts and the halves on their own. 1 + 1 + 1 = 3, and three halves make 1.5. 3 + 1.5 = 4.5, which is more than 4. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0025",
+    "quantity_a": "0.5\\% \\text{ of } 100",
+    "quantity_b": "1",
+    "condition": null,
+    "expr_a": "0.005 * 100",
+    "expr_b": "1",
+    "correct_answer": "B",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "1% of 100 is 1. 0.5% is only half of 1%, so it gives ½.",
+    "full_explanation": "Percent means out of 100, so 1% of 100 is exactly 1. 0.5% is half of 1%. So 0.5% of 100 is half of 1, which is ½. Watch out: 0.5% means half of one percent. It is not 5%. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "num-0023",
+    "quantity_a": "\\text{the number of prime numbers less than } 10",
+    "quantity_b": "5",
+    "condition": null,
+    "expr_a": "sum(isPrime(1:9))",
+    "expr_b": "5",
+    "correct_answer": "B",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "The primes below 10 are 2, 3, 5 and 7. That makes 4.",
+    "full_explanation": "A prime number can only be divided evenly by 1 and itself. Below 10 the primes are 2, 3, 5 and 7. 1 is not prime, and 9 = 3 × 3 is not either. 4 is less than 5. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "exp-0032",
+    "quantity_a": "(\\frac{1}{2})^3",
+    "quantity_b": "\\frac{1}{6}",
+    "condition": null,
+    "expr_a": "(1/2)^3",
+    "expr_b": "1/6",
+    "correct_answer": "B",
+    "tags": ["exponents", "fractions"],
+    "trap": "fraction_0_1",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Halve three times: ½ × ½ × ½ = ⅛. An eighth is smaller than a sixth.",
+    "full_explanation": "(½)³ means ½ × ½ × ½. That is 1/8, because 2 × 2 × 2 = 8. Powers of a number between 0 and 1 get smaller. 1/8 is less than 1/6, because cutting into 8 equal parts makes smaller pieces than cutting into 6. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "frac-0025",
+    "quantity_a": "\\frac{2}{3} \\times \\frac{3}{4}",
+    "quantity_b": "\\frac{1}{2}",
+    "condition": null,
+    "expr_a": "2/3 * 3/4",
+    "expr_b": "1/2",
+    "correct_answer": "C",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "The 3 on top cancels the 3 on the bottom. That leaves 2/4, which is ½.",
+    "full_explanation": "Multiply the tops and the bottoms: 2 × 3 = 6 and 3 × 4 = 12. 6/12 is one half. A quicker way: the two 3s cancel, because 3 ÷ 3 = 1. That leaves 2/4 = ½. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "dec-0021",
+    "quantity_a": "\\text{the number of tenths in } 2.5",
+    "quantity_b": "20",
+    "condition": null,
+    "expr_a": "2.5 * 10",
+    "expr_b": "20",
+    "correct_answer": "A",
+    "tags": ["decimals"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "Each whole has 10 tenths. 2 wholes have 20 tenths, and 0.5 adds 5 more: 25.",
+    "full_explanation": "There are 10 tenths in 1, so there are 20 tenths in 2. The 0.5 is 5 more tenths. 20 + 5 = 25, which is more than 20. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0026",
+    "quantity_a": "\\text{the number of questions missed on a test of } 40 \\text{ questions, with a score of } 90\\%",
+    "quantity_b": "5",
+    "condition": null,
+    "expr_a": "(100 - 90) / 100 * 40",
+    "expr_b": "5",
+    "correct_answer": "B",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "A score of 90% means 10% were missed. 10% of 40 is 4.",
+    "full_explanation": "If 90% of the questions are right, the other 10% are missed. 10% of 40 is 40 ÷ 10 = 4. 4 is less than 5. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "pct-0027",
+    "quantity_a": "\\text{the price before the discount}",
+    "quantity_b": "48",
+    "condition": "\\text{after a } 20\\% \\text{ discount, a toy costs } 40",
+    "expr_a": "40 / 0.8",
+    "expr_b": "48",
+    "correct_answer": "A",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 15,
+    "shortcut_explanation": "40 is 80% of the old price. So 10% of the old price is 5, and 100% is 50.",
+    "full_explanation": "After a 20% discount you pay 80% of the old price, so 40 is 80% of it. Then 10% of the old price is 40 ÷ 8 = 5. The full price is 10 × 5 = 50. Watch out: the 20% was taken off the old price, not off 40, so adding 20% of 40 to get 48 doesn't work. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "avg-0019",
+    "quantity_a": "\\text{the average after every number is doubled}",
+    "quantity_b": "20",
+    "condition": "\\text{a list of numbers has an average of } 10",
+    "expr_a": "2 * 10",
+    "expr_b": "20",
+    "correct_answer": "C",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "If every number doubles, the total doubles too. So the average doubles: 2 × 10 = 20.",
+    "full_explanation": "Try a list like 8 and 12, with an average of 10. Doubled, it is 16 and 24, with an average of 20. Doubling every number doubles the total, and the count stays the same. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0020",
+    "quantity_a": "\\text{the real distance between the towns, in km}",
+    "quantity_b": "35",
+    "condition": "\\text{on a map, } 1 \\text{ cm stands for } 5 \\text{ km, and two towns are } 6 \\text{ cm apart}",
+    "expr_a": "6 * 5",
+    "expr_b": "35",
+    "correct_answer": "B",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "Each cm on the map is 5 km. 6 cm is 6 × 5 = 30 km.",
+    "full_explanation": "A map shrinks every distance the same way. 1 cm on the map is 5 km in real life. So 6 cm is 6 × 5 = 30 km. 30 is less than 35. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "abs-0017",
+    "quantity_a": "|x| + 1",
+    "quantity_b": "0",
+    "condition": null,
+    "expr_a": "abs(x) + 1",
+    "expr_b": "0",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "A",
+    "tags": ["absolute_value"],
+    "trap": "absolute_value",
+    "difficulty": 2,
+    "target_seconds": 10,
+    "shortcut_explanation": "|x| is a distance, so it is never negative. Adding 1 makes it at least 1.",
+    "full_explanation": "Try x = −3: |−3| + 1 = 3 + 1 = 4. Try x = 0: 0 + 1 = 1. |x| is never below 0, so |x| + 1 is always at least 1, which beats 0. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "expr-0016",
+    "quantity_a": "5 - (x - 2)",
+    "quantity_b": "7 - x",
+    "condition": null,
+    "expr_a": "5 - (x - 2)",
+    "expr_b": "7 - x",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "C",
+    "tags": ["expressions"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "A minus sign before brackets flips every sign inside. 5 − (x − 2) = 5 − x + 2 = 7 − x.",
+    "full_explanation": "Taking away (x − 2) means taking away x and then giving back 2. So 5 − (x − 2) = 5 − x + 2. That is 7 − x, the same as B. Try x = 1: 5 − (−1) = 6, and 7 − 1 = 6. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "geom-0019",
+    "quantity_a": "x",
+    "quantity_b": "90",
+    "condition": "x \\text{ is one angle of a triangle, in degrees}",
+    "expr_a": "x",
+    "expr_b": "90",
+    "domain": {
+      "x": "real, 0 < x < 180"
+    },
+    "correct_answer": "D",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "witnesses": [
+      {
+        "x": 120,
+        "relation": "A"
+      },
+      {
+        "x": 60,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "A triangle can have one wide angle, like 120°. It can also have only small angles, like 60°, 60° and 60°.",
+    "full_explanation": "The angles of a triangle add up to 180 degrees. One angle could be 120, with 30 and 30 for the others; then A wins. Or all three could be 60; then B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "root-0022",
+    "quantity_a": "\\sqrt{x}",
+    "quantity_b": "\\sqrt{2x}",
+    "condition": "x \\ge 0",
+    "expr_a": "sqrt(x)",
+    "expr_b": "sqrt(2 * x)",
+    "domain": {
+      "x": "real, x >= 0"
+    },
+    "correct_answer": "D",
+    "tags": ["roots"],
+    "trap": "zero",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "witnesses": [
+      {
+        "x": 0,
+        "relation": "C"
+      },
+      {
+        "x": 2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test 0: both roots are 0. Test 2: √2 is less than √4 = 2.",
+    "full_explanation": "If x = 0, both sides are √0 = 0, a tie. If x = 2, A is √2, about 1.4, and B is √4 = 2, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "num-0024",
+    "quantity_a": "\\text{the number of even numbers from } 1 \\text{ to } n",
+    "quantity_b": "\\text{the number of odd numbers from } 1 \\text{ to } n",
+    "condition": "n \\text{ is a whole number and } n > 1",
+    "expr_a": "floor(n / 2)",
+    "expr_b": "ceil(n / 2)",
+    "domain": {
+      "n": "integer, n > 1"
+    },
+    "correct_answer": "D",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "n": 4,
+        "relation": "C"
+      },
+      {
+        "n": 5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test an even n and an odd n. From 1 to 4 there are 2 of each, but from 1 to 5 there are 3 odd numbers.",
+    "full_explanation": "From 1 to 4, the even numbers are 2 and 4, and the odd ones are 1 and 3: a tie. From 1 to 5, the odd numbers 1, 3 and 5 win. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "abs-0018",
+    "quantity_a": "|x| \\times |y|",
+    "quantity_b": "|xy|",
+    "condition": "x < 0 \\text{ and } y > 0",
+    "expr_a": "abs(x) * abs(y)",
+    "expr_b": "abs(x * y)",
+    "domain": {
+      "x": "real, x < 0",
+      "y": "real, y > 0"
+    },
+    "correct_answer": "C",
+    "tags": ["absolute_value"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Absolute value drops the sign, before or after you multiply. Try x = −2 and y = 3: 2 × 3 = 6, and |−6| = 6.",
+    "full_explanation": "|x| × |y| drops the signs first and then multiplies. |xy| multiplies first and then drops the sign. Either way you get the same size, so the two sides are always equal. Try x = −2 and y = 3: |−2| × |3| = 6, and |−6| = 6. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0021",
+    "quantity_a": "\\text{the hours } 2x \\text{ workers need for the same job}",
+    "quantity_b": "6",
+    "condition": "x \\text{ workers finish a job in } 12 \\text{ hours, all working at the same speed}",
+    "expr_a": "12 * x / (2 * x)",
+    "expr_b": "6",
+    "domain": {
+      "x": "integer, x >= 1"
+    },
+    "correct_answer": "C",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Twice as many workers do the job in half the time. Half of 12 hours is 6.",
+    "full_explanation": "Doubling the workers doubles the work done each hour. So the job takes half as long: 12 ÷ 2 = 6 hours. Watch out: more workers means less time, not more. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "avg-0020",
+    "quantity_a": "\\text{the new average}",
+    "quantity_b": "13",
+    "condition": "\\text{the average of } 4 \\text{ numbers is } 10, \\text{ and one number changes from } 6 \\text{ to } 14",
+    "expr_a": "(4 * 10 + 14 - 6) / 4",
+    "expr_b": "13",
+    "correct_answer": "B",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "The total goes up by 14 − 6 = 8. Shared by 4 numbers, the average goes up by 2, to 12.",
+    "full_explanation": "The 4 numbers add up to 4 × 10 = 40. Changing 6 to 14 adds 8, so the new total is 48. 48 ÷ 4 = 12, which is less than 13. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "dec-0022",
+    "quantity_a": "x",
+    "quantity_b": "\\text{the whole number nearest to } x",
+    "condition": "2 < x < 3",
+    "expr_a": "x",
+    "expr_b": "round(x)",
+    "domain": {
+      "x": "real, 2 < x < 3"
+    },
+    "correct_answer": "D",
+    "tags": ["decimals"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "witnesses": [
+      {
+        "x": 2.2,
+        "relation": "A"
+      },
+      {
+        "x": 2.7,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test 2.2 and 2.7. 2.2 rounds down to 2, but 2.7 rounds up to 3.",
+    "full_explanation": "If x = 2.2, the nearest whole number is 2, so A is bigger. If x = 2.7, the nearest whole number is 3, so B is bigger. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "exp-0033",
+    "quantity_a": "2^x",
+    "quantity_b": "2^{x + 1}",
+    "condition": "x \\text{ is a whole number from } 1 \\text{ to } 20",
+    "expr_a": "2^x",
+    "expr_b": "2^(x + 1)",
+    "domain": {
+      "x": "integer, 1 <= x <= 20"
+    },
+    "correct_answer": "B",
+    "tags": ["exponents"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "2ˣ⁺¹ has one more 2 multiplied in. So it is always double 2ˣ.",
+    "full_explanation": "Try x = 3: 2³ = 8 and 2⁴ = 16. 2ˣ⁺¹ has one more 2 multiplied in, so B is always double A. Doubling a positive number makes it bigger. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "frac-0026",
+    "quantity_a": "\\frac{1}{x}",
+    "quantity_b": "\\frac{1}{x + 1}",
+    "condition": "x \\neq 0, x \\neq -1",
+    "expr_a": "1 / x",
+    "expr_b": "1 / (x + 1)",
+    "domain": {
+      "x": "real, x != 0, x != -1"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -0.5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test 1 and −½. At 1, A is 1 and B is ½. At −½, A is −2 but B is 2.",
+    "full_explanation": "If x = 1, A is 1 and B is ½, so A wins. If x = −½, A is 1 ÷ (−½) = −2, while B is 1 ÷ ½ = 2, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "geom-0020",
+    "quantity_a": "\\text{the area of a square with side } 2x",
+    "quantity_b": "\\text{twice the area of a square with side } x",
+    "condition": "x > 0",
+    "expr_a": "(2 * x)^2",
+    "expr_b": "2 * x^2",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Doubling the side doubles both the length and the width. The area grows 2 × 2 = 4 times, not 2 times.",
+    "full_explanation": "Try x = 3. A square with side 6 has area 36. A square with side 3 has area 9, and twice that is 18. Doubling the side makes the area 4 times as big. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ineq-0022",
+    "quantity_a": "x^2",
+    "quantity_b": "9",
+    "condition": "-3 < x < 2",
+    "expr_a": "x^2",
+    "expr_b": "9",
+    "domain": {
+      "x": "real, -3 < x < 2"
+    },
+    "correct_answer": "B",
+    "tags": ["inequalities", "exponents"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "x² depends only on how far x is from 0. Here x is always less than 3 away from 0, so x² is less than 9.",
+    "full_explanation": "Watch out for numbers near −3: they are the farthest from 0 here. But x never reaches −3, so x is always less than 3 away from 0. That makes x² less than 3 × 3 = 9. Try x = −2.9: x² = 8.41. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "expr-0017",
+    "quantity_a": "x^2 + x",
+    "quantity_b": "0",
+    "condition": null,
+    "expr_a": "x^2 + x",
+    "expr_b": "0",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["expressions"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -0.5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test 1 and −½. 1 + 1 = 2, but ¼ − ½ = −¼.",
+    "full_explanation": "If x = 1, A is 1 + 1 = 2, so A wins. If x = −½, A is (−½)² + (−½) = ¼ − ½ = −¼, which is below 0, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "pct-0028",
+    "quantity_a": "\\text{a after a } 10\\% \\text{ fall}",
+    "quantity_b": "b",
+    "condition": "a > b > 0",
+    "expr_a": "0.9 * a",
+    "expr_b": "b",
+    "domain": {
+      "a": "real, a > 0",
+      "b": "real, 0 < b < a"
+    },
+    "correct_answer": "D",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "a": 100,
+        "b": 50,
+        "relation": "A"
+      },
+      {
+        "a": 100,
+        "b": 95,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test b far below a, then b just below a. 10% off 100 is 90, which beats 50 but loses to 95.",
+    "full_explanation": "If a = 100 and b = 50, A is 90, so A wins. If a = 100 and b = 95, A is still 90, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "geom-0021",
+    "quantity_a": "x",
+    "quantity_b": "y",
+    "condition": "x \\text{ and } y \\text{ are two angles of a triangle, and } x > 90",
+    "expr_a": "180 - y - z",
+    "expr_b": "y",
+    "domain": {
+      "y": "real, 0 < y < 90",
+      "z": "real, 0 < z < 90 - y"
+    },
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "The three angles add up to 180°. If x is more than 90, the other two share less than 90.",
+    "full_explanation": "The three angles of a triangle add up to 180 degrees. x is more than 90, so the other two angles add up to less than 90. That makes y less than 90, while x is more than 90. Try x = 100: y is less than 80. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "tri-0009",
+    "quantity_a": "x",
+    "quantity_b": "y",
+    "condition": "\\text{a triangle has sides } x, y \\text{ and } 10, \\text{ and } x < 5",
+    "expr_a": "x",
+    "expr_b": "10 + s",
+    "domain": {
+      "x": "real, 0 < x < 5",
+      "s": "real, -x < s < x"
+    },
+    "correct_answer": "B",
+    "tags": ["triangle_inequality", "inequalities"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Two sides together must be longer than the third: x + y > 10. With x below 5, y must be above 5.",
+    "full_explanation": "In a triangle, any two sides add up to more than the third side. So x + y is more than 10. If x is less than 5, y has to make up the rest, so y is more than 5. Try x = 3: y must be more than 7. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "ratio-0022",
+    "quantity_a": "\\text{the number of red marbles at the start}",
+    "quantity_b": "5",
+    "condition": "\\text{a bag has red and blue marbles in the ratio } 1 : 2, \\text{ and after } 5 \\text{ red marbles are added, the ratio is } 1 : 1",
+    "expr_a": "10 / 2",
+    "expr_b": "5",
+    "correct_answer": "C",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 25,
+    "shortcut_explanation": "Now red equals blue. At the start, blue was twice red, so the 5 new red marbles filled a gap as big as red itself.",
+    "full_explanation": "At the start, blue is twice red, so blue is red plus another red. After 5 red marbles are added, red equals blue. So the 5 new marbles filled a gap the size of the starting red. Red started at 5, with 10 blue. Check: 5 : 10 is 1 : 2, and 10 : 10 is 1 : 1. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "pct-0029",
+    "quantity_a": "x",
+    "quantity_b": "30",
+    "condition": "\\text{in a class, } 70\\% \\text{ of the students like cats, } 60\\% \\text{ like dogs, and } x\\% \\text{ like both}",
+    "expr_a": "x",
+    "expr_b": "30",
+    "domain": {
+      "x": "real, 30 <= x <= 60"
+    },
+    "correct_answer": "D",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 25,
+    "witnesses": [
+      {
+        "x": 30,
+        "relation": "C"
+      },
+      {
+        "x": 60,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "70 + 60 = 130, which is 30 more than 100%. So at least 30% like both, and it could be more.",
+    "full_explanation": "70% and 60% add up to 130%, but a class is only 100%. So at least 30% must be counted twice, because they like both. If x is exactly 30, it is a tie. If every dog lover also likes cats, x is 60 and A wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "num-0025",
+    "quantity_a": "\\text{how many numbers from } 1 \\text{ to } 99 \\text{ divide evenly by both } 4 \\text{ and } 6",
+    "quantity_b": "9",
+    "condition": null,
+    "expr_a": "floor(99 / lcm(4, 6))",
+    "expr_b": "9",
+    "correct_answer": "B",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "The numbers that 4 and 6 both go into are the multiples of 12, not of 24. 12 × 8 = 96, so there are 8.",
+    "full_explanation": "The smallest number that both 4 and 6 go into is 12, so the numbers are 12, 24, 36 and so on. 12 × 8 = 96 and 12 × 9 = 108, so 8 of them are below 100. Watch out: counting by 4 × 6 = 24 misses 12, 36, 60 and 84. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "avg-0021",
+    "quantity_a": "\\text{the average of } x \\text{ and } y",
+    "quantity_b": "15",
+    "condition": "\\text{the average of } x, y \\text{ and } 20 \\text{ is } 15",
+    "expr_a": "(45 - 20) / 2",
+    "expr_b": "15",
+    "correct_answer": "B",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "The three numbers add up to 3 × 15 = 45. Without the 20, x + y = 25, so their average is 12.5.",
+    "full_explanation": "An average of 15 for three numbers means they add up to 45. Take away the 20, and x + y = 25. Their average is 25 ÷ 2 = 12.5. Taking out a number above the average pulls the average down. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "frac-0027",
+    "quantity_a": "\\frac{x}{y}",
+    "quantity_b": "\\frac{x + 1}{y}",
+    "condition": "y < 0",
+    "expr_a": "x / y",
+    "expr_b": "(x + 1) / y",
+    "domain": {
+      "x": "real",
+      "y": "real, y < 0"
+    },
+    "correct_answer": "A",
+    "tags": ["fractions", "inequalities"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Watch the sign of y. Dividing by a negative number flips the order, so the bigger top gives the smaller result.",
+    "full_explanation": "Try x = 2 and y = −1. A is 2 ÷ (−1) = −2, and B is 3 ÷ (−1) = −3. −2 is more than −3. Dividing by a negative number flips the order, so the bigger top gives the smaller result. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "root-0023",
+    "quantity_a": "\\sqrt{x}",
+    "quantity_b": "\\frac{x}{2}",
+    "condition": "0 < x < 4",
+    "expr_a": "sqrt(x)",
+    "expr_b": "x / 2",
+    "domain": {
+      "x": "real, 0 < x < 4"
+    },
+    "correct_answer": "A",
+    "tags": ["roots"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Test 1: √1 = 1 beats ½. The two sides only tie at 4, where both are 2.",
+    "full_explanation": "Try x = 1: √1 = 1 and 1 ÷ 2 = ½, so A wins. Try x = 3: √3 is about 1.7, and 3 ÷ 2 = 1.5. The two sides tie at x = 4, where both are 2. Below 4, the root is always bigger. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ineq-0023",
+    "quantity_a": "\\frac{1}{x}",
+    "quantity_b": "x",
+    "condition": "x < 0, x \\neq -1",
+    "expr_a": "1 / x",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x < 0, x != -1"
+    },
+    "correct_answer": "D",
+    "tags": ["inequalities", "fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "x": -2,
+        "relation": "A"
+      },
+      {
+        "x": -0.5,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test −2 and −½. 1/(−2) = −½ beats −2, but 1/(−½) = −2 loses to −½.",
+    "full_explanation": "If x = −2, A is −½ and B is −2, so A wins. If x = −½, A is −2 and B is −½, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "expr-0018",
+    "quantity_a": "3(x + 2) - 2(x + 3)",
+    "quantity_b": "x",
+    "condition": null,
+    "expr_a": "3 * (x + 2) - 2 * (x + 3)",
+    "expr_b": "x",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "C",
+    "tags": ["expressions"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "Open the brackets: 3x + 6 − 2x − 6. The +6 and −6 cancel, which leaves x.",
+    "full_explanation": "3(x + 2) is 3x + 6, and 2(x + 3) is 2x + 6. Taking 2x + 6 away from 3x + 6 leaves x. Try x = 5: 21 − 16 = 5. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "geom-0022",
+    "quantity_a": "45",
+    "quantity_b": "y",
+    "condition": "\\text{a triangle has angles of } 90, x \\text{ and } y \\text{ degrees, and } x > 45",
+    "expr_a": "45",
+    "expr_b": "y",
+    "domain": {
+      "y": "real, 0 < y < 45"
+    },
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "Besides the right angle, the two other angles share 90°. If x takes more than 45, y gets less than 45.",
+    "full_explanation": "The angles add up to 180, and the right angle takes 90. So x and y add up to 90. If x is more than 45, y is less than 45. Try x = 60: then y is 30. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "arith-0020",
+    "quantity_a": "\\text{the number of digits in } 2^{10} \\times 5^{10}",
+    "quantity_b": "11",
+    "condition": null,
+    "expr_a": "floor(log10(2^10 * 5^10)) + 1",
+    "expr_b": "11",
+    "correct_answer": "C",
+    "tags": ["arithmetic", "exponents"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "Pair each 2 with a 5: 2 × 5 = 10. So the product is 10¹⁰, a 1 with ten zeros.",
+    "full_explanation": "2¹⁰ × 5¹⁰ is ten 2s and ten 5s multiplied together. Each 2 × 5 pair makes 10, so the product is 10 multiplied by itself 10 times. That is 1 followed by 10 zeros, which has 11 digits. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "num-0026",
+    "quantity_a": "\\text{the remainder when } n^2 \\text{ is divided by } 3",
+    "quantity_b": "1",
+    "condition": "n \\text{ is a whole number}",
+    "expr_a": "mod(n^2, 3)",
+    "expr_b": "1",
+    "domain": {
+      "n": "integer, n >= 0"
+    },
+    "correct_answer": "D",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "n": 1,
+        "relation": "C"
+      },
+      {
+        "n": 3,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Test 1 and 3. 1² = 1 leaves 1, but 3² = 9 leaves 0.",
+    "full_explanation": "If n = 1, n² = 1, and 1 divided by 3 leaves 1: a tie. If n = 3, n² = 9, which 3 divides exactly, so the remainder is 0 and B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "exp-0034",
+    "quantity_a": "(-1)^n + (-1)^{n + 1}",
+    "quantity_b": "0",
+    "condition": "n \\text{ is a whole number}",
+    "expr_a": "(-1)^n + (-1)^(n + 1)",
+    "expr_b": "0",
+    "domain": {
+      "n": "integer, n >= 0"
+    },
+    "correct_answer": "C",
+    "tags": ["exponents"],
+    "trap": "negative_numbers",
+    "difficulty": 5,
+    "target_seconds": 22,
+    "shortcut_explanation": "Two powers of −1 next to each other: one is 1 and the other is −1. They always add up to 0.",
+    "full_explanation": "Powers of −1 take turns: 1, −1, 1, −1 and so on. n and n + 1 are next to each other, so one power is 1 and the other is −1. 1 + (−1) = 0 every time. Try n = 2: 1 + (−1) = 0. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "num-0027",
+    "quantity_a": "n",
+    "quantity_b": "2",
+    "condition": "n \\text{ and } n + 1 \\text{ are both prime numbers}",
+    "expr_a": "n",
+    "expr_b": "2",
+    "domain": {
+      "n": "integer, isPrime(n), isPrime(n + 1)"
+    },
+    "correct_answer": "C",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "Of two numbers next to each other, one is even. The only even prime is 2, so n = 2 and n + 1 = 3.",
+    "full_explanation": "Of n and n + 1, one is even. The only even prime is 2, because every other even number can also be divided by 2. So the even one is 2. n + 1 can't be 2, since then n = 1, which isn't prime. That leaves n = 2. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ineq-0024",
+    "quantity_a": "a",
+    "quantity_b": "b",
+    "condition": "a^2 < b^2 \\text{ and } b < 0",
+    "expr_a": "a",
+    "expr_b": "b",
+    "domain": {
+      "b": "real, b < 0",
+      "a": "real, a^2 < b^2"
+    },
+    "correct_answer": "A",
+    "tags": ["inequalities", "exponents"],
+    "trap": "even_power",
+    "difficulty": 5,
+    "target_seconds": 28,
+    "shortcut_explanation": "a² < b² means a is closer to 0 than b. b is negative, so a lies to the right of b on the number line.",
+    "full_explanation": "Squares measure how far a number is from 0. So a is closer to 0 than b is. Try b = −3: then a is between −3 and 3, so a is more than −3. Any number closer to 0 than a negative b sits to its right. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "frac-0028",
+    "quantity_a": "\\frac{x}{y}",
+    "quantity_b": "\\frac{y}{x}",
+    "condition": "x < y < 0",
+    "expr_a": "x / y",
+    "expr_b": "y / x",
+    "domain": {
+      "y": "real, y < 0",
+      "x": "real, x < y"
+    },
+    "correct_answer": "A",
+    "tags": ["fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "Two negatives divide to a positive. x is farther from 0, so x/y is more than 1 and y/x is less than 1.",
+    "full_explanation": "Try x = −4 and y = −2. x/y = 2 and y/x = ½, so A wins. Both results are positive, because a negative divided by a negative is positive. x is farther from 0, so A has the bigger size on top. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0030",
+    "quantity_a": "p \\text{ after two } 10\\% \\text{ rises}",
+    "quantity_b": "p \\text{ after one } 20\\% \\text{ rise}",
+    "condition": "p > 0",
+    "expr_a": "p * 1.1 * 1.1",
+    "expr_b": "p * 1.2",
+    "domain": {
+      "p": "real, p > 0"
+    },
+    "correct_answer": "A",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 22,
+    "shortcut_explanation": "The second 10% is taken of a bigger number. 1.1 × 1.1 = 1.21, which is a 21% rise.",
+    "full_explanation": "Try p = 100. One 10% rise gives 110, and 10% of 110 is 11, so the second rise gives 121. One 20% rise gives only 120. Two 10% rises add up to more than one 20% rise. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "abs-0019",
+    "quantity_a": "|x| + |x - 4|",
+    "quantity_b": "4",
+    "condition": null,
+    "expr_a": "abs(x) + abs(x - 4)",
+    "expr_b": "4",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["absolute_value"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 28,
+    "witnesses": [
+      {
+        "x": 2,
+        "relation": "C"
+      },
+      {
+        "x": 5,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "Think of distances on a number line: from x to 0, plus from x to 4. Between 0 and 4 they add up to exactly 4; outside, to more.",
+    "full_explanation": "|x| is how far x is from 0, and |x − 4| is how far x is from 4. If x = 2, the distances are 2 and 2, which make 4: a tie. If x = 5, they are 5 and 1, which make 6, so A wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "expr-0019",
+    "quantity_a": "x^2",
+    "quantity_b": "x",
+    "condition": "x^2 = 2x",
+    "expr_a": "x^2",
+    "expr_b": "x",
+    "domain": {
+      "x": "real, x^2 == 2 * x"
+    },
+    "correct_answer": "D",
+    "tags": ["expressions"],
+    "trap": "zero",
+    "difficulty": 5,
+    "target_seconds": 25,
+    "witnesses": [
+      {
+        "x": 0,
+        "relation": "C"
+      },
+      {
+        "x": 2,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "Don't divide both sides by x, because x could be 0. Both x = 0 and x = 2 work.",
+    "full_explanation": "Dividing both sides by x gives x = 2, but that step only works if x isn't 0. And x = 0 works too: 0² = 0 = 2 × 0. If x = 0, both sides are 0, a tie. If x = 2, A is 4 and B is 2. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "avg-0022",
+    "quantity_a": "\\text{the average of all } 5 \\text{ numbers}",
+    "quantity_b": "12.5",
+    "condition": "\\text{the average of } 2 \\text{ numbers is } 15, \\text{ and the average of } 3 \\text{ other numbers is } 10",
+    "expr_a": "(2 * 15 + 3 * 10) / 5",
+    "expr_b": "12.5",
+    "correct_answer": "B",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "Don't take the average of the two averages. Add up the totals: 30 + 30 = 60, and 60 ÷ 5 = 12.",
+    "full_explanation": "The 2 numbers add up to 2 × 15 = 30. The 3 numbers add up to 3 × 10 = 30. All 5 add up to 60, and 60 ÷ 5 = 12. Halfway between 15 and 10 is 12.5, but the group of 3 counts more. So the answer is B: Quantity B is greater."
+  }
+]

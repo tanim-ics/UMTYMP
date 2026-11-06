@@ -4,7 +4,23 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C5, then C6. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; C5 written, verified and committed 2026-11-06; owner review of C1–C5 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C6, then C7. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; C5 written, verified and committed 2026-11-06; C6 written, verified and committed 2026-11-06; owner review of C1–C6 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (batch C6, 2026-11-06):** `content/questions/c6.json`, 50 original items, levels 7 / 11 / 12 / 12 / 8,
+answers A 13 · B 13 · C 12 · D 12. Bank now 320 items: levels 46 / 70 / 81 / 71 / 52 (minimum 60 / 90 / 100 / 90 / 60:
+still 14 / 20 / 19 / 19 / 8 to go in C7–C8), answers A 83 · B 81 · C 80 · D 76; all pass `npm run verify` (65,844
+value checks). New lessons include the reverse discount (40 after 20% off came from 50, not 48), averages of groups of
+different sizes, rounding, the overlap of two percents (70% + 60% → at least 30% both), multiples of both 4 and 6,
+x² = 2x (don't divide by x), 2¹⁰ × 5¹⁰ digits, and the only primes next to each other. The `absolute_value` trap is used
+for the first time (`abs-0017`). Three items with narrow ranges (`tri-0009`, `geom-0021`, `geom-0022`) let the
+verifier sample other variables of the same triangle (a third angle, or y = 10 + s), so their checks cover the whole
+condition. Re-read word by word: 13 texts changed (one double "So", "product" → "result", "8 equal parts are smaller
+than 6", "the wrong 48"). **Duplicates:** `duplicates.test.ts` passes; shape groups read by hand, and two items
+replaced before the first commit: 0.1 + 0.2 vs 0.25 (same lesson as `dec-0005`, now 1.5 + 1.5 + 1.5 vs 4) and 1% of
+500 vs 50 (same as `pct-0006`, now 0.5% of 100 vs 1). Kept on purpose, because the condition changes the lesson:
+`ineq-0023` (1/x vs x with x < 0, D) beside `ineq-0004`/`frac-0010`; `frac-0028` (x/y vs y/x with x < y < 0) beside
+`frac-0011`; `num-0027` (n, n + 1 prime) beside `num-0019` (n, n + 2 prime). Mutation: eight planted wrong answers or
+examples each failed. Task check passed; full suite 119 passed. **For the owner:** the C6 review sheet.
 
 **Handoff (batch C5, 2026-11-06):** `content/questions/c5.json`, 50 original items, levels 7 / 11 / 13 / 11 / 8,
 answers A 13 · B 14 · C 12 · D 11. Bank now 270 items: levels 39 / 59 / 69 / 59 / 44 (minimum 60 / 90 / 100 / 90 / 60
