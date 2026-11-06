@@ -1,0 +1,962 @@
+[
+  {
+    "id": "root-0018",
+    "quantity_a": "\\sqrt{16}",
+    "quantity_b": "16 \\div 2",
+    "condition": null,
+    "expr_a": "sqrt(16)",
+    "expr_b": "16 / 2",
+    "correct_answer": "B",
+    "tags": ["roots"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "A square root is not half. √16 is 4, because 4 × 4 = 16.",
+    "full_explanation": "√16 asks which number times itself makes 16. That number is 4. Half of 16 is 8. 8 is more than 4. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "geom-0014",
+    "quantity_a": "\\text{the perimeter of a rectangle } 7 \\text{ by } 3",
+    "quantity_b": "\\text{the perimeter of a square with side } 5",
+    "condition": null,
+    "expr_a": "2 * (7 + 3)",
+    "expr_b": "4 * 5",
+    "correct_answer": "C",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "Go once around each shape. 7 + 3 + 7 + 3 = 20, and 5 + 5 + 5 + 5 = 20.",
+    "full_explanation": "The perimeter is the distance all the way around. The rectangle has two sides of 7 and two sides of 3, which make 20. The square has four sides of 5, which also make 20. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "arith-0015",
+    "quantity_a": "1 + 2 + 3 + 4 + 5",
+    "quantity_b": "16",
+    "condition": null,
+    "expr_a": "1 + 2 + 3 + 4 + 5",
+    "expr_b": "16",
+    "correct_answer": "B",
+    "tags": ["arithmetic"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "The middle number is 3, and there are 5 numbers. So the sum is 3 × 5 = 15.",
+    "full_explanation": "Pair the outside numbers: 1 + 5 = 6 and 2 + 4 = 6. With the 3 in the middle, that makes 6 + 6 + 3 = 15. 15 is less than 16. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "dec-0016",
+    "quantity_a": "\\frac{3}{10}",
+    "quantity_b": "0.03",
+    "condition": null,
+    "expr_a": "3 / 10",
+    "expr_b": "0.03",
+    "correct_answer": "A",
+    "tags": ["decimals", "fractions"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "3/10 is three tenths, which is 0.3. 0.03 is only three hundredths.",
+    "full_explanation": "The first place after the point is tenths, and the second place is hundredths. 3/10 is 0.3, with the 3 in the tenths place. 0.03 has its 3 in the hundredths place, so it is ten times smaller. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0020",
+    "quantity_a": "200\\% \\text{ of } 10",
+    "quantity_b": "15",
+    "condition": null,
+    "expr_a": "2 * 10",
+    "expr_b": "15",
+    "correct_answer": "A",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 8,
+    "shortcut_explanation": "100% is the whole thing, so 200% is double. Double 10 is 20.",
+    "full_explanation": "100% of 10 is 10, the whole amount. 200% is two whole amounts: 10 + 10 = 20. 20 is more than 15. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "num-0020",
+    "quantity_a": "\\text{the number of odd numbers from } 1 \\text{ to } 9",
+    "quantity_b": "5",
+    "condition": null,
+    "expr_a": "sum(mod(1:9, 2))",
+    "expr_b": "5",
+    "correct_answer": "C",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "List them: 1, 3, 5, 7, 9. That is 5 numbers.",
+    "full_explanation": "Odd numbers are the ones you can't split into two equal whole-number halves. From 1 to 9 they are 1, 3, 5, 7 and 9. Counting them gives 5. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0018",
+    "quantity_a": "\\frac{1}{2} + \\frac{1}{3}",
+    "quantity_b": "1",
+    "condition": null,
+    "expr_a": "1/2 + 1/3",
+    "expr_b": "1",
+    "correct_answer": "B",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 1,
+    "target_seconds": 10,
+    "shortcut_explanation": "A half plus a third is less than a half plus a half. So it is less than 1.",
+    "full_explanation": "A third is smaller than a half. So a half plus a third is smaller than a half plus a half, which is 1. In sixths: 3/6 + 2/6 = 5/6. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "geom-0015",
+    "quantity_a": "\\text{the angle that makes a straight line with a } 130 \\text{ degree angle}",
+    "quantity_b": "60",
+    "condition": null,
+    "expr_a": "180 - 130",
+    "expr_b": "60",
+    "correct_answer": "B",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Angles on a straight line add up to 180°. 180 − 130 = 50.",
+    "full_explanation": "A straight line is a half turn, which is 180 degrees. The two angles share it, so the missing one is 180 − 130 = 50. 50 is less than 60. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "root-0019",
+    "quantity_a": "\\sqrt{(-3)^2}",
+    "quantity_b": "-3",
+    "condition": null,
+    "expr_a": "sqrt((-3)^2)",
+    "expr_b": "-3",
+    "correct_answer": "A",
+    "tags": ["roots"],
+    "trap": "principal_root",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Do the inside first: (−3)² = 9. Then √9 = 3, never −3.",
+    "full_explanation": "(−3)² = −3 × −3 = 9, because a negative times a negative is positive. √9 means the non-negative number that times itself makes 9, which is 3. 3 is more than −3. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "dec-0017",
+    "quantity_a": "1.01 - 0.1",
+    "quantity_b": "0.9",
+    "condition": null,
+    "expr_a": "1.01 - 0.1",
+    "expr_b": "0.9",
+    "correct_answer": "A",
+    "tags": ["decimals"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "Line up the points: 1.01 − 0.10 = 0.91. 0.91 is a bit more than 0.90.",
+    "full_explanation": "Write 0.1 as 0.10 so both numbers have two places after the point. 1.01 − 0.10 = 0.91. Compare 0.91 with 0.90: 91 hundredths beat 90 hundredths. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "pct-0021",
+    "quantity_a": "\\text{80 after a } 25\\% \\text{ rise}",
+    "quantity_b": "100",
+    "condition": null,
+    "expr_a": "80 * 1.25",
+    "expr_b": "100",
+    "correct_answer": "C",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "25% is a quarter. A quarter of 80 is 20, and 80 + 20 = 100.",
+    "full_explanation": "A 25% rise adds a quarter of the starting amount. A quarter of 80 is 80 ÷ 4 = 20. 80 + 20 = 100. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "abs-0015",
+    "quantity_a": "|x|",
+    "quantity_b": "-|x|",
+    "condition": null,
+    "expr_a": "abs(x)",
+    "expr_b": "-abs(x)",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["absolute_value"],
+    "trap": "zero",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": 0,
+        "relation": "C"
+      }
+    ],
+    "shortcut_explanation": "Test 0 as well. At x = 0 both sides are 0, but at x = 1, A is 1 and B is −1.",
+    "full_explanation": "|x| is never negative, so −|x| is never positive. If x = 1, A is 1 and B is −1, so A wins. If x = 0, both are 0, a tie. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "exp-0027",
+    "quantity_a": "x^3",
+    "quantity_b": "0",
+    "condition": null,
+    "expr_a": "x^3",
+    "expr_b": "0",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["exponents"],
+    "trap": "negative_numbers",
+    "difficulty": 2,
+    "target_seconds": 12,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -1,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "An odd power keeps the sign. Try x = 1, then x = −1.",
+    "full_explanation": "If x = 1, then x³ = 1, which is more than 0. If x = −1, then x³ = −1 × −1 × −1 = −1, which is less than 0. Three negatives multiplied make a negative. So the answer is D: not enough information."
+  },
+  {
+    "id": "ratio-0015",
+    "quantity_a": "\\text{km travelled in } 15 \\text{ minutes at } 60 \\text{ km per hour}",
+    "quantity_b": "20",
+    "condition": null,
+    "expr_a": "60 * 15 / 60",
+    "expr_b": "20",
+    "correct_answer": "B",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 14,
+    "shortcut_explanation": "60 km per hour is 1 km every minute. In 15 minutes that is 15 km.",
+    "full_explanation": "An hour has 60 minutes, so 60 km per hour means 1 km each minute. 15 minutes then gives 15 km. 15 is less than 20. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "arith-0016",
+    "quantity_a": "17 \\times 6 + 17 \\times 4",
+    "quantity_b": "170",
+    "condition": null,
+    "expr_a": "17 * 6 + 17 * 4",
+    "expr_b": "170",
+    "correct_answer": "C",
+    "tags": ["arithmetic"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 12,
+    "shortcut_explanation": "6 lots of 17 plus 4 lots of 17 is 10 lots of 17. That is 170.",
+    "full_explanation": "Both parts multiply 17. Put them together: 6 + 4 = 10 lots of 17. 17 × 10 = 170. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "exp-0028",
+    "quantity_a": "(2^3)^2",
+    "quantity_b": "2^5",
+    "condition": null,
+    "expr_a": "(2^3)^2",
+    "expr_b": "2^5",
+    "correct_answer": "A",
+    "tags": ["exponents"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 14,
+    "shortcut_explanation": "(2³)² is 2³ × 2³, which is six 2s multiplied. 2⁶ beats 2⁵.",
+    "full_explanation": "2³ = 8, and 8² = 8 × 8 = 64. 2⁵ = 32. Squaring 2³ gives 2³ × 2³ = 2⁶, one more 2 than 2⁵. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "tri-0008",
+    "quantity_a": "\\text{the longest whole-number length the third side can have}",
+    "quantity_b": "9",
+    "condition": "\\text{a triangle has sides } 4 \\text{ and } 6",
+    "expr_a": "4 + 6 - 1",
+    "expr_b": "9",
+    "correct_answer": "C",
+    "tags": ["triangle_inequality"],
+    "trap": null,
+    "difficulty": 2,
+    "target_seconds": 14,
+    "shortcut_explanation": "The third side must be shorter than 4 + 6 = 10. The biggest whole number below 10 is 9.",
+    "full_explanation": "Two sides of a triangle together must be longer than the third side. So the third side is less than 4 + 6 = 10. A side of 9 still works, but a side of 10 would make the triangle lie flat. That makes 9 the longest. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0019",
+    "quantity_a": "\\frac{1}{x}",
+    "quantity_b": "1",
+    "condition": "x \\neq 0",
+    "expr_a": "1 / x",
+    "expr_b": "1",
+    "domain": {
+      "x": "real, x != 0"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions"],
+    "trap": "fraction_0_1",
+    "difficulty": 2,
+    "target_seconds": 14,
+    "witnesses": [
+      {
+        "x": 2,
+        "relation": "B"
+      },
+      {
+        "x": 0.5,
+        "relation": "A"
+      }
+    ],
+    "shortcut_explanation": "Try x = 2, then x = ½. Dividing 1 by a number less than 1 gives more than 1.",
+    "full_explanation": "If x = 2, then 1/x = ½, which is less than 1. If x = ½, then 1/x = 2, because two halves fit in 1. That is more than 1. So the answer is D: not enough information."
+  },
+  {
+    "id": "geom-0016",
+    "quantity_a": "x",
+    "quantity_b": "90",
+    "condition": "x \\text{ and } 2x \\text{ are angles that make a straight line}",
+    "expr_a": "180 / 3",
+    "expr_b": "90",
+    "correct_answer": "B",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "x and 2x make 180°, so 3x = 180 and x = 60.",
+    "full_explanation": "Angles on a straight line add up to 180 degrees. x + 2x is three x's, so each x is 180 ÷ 3 = 60. 60 is less than 90. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "arith-0017",
+    "quantity_a": "999 \\times n",
+    "quantity_b": "1000 \\times n",
+    "condition": "n < 0",
+    "expr_a": "999 * n",
+    "expr_b": "1000 * n",
+    "domain": {
+      "n": "real, n < 0"
+    },
+    "correct_answer": "A",
+    "tags": ["arithmetic", "inequalities"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "n is negative, so more lots of n go further below 0. 1000 × n is the more negative one.",
+    "full_explanation": "Try n = −1: 999 × −1 = −999 and 1000 × −1 = −1000. −999 is closer to 0, so it is bigger. Each extra lot of a negative number pulls the total down. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "dec-0018",
+    "quantity_a": "x^2",
+    "quantity_b": "0.25",
+    "condition": "0 < x < 0.5",
+    "expr_a": "x^2",
+    "expr_b": "0.25",
+    "domain": {
+      "x": "real, 0 < x < 0.5"
+    },
+    "correct_answer": "B",
+    "tags": ["decimals", "exponents"],
+    "trap": "fraction_0_1",
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "0.5² = 0.25. Any x below 0.5 has a smaller square.",
+    "full_explanation": "0.5 × 0.5 = 0.25. When x is smaller than 0.5, x × x is smaller than 0.5 × 0.5. Try x = 0.3: 0.3² = 0.09, which is less than 0.25. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "pct-0022",
+    "quantity_a": "x\\% \\text{ of } 60",
+    "quantity_b": "15",
+    "condition": "0 < x < 50",
+    "expr_a": "x / 100 * 60",
+    "expr_b": "15",
+    "domain": {
+      "x": "real, 0 < x < 50"
+    },
+    "correct_answer": "D",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "x": 30,
+        "relation": "A"
+      },
+      {
+        "x": 20,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "15 is 25% of 60. So it depends on whether x is above or below 25.",
+    "full_explanation": "If x = 30, then 30% of 60 is 18, which is more than 15. If x = 20, then 20% of 60 is 12, which is less than 15. Both 20 and 30 are between 0 and 50. So the answer is D: not enough information."
+  },
+  {
+    "id": "avg-0017",
+    "quantity_a": "\\text{the average of all four numbers}",
+    "quantity_b": "\\text{the average of } a, b \\text{ and } c",
+    "condition": "\\text{a fourth number, equal to the average of } a, b \\text{ and } c, \\text{ is added to them}",
+    "expr_a": "(a + b + c + (a + b + c) / 3) / 4",
+    "expr_b": "(a + b + c) / 3",
+    "domain": {
+      "a": "real",
+      "b": "real",
+      "c": "real"
+    },
+    "correct_answer": "C",
+    "tags": ["averages"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "shortcut_explanation": "Adding a number equal to the average doesn't pull the average up or down.",
+    "full_explanation": "Try 1, 2 and 6: their average is 3. Add a 3, and the four numbers 1, 2, 6 and 3 add up to 12. 12 ÷ 4 = 3, the same average as before. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "root-0020",
+    "quantity_a": "\\sqrt{x} \\times \\sqrt{x}",
+    "quantity_b": "x + 1",
+    "condition": "x > 0",
+    "expr_a": "sqrt(x) * sqrt(x)",
+    "expr_b": "x + 1",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "B",
+    "tags": ["roots"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 12,
+    "shortcut_explanation": "√x times √x is just x. And x is less than x + 1.",
+    "full_explanation": "√x is the number that times itself makes x. So √x × √x = x. Try x = 9: 3 × 3 = 9, and 9 + 1 = 10. B is always 1 more. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "ineq-0018",
+    "quantity_a": "x",
+    "quantity_b": "y",
+    "condition": "x + 3 = y - 3",
+    "expr_a": "x",
+    "expr_b": "x + 6",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "B",
+    "tags": ["inequalities"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Undo both sides: y is 6 more than x.",
+    "full_explanation": "x + 3 = y − 3. Add 3 to both sides: x + 6 = y. So y is always 6 more than x. Try x = 1: then y = 7. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "expr-0014",
+    "quantity_a": "(x + 2)(x + 3)",
+    "quantity_b": "x^2 + 5x + 6",
+    "condition": null,
+    "expr_a": "(x + 2) * (x + 3)",
+    "expr_b": "x^2 + 5 * x + 6",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "C",
+    "tags": ["expressions"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "Multiply each part of the first bracket by each part of the second: x², 3x, 2x and 6.",
+    "full_explanation": "x × x = x², x × 3 = 3x, 2 × x = 2x, and 2 × 3 = 6. 3x + 2x = 5x, so the total is x² + 5x + 6. Try x = 1: 3 × 4 = 12, and 1 + 5 + 6 = 12. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0020",
+    "quantity_a": "\\frac{x + 1}{x}",
+    "quantity_b": "1",
+    "condition": "x > 0",
+    "expr_a": "(x + 1) / x",
+    "expr_b": "1",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "A",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "The top is bigger than the bottom, so the fraction is more than 1.",
+    "full_explanation": "With x positive, x + 1 is bigger than x. A fraction whose top is bigger than its bottom is more than 1. Try x = 4: 5/4 = 1¼. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "num-0021",
+    "quantity_a": "n",
+    "quantity_b": "\\text{the remainder when } n \\text{ is divided by } 10",
+    "condition": "n \\text{ is a whole number and } n > 10",
+    "expr_a": "n",
+    "expr_b": "mod(n, 10)",
+    "domain": {
+      "n": "integer, n > 10"
+    },
+    "correct_answer": "A",
+    "tags": ["number_theory"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "A remainder when you divide by 10 is at most 9. n is more than 10.",
+    "full_explanation": "Dividing by 10 leaves a remainder from 0 to 9, the last digit of n. n is more than 10, so it beats any of those. Try n = 23: the remainder is 3. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ratio-0016",
+    "quantity_a": "x + y",
+    "quantity_b": "30",
+    "condition": "x : y = 2 : 3 \\text{ and } y = 18",
+    "expr_a": "18 * 2 / 3 + 18",
+    "expr_b": "30",
+    "correct_answer": "C",
+    "tags": ["ratios"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 15,
+    "shortcut_explanation": "y = 18 is 3 parts, so each part is 6. x is 2 parts, which is 12, and 12 + 18 = 30.",
+    "full_explanation": "The ratio splits things into parts of the same size. y is 3 parts and equals 18, so one part is 18 ÷ 3 = 6. x is 2 parts: 2 × 6 = 12. 12 + 18 = 30. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0021",
+    "quantity_a": "\\frac{x}{3}",
+    "quantity_b": "\\frac{3}{x}",
+    "condition": "x > 0",
+    "expr_a": "x / 3",
+    "expr_b": "3 / x",
+    "domain": {
+      "x": "real, x > 0"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions"],
+    "trap": null,
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "x": 6,
+        "relation": "A"
+      },
+      {
+        "x": 1,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "Try a big x and a small x. x = 6 gives 2 and ½, but x = 1 gives ⅓ and 3.",
+    "full_explanation": "If x = 6, then x/3 = 2 and 3/x = ½, so A wins. If x = 1, then x/3 = ⅓ and 3/x = 3, so B wins. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "ineq-0019",
+    "quantity_a": "x",
+    "quantity_b": "y",
+    "condition": "x > 2y",
+    "expr_a": "x",
+    "expr_b": "y",
+    "domain": {
+      "x": "real",
+      "y": "real, x > 2 * y"
+    },
+    "correct_answer": "D",
+    "tags": ["inequalities"],
+    "trap": "negative_numbers",
+    "difficulty": 3,
+    "target_seconds": 18,
+    "witnesses": [
+      {
+        "x": 3,
+        "y": 1,
+        "relation": "A"
+      },
+      {
+        "x": -3,
+        "y": -2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "x > 2y sounds like x is bigger, but test negatives. Try y = 1, then y = −2.",
+    "full_explanation": "If x = 3 and y = 1, then 3 > 2, and x is more than y. If x = −3 and y = −2, then −3 > −4, but x is less than y. Doubling a negative number makes it smaller. So the answer is D: not enough information."
+  },
+  {
+    "id": "root-0021",
+    "quantity_a": "\\sqrt{x^2 - 6x + 9}",
+    "quantity_b": "3 - x",
+    "condition": "x < 3",
+    "expr_a": "sqrt(x^2 - 6 * x + 9)",
+    "expr_b": "3 - x",
+    "domain": {
+      "x": "real, x < 3"
+    },
+    "correct_answer": "C",
+    "tags": ["roots", "expressions"],
+    "trap": "principal_root",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "x² − 6x + 9 is (x − 3)². Its square root is the distance between x and 3, and x is below 3.",
+    "full_explanation": "(x − 3)² = x² − 6x + 9, so A is √((x − 3)²). A square root is never negative, so it is the distance from x to 3. With x below 3, that distance is 3 − x. Try x = 1: √4 = 2, and 3 − 1 = 2. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "frac-0022",
+    "quantity_a": "\\frac{1}{x}",
+    "quantity_b": "\\frac{1}{x^2}",
+    "condition": "0 < x < 1",
+    "expr_a": "1 / x",
+    "expr_b": "1 / x^2",
+    "domain": {
+      "x": "real, 0 < x < 1"
+    },
+    "correct_answer": "B",
+    "tags": ["fractions", "exponents"],
+    "trap": "fraction_0_1",
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "For x between 0 and 1, x² is smaller than x. Dividing 1 by a smaller number gives a bigger answer.",
+    "full_explanation": "Try x = ½: 1/x = 2, but x² = ¼, so 1/x² = 4. Squaring a fraction between 0 and 1 makes it smaller. A smaller bottom makes a bigger fraction. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "frac-0023",
+    "quantity_a": "\\frac{x + 4}{2}",
+    "quantity_b": "x + 2",
+    "condition": null,
+    "expr_a": "(x + 4) / 2",
+    "expr_b": "x + 2",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions", "expressions"],
+    "trap": "order_of_operations",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "x": 0,
+        "relation": "C"
+      },
+      {
+        "x": 2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "The fraction bar halves the whole top, so A is x/2 + 2, not x + 2. Try x = 0, then x = 2.",
+    "full_explanation": "If x = 0, A is 4 ÷ 2 = 2 and B is 2, a tie. If x = 2, A is 6 ÷ 2 = 3 and B is 4, so B wins. Halving x + 4 halves the x as well as the 4. So the answer is D: not enough information."
+  },
+  {
+    "id": "pct-0023",
+    "quantity_a": "\\text{the percent increase from } a \\text{ to } b",
+    "quantity_b": "\\text{the percent decrease from } b \\text{ to } a",
+    "condition": "0 < a < b",
+    "expr_a": "(b - a) / a * 100",
+    "expr_b": "(b - a) / b * 100",
+    "domain": {
+      "a": "real, a > 0",
+      "b": "real, b > a"
+    },
+    "correct_answer": "A",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Both changes are the same amount, b − a. The same change is a bigger percent of the smaller number a.",
+    "full_explanation": "Try a = 50 and b = 100. Going up by 50 from 50 is a 100% increase. Going down by 50 from 100 is only a 50% decrease. The same change is a bigger share of the smaller number. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "exp-0029",
+    "quantity_a": "3^x",
+    "quantity_b": "2^x",
+    "condition": null,
+    "expr_a": "3^x",
+    "expr_b": "2^x",
+    "domain": {
+      "x": "real"
+    },
+    "correct_answer": "D",
+    "tags": ["exponents"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -1,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "For positive powers 3 wins, but negative powers flip. Try x = 1, then x = −1.",
+    "full_explanation": "If x = 1, 3¹ = 3 beats 2¹ = 2. If x = −1, 3⁻¹ = ⅓ and 2⁻¹ = ½, and ½ is bigger. A negative power means 1 divided by the positive power. So the answer is D: not enough information."
+  },
+  {
+    "id": "ineq-0020",
+    "quantity_a": "\\frac{a}{c}",
+    "quantity_b": "\\frac{b}{c}",
+    "condition": "a > b \\text{ and } c < 0",
+    "expr_a": "a / c",
+    "expr_b": "b / c",
+    "domain": {
+      "a": "real",
+      "b": "real, b < a",
+      "c": "real, c < 0"
+    },
+    "correct_answer": "B",
+    "tags": ["inequalities", "fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Dividing by a negative number flips the order. a is bigger, so a/c is smaller.",
+    "full_explanation": "Try a = 6, b = 2 and c = −2. Then a/c = −3 and b/c = −1, and −1 is bigger. Dividing by a negative turns big positives into big negatives. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "num-0022",
+    "quantity_a": "\\text{the remainder when } 10^n \\text{ is divided by } 9",
+    "quantity_b": "1",
+    "condition": "n \\text{ is a whole number from } 1 \\text{ to } 15",
+    "expr_a": "mod(10^n, 9)",
+    "expr_b": "1",
+    "domain": {
+      "n": "integer, 1 <= n <= 15"
+    },
+    "correct_answer": "C",
+    "tags": ["number_theory", "exponents"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 20,
+    "shortcut_explanation": "Dividing by 9 leaves the same remainder as the digit sum does. 10ⁿ is a 1 and some 0s, so its digits add up to 1.",
+    "full_explanation": "10 = 9 + 1, 100 = 99 + 1, and 1000 = 999 + 1. Numbers like 9, 99 and 999 divide by 9 exactly. That makes every 10ⁿ a multiple of 9 plus 1, so the remainder is 1. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "ratio-0017",
+    "quantity_a": "\\frac{a + b}{b}",
+    "quantity_b": "2",
+    "condition": "a : b = 3 : 4, b \\neq 0",
+    "expr_a": "(0.75 * b + b) / b",
+    "expr_b": "2",
+    "domain": {
+      "b": "real, b != 0"
+    },
+    "correct_answer": "B",
+    "tags": ["ratios", "fractions"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "a is 3 parts and b is 4 parts, so a + b is 7 parts. 7 parts divided by 4 parts is 7/4, which is less than 2.",
+    "full_explanation": "Count in parts: a + b is 3 + 4 = 7 parts, and b is 4 parts. So the fraction is 7/4 = 1¾. 2 would need a + b to be 8 parts. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "abs-0016",
+    "quantity_a": "|x| + |y|",
+    "quantity_b": "|x + y|",
+    "condition": "xy < 0",
+    "expr_a": "abs(x) + abs(y)",
+    "expr_b": "abs(x + y)",
+    "domain": {
+      "x": "real",
+      "y": "real, x * y < 0"
+    },
+    "correct_answer": "A",
+    "tags": ["absolute_value"],
+    "trap": "absolute_value",
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "xy < 0 means one number is positive and one is negative. Adding them cancels some, but A adds both distances.",
+    "full_explanation": "Try x = 5 and y = −2: A is 5 + 2 = 7, but B is |3| = 3. When the signs are different, adding x and y takes part of one away. A never loses anything. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "exp-0030",
+    "quantity_a": "3^{20}",
+    "quantity_b": "2^{30}",
+    "condition": null,
+    "expr_a": "3^20",
+    "expr_b": "2^30",
+    "correct_answer": "A",
+    "tags": ["exponents"],
+    "trap": null,
+    "difficulty": 4,
+    "target_seconds": 22,
+    "shortcut_explanation": "Turn both into tenth powers: 3²⁰ = 9¹⁰ and 2³⁰ = 8¹⁰. 9 beats 8.",
+    "full_explanation": "3²⁰ is (3²)¹⁰ = 9¹⁰, because twenty 3s make ten groups of two 3s. 2³⁰ is (2³)¹⁰ = 8¹⁰. Both are ten copies multiplied, and 9 is bigger than 8. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "frac-0024",
+    "quantity_a": "\\frac{x + 1}{x}",
+    "quantity_b": "\\frac{x}{x + 1}",
+    "condition": "x \\neq 0, x \\neq -1",
+    "expr_a": "(x + 1) / x",
+    "expr_b": "x / (x + 1)",
+    "domain": {
+      "x": "real, x != 0, x != -1"
+    },
+    "correct_answer": "D",
+    "tags": ["fractions"],
+    "trap": "negative_numbers",
+    "difficulty": 4,
+    "target_seconds": 24,
+    "witnesses": [
+      {
+        "x": 1,
+        "relation": "A"
+      },
+      {
+        "x": -3,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "For positive x, A is more than 1 and B is less than 1. Then test a negative, like x = −3.",
+    "full_explanation": "If x = 1, A is 2 and B is ½, so A wins. If x = −3, A is −2/−3 = ⅔ and B is −3/−2 = 1½, so B wins. A negative x can flip the sizes. So the answer is D: not enough information."
+  },
+  {
+    "id": "geom-0017",
+    "quantity_a": "\\text{each angle of a shape with } n \\text{ equal sides and } n \\text{ equal angles}",
+    "quantity_b": "90",
+    "condition": "n \\text{ is a whole number and } n > 4",
+    "expr_a": "180 - 360 / n",
+    "expr_b": "90",
+    "domain": {
+      "n": "integer, n > 4"
+    },
+    "correct_answer": "A",
+    "tags": ["geometry"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 28,
+    "shortcut_explanation": "A square has four 90° corners. With more equal sides, each corner opens wider.",
+    "full_explanation": "Walk around the shape: you make one full turn of 360 degrees in n equal turns. Each turn is 360 ÷ n, which is less than 90 when n is more than 4. Each inside angle is 180 minus that turn, so it is more than 90. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "ratio-0018",
+    "quantity_a": "\\text{the average speed for the whole trip, in km per hour}",
+    "quantity_b": "50",
+    "condition": "\\text{a car drives } 120 \\text{ km at } 40 \\text{ km per hour, then } 120 \\text{ km back at } 60 \\text{ km per hour}",
+    "expr_a": "240 / (120 / 40 + 120 / 60)",
+    "expr_b": "50",
+    "correct_answer": "B",
+    "tags": ["ratios", "averages"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 28,
+    "shortcut_explanation": "The car spends more time at the slower speed. So the average is below the halfway speed of 50.",
+    "full_explanation": "Going takes 120 ÷ 40 = 3 hours, and coming back takes 120 ÷ 60 = 2 hours. That is 240 km in 5 hours, which is 48 km per hour. 48 is less than 50. So the answer is B: Quantity B is greater."
+  },
+  {
+    "id": "pct-0024",
+    "quantity_a": "\\text{the price after a } 25\\% \\text{ rise and then a } 20\\% \\text{ fall}",
+    "quantity_b": "\\text{the starting price } p",
+    "condition": "p > 0",
+    "expr_a": "p * 1.25 * 0.8",
+    "expr_b": "p",
+    "domain": {
+      "p": "real, p > 0"
+    },
+    "correct_answer": "C",
+    "tags": ["percents"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "A 25% rise multiplies by 5/4. A 20% fall multiplies by 4/5. 5/4 × 4/5 = 1.",
+    "full_explanation": "Try p = 100. A 25% rise gives 125. 20% of 125 is 25, so the fall takes it back to 100. The fall is a smaller percent, but of a bigger number. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "dec-0019",
+    "quantity_a": "\\frac{1}{3}",
+    "quantity_b": "0.333",
+    "condition": null,
+    "expr_a": "1 / 3",
+    "expr_b": "0.333",
+    "correct_answer": "A",
+    "tags": ["decimals", "fractions"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 20,
+    "shortcut_explanation": "1/3 as a decimal is 0.3333…, with 3s that never stop. 0.333 stops after three of them.",
+    "full_explanation": "1 ÷ 3 = 0.3333…, and the 3s go on forever. 0.333 is a little short of that, by about 3 ten-thousandths. Close is not the same as equal. So the answer is A: Quantity A is greater."
+  },
+  {
+    "id": "arith-0018",
+    "quantity_a": "\\text{the sum of the odd numbers from } 1 \\text{ to } 19",
+    "quantity_b": "10^2",
+    "condition": null,
+    "expr_a": "sum(1:2:19)",
+    "expr_b": "10^2",
+    "correct_answer": "C",
+    "tags": ["arithmetic", "exponents"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 20,
+    "shortcut_explanation": "Adding the first n odd numbers always makes n². From 1 to 19 there are 10 odd numbers.",
+    "full_explanation": "Pair them from the outside: 1 + 19, 3 + 17, 5 + 15, 7 + 13 and 9 + 11. That is 5 pairs of 20, which is 100. And 10² = 100 too. So the answer is C: the two quantities are equal."
+  },
+  {
+    "id": "exp-0031",
+    "quantity_a": "-2^x",
+    "quantity_b": "(-2)^x",
+    "condition": "x \\text{ is a whole number from } 1 \\text{ to } 10",
+    "expr_a": "-2^x",
+    "expr_b": "(-2)^x",
+    "domain": {
+      "x": "integer, 1 <= x <= 10"
+    },
+    "correct_answer": "D",
+    "tags": ["exponents"],
+    "trap": "order_of_operations",
+    "difficulty": 5,
+    "target_seconds": 28,
+    "witnesses": [
+      {
+        "x": 3,
+        "relation": "C"
+      },
+      {
+        "x": 2,
+        "relation": "B"
+      }
+    ],
+    "shortcut_explanation": "−2ˣ means −(2ˣ), always negative. (−2)ˣ is negative for odd x and positive for even x.",
+    "full_explanation": "If x = 3: −2³ = −8 and (−2)³ = −8, a tie. If x = 2: −2² = −4, but (−2)² = 4, so B wins. Do the power before the minus sign unless there are brackets. So the answer is D: not enough information."
+  },
+  {
+    "id": "expr-0015",
+    "quantity_a": "x^2 y",
+    "quantity_b": "x y^2",
+    "condition": "x > y",
+    "expr_a": "x^2 * y",
+    "expr_b": "x * y^2",
+    "domain": {
+      "x": "real",
+      "y": "real, y < x"
+    },
+    "correct_answer": "D",
+    "tags": ["expressions", "inequalities"],
+    "trap": "zero",
+    "difficulty": 5,
+    "target_seconds": 28,
+    "witnesses": [
+      {
+        "x": 2,
+        "y": 1,
+        "relation": "A"
+      },
+      {
+        "x": 0,
+        "y": -1,
+        "relation": "C"
+      }
+    ],
+    "shortcut_explanation": "Test 0. If x = 0 and y = −1, both sides are 0. But x = 2 and y = 1 gives 4 and 2.",
+    "full_explanation": "If x = 2 and y = 1, A is 4 × 1 = 4 and B is 2 × 1 = 2, so A wins. If x = 0 and y = −1, both sides are 0, a tie. Two different results mean you can't tell. So the answer is D: not enough information."
+  },
+  {
+    "id": "ineq-0021",
+    "quantity_a": "x",
+    "quantity_b": "y",
+    "condition": "x^3 < y^3",
+    "expr_a": "x",
+    "expr_b": "y",
+    "domain": {
+      "x": "real",
+      "y": "real, x^3 < y^3"
+    },
+    "correct_answer": "B",
+    "tags": ["inequalities", "exponents"],
+    "trap": null,
+    "difficulty": 5,
+    "target_seconds": 25,
+    "shortcut_explanation": "An odd power keeps the order and the sign. If x³ is smaller, x is smaller.",
+    "full_explanation": "Cubing never swaps two numbers: a bigger number always has a bigger cube, even for negatives. Try x = −2 and y = 1: −8 < 1, and −2 < 1. Squares are different, because they hide the sign. So the answer is B: Quantity B is greater."
+  }
+]

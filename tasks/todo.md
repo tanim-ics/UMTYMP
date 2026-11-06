@@ -4,7 +4,21 @@ Each task also meets the definition of done in `CLAUDE.md` §8. "Task check" = `
 "E2E" = `docker compose run --rm e2e`. Sizes: S = 1–2 files, M = 3–5 files.
 
 **Plan approved by owner 2026-11-03.** **Current task:** none. **Done:** Tasks 1–6 (committed and pushed to
-`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C4, then C5. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; owner review of C1–C4 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+`github.com/tanim-ics/UMTYMP`; Checkpoint A approved by owner 2026-11-04). **Next:** owner review of batches C1–C5, then C6. C1 committed 2026-11-05; C2 and C3 written, verified and committed 2026-11-05; C4 written, verified and committed 2026-11-05; C5 written, verified and committed 2026-11-06; owner review of C1–C5 wording open. Owner's plan 2026-11-05: after Task 25, write the question bank (C1–C8) by difficulty level. Checkpoint D passed and committed 2026-11-05. Task 19 done and committed 2026-11-05. Task 20 done, art approved by owner and committed 2026-11-05. Setup fix (`tools/doctor.sh`, README) committed 2026-11-05. Task 21 done and committed 2026-11-05. Task 22 done and committed 2026-11-05. Checkpoint E approved by owner 2026-11-05. Task 23 done and committed 2026-11-05. Task 24 done and committed 2026-11-05. Task 25 done and committed 2026-11-05; CI = GitHub Actions (owner, ADR 0002).
+
+**Handoff (batch C5, 2026-11-06):** `content/questions/c5.json`, 50 original items, levels 7 / 11 / 13 / 11 / 8,
+answers A 13 · B 14 · C 12 · D 11. Bank now 270 items: levels 39 / 59 / 69 / 59 / 44 (minimum 60 / 90 / 100 / 90 / 60
+still to reach in C6–C8), answers A 70 · B 68 · C 68 · D 64; all pass `npm run verify` (56,651 value checks). Every
+tag is now on 4–5 levels and every trap (except `not_to_scale`, text-only bank) on levels 2–5: C5 added
+`order_of_operations` and `zero` at level 5, geometry, ratios and decimals at level 5, triangle_inequality at level 2.
+Traps on 16 items. Re-read word by word: 11 texts changed (one double "So", "a percent of the smaller number a is a
+bigger percent", "7 parts out of 4", "twenty 3s", "1 divided by the power", "dividing by a fraction makes a number
+bigger"). **Duplicates:** `duplicates.test.ts` passes; shape groups read by hand, and two items replaced before the
+first commit: 1/x vs 10 (same lesson as the new `frac-0019`, now 1/3 vs 0.333) and the count of whole-number third
+sides (overlapped `tri-0008` and `tri-0005`, now 10ⁿ ÷ 9 remainder). Kept on purpose: `abs-0016` (|x| + |y| vs |x + y|
+with xy < 0, A) beside `abs-0004` (no condition, D); `exp-0027` (x³ vs 0, odd power) beside `exp-0022` (x² vs 0).
+mathjs ranges with a step (`sum(1:2:19)`) used for the odd-number sum. Mutation: eight planted wrong answers or
+examples each failed. Task check passed; full suite 119 passed. **For the owner:** the C5 review sheet.
 
 **Handoff (batch C4, 2026-11-05):** `content/questions/c4.json`, 50 original items, levels 7 / 11 / 13 / 11 / 8,
 answers A 12 · B 10 · C 12 · D 16 (leaning D as planned). Bank now 220 items: levels 32 / 48 / 56 / 48 / 36, answers
